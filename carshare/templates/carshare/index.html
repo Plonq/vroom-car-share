@@ -1,6 +1,79 @@
-{% extends 'base.html' %}
-{% block pagetitle %}This is the homepage{% endblock %}
-{% block maincontent %}
-    This is the homepage<br /><br/>
 
+<!-- Extend from base.html file -->
+{% extends 'carshare/base.html' %}
+{% block pagetitle %}Vroom! Home{% endblock %}
+{% block maincontent-test %}
+
+    <body>
+
+    <!-- Introduction Placeholder -->
+    <div>
+        <h1>Who are we?</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis metus justo,
+            ac elementum felis commodo vitae. Aenean vestibulum, dolor a molestie scelerisque,
+            quam ipsum maximus nisl, sit amet vulputate eros dolor nec arcu. Nullam vitae dignissim
+            ex, sit amet bibendum tortor. Morbi feugiat congue luctus. Interdum et malesuada
+            fames ac ante ipsum primis in faucibus. Nulla arcu neque, viverra vel lorem in,
+            viverra eleifend enim. Sed in posuere lectus. Vestibulum metus diam, bibendum sit
+            amet nisi in, rhoncus interdum tortor. Sed ornare mauris id augue volutpat, ac dapibus
+            neque dignissim. Nam quis finibus dui. Mauris sit amet eros sagittis, posuere ipsum non,
+            cursus lorem. Nunc luctus, sem sit amet pharetra porta, ipsum dolor gravida erat, nec
+            finibus ligula nulla et dolor. </p>
+    </div>
+
+    <!-- Place holder for booking form -->
+    <form id="form-container">
+        <fieldset>
+            <legend>BOOK A CAR</legend>
+            <div class="form-group">
+                <button name="login">Login</button>
+                <button name="register">Register</button><br>
+                <br>
+                <label for="PickUp">Pickup</label>
+                <input class="places" placeholder="Enter your location"><br>
+                <input type="radio" name="geolocation" value="active"> Use your current location <br>
+                <br>
+                <label for="pickUpDate">Pick a Date: </label>
+                <input type="date" name="pickupdate" min="2017-01-01"><br>
+
+                <label for="pickUpTime">Pickup Time</label>
+                <select id="time">
+                    <option value="8:00am">8:00am</option>
+                    <option value="9:00am">9:00am</option>
+                    <option value="10:00am">10:00am</option>
+                    <option value="11:00am">11:00am</option>
+                    <option value="12:00pm">12:00pm</option>
+                    <option value="1:00pm">1:00pm</option>
+                    <option value="2:00pm">2:00pm</option>
+                    <option value="3:00pm">3:00pm</option>
+                    <option value="4:00pm">4:00pm</option>
+                    <option value="5:00pm">5:00pm</option>
+                    <option value="6:00pm">6:00pm</option>
+                    <option value="7:00pm">7:00pm</option>
+                </select>
+            </div>
+        </fieldset>
+    </form>
+
+        <!-- Further space for information or pictures -->
+    <div id="information">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis metus justo,
+            ac elementum felis commodo vitae. Aenean vestibulum, dolor a molestie scelerisque,
+            quam ipsum maximus nisl, sit amet vulputate eros dolor nec arcu. Nullam vitae dignissim
+            ex, sit amet bibendum tortor. Morbi feugiat congue luctus. Interdum et malesuada
+            fames ac ante ipsum primis in faucibus. Nulla arcu neque, viverra vel lorem in,
+            viverra eleifend enim. Sed in posuere lectus. Vestibulum metus diam, bibendum sit
+            amet nisi in, rhoncus interdum tortor. Sed ornare mauris id augue volutpat, ac dapibus
+            neque dignissim. Nam quis finibus dui. Mauris sit amet eros sagittis, posuere ipsum non,
+            cursus lorem. Nunc luctus, sem sit amet pharetra porta, ipsum dolor gravida erat, nec
+            finibus ligula nulla et dolor.
+        </p>
+    </div>
+
+    <div class="container-fluid">
+        <div id="advertise">
+
+        </div>
+    </div>
+    </body>
 {% endblock %}
