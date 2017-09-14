@@ -2,19 +2,34 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from carshare.models import UserProfile
+from carshare.models import UserProfile, Address, CreditCard
 
+#
+# User and its related profile models (UserProfile, Address, CreditCard)
+#
 
-# Define an inline admin descriptor for UserProfile model
+# Inline admin descriptors
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
     verbose_name_plural = 'Profile'
 
 
-# Define a new User admin
+class AddressInline(admin.StackedInline):
+    model = Address
+    can_delete = False
+    verbose_name_plural = 'Address'
+
+
+class CreditCardInline(admin.StackedInline):
+    model = CreditCard
+    can_delete = False
+    verbose_name_plural = 'Credit Card'
+
+
+# Define new UserAdmin, containing above inlines
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserProfileInline, )
+    inlines = (UserProfileInline, AddressInline, CreditCardInline)
 
     def get_inline_instances(self, request, obj=None):
         """Prevents profile fields when creating new user"""
@@ -22,6 +37,6 @@ class UserAdmin(BaseUserAdmin):
             return list()
         return super(UserAdmin, self).get_inline_instances(request, obj)
 
-# Re-register UserAdmin
+# Re-register user admin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
