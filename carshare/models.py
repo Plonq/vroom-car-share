@@ -65,7 +65,7 @@ class CreditCard(models.Model):
     """
     Stores credit card information for a user
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='credit_card')
     number = models.CharField(max_length=16)
     expiry_month = models.CharField(max_length=2)
     expiry_year = models.CharField(max_length=4)
