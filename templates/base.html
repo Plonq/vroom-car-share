@@ -16,7 +16,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" alt="Vroom Car Share">
             </a>
 
@@ -27,12 +27,12 @@
 
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
                     <a class="nav-item nav-link" href="#">About</a>
                     <a class="nav-item nav-link" href="#">FAQ</a>
                     <a class="nav-item nav-link" href="#">Make Booking</a>
                     <a class="nav-item nav-link" href="#">Find a car</a>
-                    <a class="nav-item nav-link" href="#">Login</a>
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                     <a class="nav-item nav-link" href="#">Register</a>
                     <a class="nav-item nav-link" href="#">How it Works</a>
                     <a class="nav-item nav-link" href="#">Pricing</a>
@@ -41,7 +41,7 @@
         </nav>
 
         <div class="container-fluid">
-            {% block maincontent-test %}{% endblock %}
+            {% block maincontent %}{% endblock %}
         </div>
 
         <footer class="footer">
