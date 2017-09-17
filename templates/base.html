@@ -11,34 +11,62 @@
         <link rel="stylesheet" type="text/css" href="{% static "carshare/css/bootstrap.css" %}">
         <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="{% static "carshare/css/style.css" %}">
+        <!-- Google Font Open Sans -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 
         <title>{% block pagetitle %}{% endblock %}</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a class="navbar-brand" href="{% url 'index' %}">
-                <img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" alt="Vroom Car Share">
-            </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#">About</a>
-                    <a class="nav-item nav-link" href="#">FAQ</a>
-                    <a class="nav-item nav-link" href="#">Make Booking</a>
-                    <a class="nav-item nav-link" href="#">Find a car</a>
-                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                    <a class="nav-item nav-link" href="#">Register</a>
-                    <a class="nav-item nav-link" href="#">How it Works</a>
-                    <a class="nav-item nav-link" href="#">Pricing</a>
-                </div>
-            </div>
-        </nav>
+    <div class="container-fluid">
+        <div class="row bg-light justify-content-center">
+
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- LOGO -->
+                    <a class="navbar-brand col-xl-5 col-lg-5 col-md-5 col-sm-9 col-9" href="{% url 'index' %}">
+                        <img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" alt="Vroom Car Share">
+                    </a>
+
+
+
+                    <!-- second attempt floating menu -->
+                    <div class="row justify-content-center d-none d-sm-none d-md-flex" id="floating_auth">
+                        <div><a href="{% url 'login' %}">LOGIN</a></div>
+                        <div>|</div>
+                        <div><a href="#">REGISTER</a></div>
+                    </div>
+
+
+
+                    <div class="collapse navbar-collapse col-xl-8 col-lg-8 col-md-8" id="navbarNavAltMarkup">
+                        <div class="navbar-nav" id="top_nav">
+                            <a class="nav-item nav-link active" href="{% url 'index' %}">HOME <span class="sr-only">(current)</span></a>
+                            <a class="nav-item nav-link" href="#">PRICING</a>
+                            <a class="nav-item nav-link" href="#">FIND A CAR</a>
+                            <a class="nav-item nav-link d-md-none" href="{% url 'login' %}">LOGIN</a>
+                            <a class="nav-item nav-link d-md-none" href="#">REGISTER</a>
+                            <a class="nav-item nav-link" href="#">ABOUT</a>
+                            <div class="dropdown">
+                            <a class="nav-item nav-link dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">HELP</a>
+                                <div class="dropdown-menu">
+                                      <a class="dropdown-item" href="#">FAQs</a>
+                                      <a class="dropdown-item" href="#">HOW IT WORKS?</a>
+                                      <a class="dropdown-item" href="#">CONTACT US</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            <!-- end column -->
+        </div><!-- end row -->
+    </div><!-- end container -->
 
         <div class="container-fluid">
             {% block maincontent %}{% endblock %}
@@ -46,17 +74,95 @@
 
         <footer class="footer">
             <div class="container">
-                <div class="row justify-content-center">
-                    <a href="#">Home</a>
-                    <a href="#">About</a>
-                    <a href="#">FAQ</a>
-                    <a href="#">Make Booking</a>
-                    <a href="#">Find a car</a>
-                    <a href="#">Login</a>
-                    <a href="#">Register</a>
-                    <a href="#">How it Works</a>
-                    <a href="#">Pricing</a>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 d-sm-none d-none d-md-flex">
+                        <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                            </ul>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 d-sm-none d-none d-md-flex">
+                        <ul>
+                        <li><a href="#">Make Booking</a></li>
+                        <li><a href="#">Find A Car</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Pricing</a></li>
+                            </ul>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 d-sm-none d-none d-md-flex">
+                        <ul>
+                            <li><a href="#">Login</a></li>
+                            <li><a href="#">Register</a></li>
+                            <li><a href="#">My Account</a></li>
+                        </ul>
+                    </div>
+
+
+                   <!-- Mobile View ONLY -->
+                    <div class="col-6 col-sm-6 d-md-none">
+                       <ul>
+                           <li><a href="#">Home</a></li>
+                           <li><a href="#">About Us</a></li>
+                           <li><a href="#">FAQ</a></li>
+                           <li><a href="#">Pricing</a></li>
+                           <li><a href="#">How It Works</a></li>
+                       </ul>
+                   </div>
+
+                   <div class="col-6 col-sm-6 d-md-none">
+                       <ul>
+                           <li><a href="#">Make Booking</a></li>
+                           <li><a href="#">Find A Car</a></li>
+                            <li><a href="#">Login</a></li>
+                            <li><a href="#">Register</a></li>
+                            <li><a href="#">My Account</a></li>
+                       </ul>
+                   </div>
+                    <!-- END Mobile View ONLY -->
                 </div>
+
+
+                    <div class="row justify-content-center d-md-flex d-sm-none d-none" id="socials">
+                        <div class="col-xl-6 col-lg-7 col-md-10">
+                            <img src="{% static "carshare/images/sm_phone.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_insta.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_facebook.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_email.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_location.png" %}" class="">
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Mobile version of social icons -->
+                <div class="row col-12 col-sm-12 d-md-none" style="display: table; margin-left: 0px;" id="small_socials">
+                    <div style="display: table-row">
+                        <div style="display: table-cell; width: 100%; text-align:center;">
+                        <img src="{% static "carshare/images/sm_phone.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_insta.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_facebook.png" %}" class="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12 col-sm-12 d-md-none" style="display: table; margin-left: 0px;" id="small_socials">
+                    <div style="display: table-row">
+                        <div style="display: table-cell; width: 100%; text-align:center;">
+                        <img src="{% static "carshare/images/sm_email.png" %}" class="">
+                        <img src="{% static "carshare/images/sm_location.png" %}" class="">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Mobile version of social icons -->
+
+
+                <div class="row">
+                    <span class="col-xl-12 text-center" id="copyright">Copyright &COPY; Vroom Car Share 2017</span>
+                </div>
+
+
             </div>
         </footer>
 
