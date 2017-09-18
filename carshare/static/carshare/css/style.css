@@ -5,42 +5,223 @@
 */
 
 /* ==== GLOBAL=== */
+* {
+    font-family: "Open Sans";
+}
+
 #logo {
-  width: 195px;
-  height:80px;
-  margin: -20px 50px 0 20px;
+    width: 195px;
+    height: 80px;
+    margin: -20px 0px 0 0px;
 }
 
 .footer .container .row a {
-  padding-right: 20px;
+    padding-right: 20px;
 }
 
 .navbar {
-  padding-top:25px;
+    padding-top: 25px;
+}
+
+
+
+
+#top_nav {
+    font-weight: bold;
+}
+
+.navbar-light .navbar-nav .nav-link{
+    color: black;
+}
+
+#top_nav a:hover {
+    color: #3399cc;
+}
+
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+    color: #3399cc;
+}
+
+#floating_auth {
+    position: absolute;
+    top:0px;
+    left: 508px;
+    width: 200px;
+    background-color: #3399cc;
+    height: 35px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#floating_auth div {
+    color: white;
+    font-weight: bold;
+    padding-top: 5px;
+}
+
+#floating_auth div a {
+    color: white;
+}
+
+#floating_auth div a:hover {
+    text-decoration: none;
+}
+
+#floating_auth div:first-child{
+    padding-right:10px;
+}
+
+#floating_auth div:nth-child(2){
+    padding-top:3px;
+}
+
+#floating_auth div:nth-child(3){
+    padding-left:10px;
+}
+
+
+
+.footer .container .row div ul {
+    list-style: none;
+   /* margin-left: -25px;*/
+    width: 100%;
+    text-align: center;
+}
+
+/*.footer .container .row div{
+    width:200px;
+}*/
+
+.website-footer {
+    width:200px;
+}
+
+
+.footer .container .row div li a {
+    color:white;
+    font-weight: bold;
+}
+
+.footer .container .row div li a:hover {
+    color:#3399cc;
+    text-decoration: none;
+}
+
+.mobile-footer ul li {
+    margin-left:-50px;
 }
 
 
 
 
 
+
+
+
+
+div#socials div {
+    margin-left: 25px;
+}
+
+
+
+
+#socials div img {
+    width: 75px;
+}
+
+.social_icon {
+    margin-right: 25px;
+}
+
+#last_social {
+    margin-right: 0px;
+}
+
+#socials div {
+    /*padding-left: 20px;*/
+}
+
+#socials div {
+    width:495px;
+}
+
+
+
+#small_socials div div img {
+    width: 75px;
+}
+
+#copyright {
+    color:white;
+    font-weight: bold;
+    margin-left: 10px;
+}
 
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
+
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 420px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
-  background-color: #f5f5f5;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 420px;
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #006699;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Media Queries
+--------------------------------------------------- */
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px)  {
+
+    .footer .container .row div li a {
+        font-size: 13px;
+    }
+
+    .footer .container .row div ul {
+        width: 125%;
+    }
+
+    .footer .container .row div li {
+        height: 40px;
+    }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 767px)  {
+
+    .footer .container .row div li a {
+        font-size: 13px;
+    }
+
+    .footer .container .row div ul {
+        width: 125%;
+    }
+
+    .footer .container .row div li {
+        height: 40px;
+    }
 }

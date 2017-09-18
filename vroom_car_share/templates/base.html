@@ -1,0 +1,208 @@
+<!-- BASE TEMPLATE -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "carshare/css/bootstrap.css" %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "carshare/css/style.css" %}">
+    <!-- Google Font Open Sans -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+    <title>{% block pagetitle %}{% endblock %}</title>
+</head>
+<body>
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Have an account? Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" class="submission-form">
+                    {% if form.errors %}
+                        <p class="error">Sorry, that is not a valid username or password</p>
+                    {% endif %}
+                    <label for="username">User name:</label>
+                    <input type="text" class="form-control" name="username" id="username"><br/>
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" name="password" id="password">
+                    <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
+                    {% csrf_token %}
+            </div><!-- There is an error because of the form wrapping... will review -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
+                <input type="hidden" name="next" value="{{ next|escape }}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row bg-light justify-content-center">
+
+        <nav class="navbar navbar-expand-md navbar-light">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- LOGO -->
+            <a class="navbar-brand col-xl-5 col-lg-5 col-md-5 col-sm-9 col-9" href="{% url 'index' %}">
+                <img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" alt="Vroom Car Share">
+            </a>
+
+
+            <!-- second attempt floating menu -->
+            <div class="row justify-content-center d-none d-sm-none d-md-flex" id="floating_auth">
+                <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
+                <div>|</div>
+                <div><a href="#">REGISTER</a></div>
+            </div>
+
+
+            <div class="collapse navbar-collapse col-xl-8 col-lg-8 col-md-8" id="navbarNavAltMarkup">
+                <div class="navbar-nav" id="top_nav">
+                    <a class="nav-item nav-link active" href="{% url 'index' %}">HOME <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="#">PRICING</a>
+                    <a class="nav-item nav-link" href="#">FIND A CAR</a>
+                    <a class="nav-item nav-link d-md-none" href="{% url 'login' %}">LOGIN</a>
+                    <a class="nav-item nav-link d-md-none" href="#">REGISTER</a>
+                    <a class="nav-item nav-link" href="#">ABOUT</a>
+                    <div class="dropdown">
+                        <a class="nav-item nav-link dropdown dropdown-toggle" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" href="#">HELP</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">FAQs</a>
+                            <a class="dropdown-item" href="#">HOW IT WORKS?</a>
+                            <a class="dropdown-item" href="#">CONTACT US</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- end column -->
+    </div><!-- end row -->
+</div><!-- end container -->
+
+<div class="container-fluid">
+    {% block maincontent %}{% endblock %}
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="d-sm-none d-none d-md-flex ml-xl-auto ml-lg-auto ml-md-auto website-footer">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="d-sm-none d-none d-md-flex website-footer">
+                <ul>
+                    <li><a href="#">Make Booking</a></li>
+                    <li><a href="#">Find A Car</a></li>
+                    <li><a href="#">How It Works</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="d-sm-none d-none d-md-flex mr-xl-auto mr-lg-auto mr-md-auto website-footer">
+                <ul>
+                    <li><a href="" data-toggle="modal" data-target="#exampleModal">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">My Account</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Mobile View ONLY -->
+            <div class="col-5 col-sm-5 ml-auto ml-sm-auto d-md-none mobile-footer">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">How It Works</a></li>
+                </ul>
+            </div>
+
+            <div class="col-5 col-sm-5 d-md-none mr-auto mr-sm-auto mobile-footer">
+                <ul>
+                    <li><a href="#">Make Booking</a></li>
+                    <li><a href="#">Find A Car</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">My Account</a></li>
+                </ul>
+            </div>
+            <!-- END Mobile View ONLY -->
+        </div>
+
+
+        <div class="row justify-content-center d-md-flex d-sm-none d-none" id="socials">
+            <div>
+                <img src="{% static "carshare/images/sm_phone.png" %}" class="social_icon">
+                <img src="{% static "carshare/images/sm_insta.png" %}" class="social_icon">
+                <img src="{% static "carshare/images/sm_facebook.png" %}" class="social_icon">
+                <img src="{% static "carshare/images/sm_email.png" %}" class="social_icon">
+                <img src="{% static "carshare/images/sm_location.png" %}" id="last_social">
+            </div>
+        </div>
+
+
+        <!-- Mobile version of social icons -->
+        <div class="row col-12 col-sm-12 d-md-none" style="display: table; margin-left: 0px;" id="small_socials">
+            <div style="display: table-row">
+                <div style="display: table-cell; width: 100%; text-align:center;">
+                    <img src="{% static "carshare/images/sm_phone.png" %}" class="">
+                    <img src="{% static "carshare/images/sm_insta.png" %}" class="">
+                    <img src="{% static "carshare/images/sm_facebook.png" %}" class="">
+                </div>
+            </div>
+        </div>
+        <div class="row col-12 col-sm-12 d-md-none" style="display: table; margin-left: 0px;" id="small_socials">
+            <div style="display: table-row">
+                <div style="display: table-cell; width: 100%; text-align:center;">
+                    <img src="{% static "carshare/images/sm_email.png" %}" class="">
+                    <img src="{% static "carshare/images/sm_location.png" %}" class="">
+                </div>
+            </div>
+        </div>
+        <!-- End Mobile version of social icons -->
+
+
+        <div class="row">
+            <span class="col-xl-12 text-center" id="copyright">Copyright &COPY; Vroom Car Share 2017</span>
+        </div>
+
+
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static "carshare/js/jquery-3.2.1.js" %}"></script>
+<script src="https://getbootstrap.com/assets/js/vendor/popper.min.js" type="text/javascript"></script>
+<script src="{% static "carshare/js/bootstrap.js" %}"></script>
+</body>
+</html>
