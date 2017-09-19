@@ -33,7 +33,7 @@ class Address(models.Model):
     """
     Stores an address for a user
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='address')
 
     STATES = (
         ('VIC', 'Victoria'),
@@ -50,17 +50,6 @@ class Address(models.Model):
     postcode = models.CharField(max_length=4)
 
 
-# Signals to create/save Address object when User is created/saved
-@receiver(post_save, sender=User)
-def create_address(sender, instance, created, **kwargs):
-    if created:
-        Address.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_address_profile(sender, instance, **kwargs):
-    instance.address.save()
-
-
 class CreditCard(models.Model):
     """
     Stores credit card information for a user
@@ -69,13 +58,3 @@ class CreditCard(models.Model):
     number = models.CharField(max_length=16)
     expiry_month = models.CharField(max_length=2)
     expiry_year = models.CharField(max_length=4)
-
-# Signals to create/save UserProfile object when User is created/saved
-@receiver(post_save, sender=User)
-def create_credit_card(sender, instance, created, **kwargs):
-    if created:
-        CreditCard.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_credit_card(sender, instance, **kwargs):
-    instance.credit_card.save()

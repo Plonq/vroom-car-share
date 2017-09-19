@@ -17,13 +17,13 @@ class UserProfileInline(admin.StackedInline):
 
 class AddressInline(admin.StackedInline):
     model = Address
-    can_delete = False
+    can_delete = True
     verbose_name_plural = 'Address'
 
 
 class CreditCardInline(admin.StackedInline):
     model = CreditCard
-    can_delete = False
+    can_delete = True
     verbose_name_plural = 'Credit Card'
 
 
