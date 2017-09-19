@@ -30,6 +30,7 @@
 .navbar {
     border: 0px;
     border-radius: 0px;
+    margin-bottom: 0px;
 }
 
 .navbar li {
@@ -204,6 +205,36 @@ ul.nav.navbar-nav {
     margin: auto;
 }
 
+
+
+
+
+
+/* INDEX carousel */
+.item img {
+    width: 100%;
+}
+
+span.glyphicon.glyphicon-chevron-left {
+    left: 30px;
+}
+
+span.glyphicon.glyphicon-chevron-right {
+    right: 30px;
+}
+
+.carousel-caption {
+    bottom:50%;
+    color: white;
+    font-size:40px;
+}
+
+
+
+
+
+
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -213,7 +244,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 388px;
+    margin-bottom: 400px;
 }
 
 .footer {
