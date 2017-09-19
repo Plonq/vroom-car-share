@@ -17,6 +17,10 @@ class UserProfile(models.Model):
         """Returns True if date of birth is at least 18 years in the past to the day"""
         return self.date_of_birth <= datetime.date.today() - datetime.timedelta(days=18*365)
 
+    def __str__(self):
+        # Appears on django-admin
+        return self.user.username
+
 
 # Signals to create/save UserProfile object when User is created/saved
 @receiver(post_save, sender=User)
@@ -49,6 +53,9 @@ class Address(models.Model):
     state = models.CharField(max_length=3, choices=STATES)
     postcode = models.CharField(max_length=4)
 
+    def __str__(self):
+        return "{0}, {1}, {2} {3}".format(self.address_line1, self.city, self.state, self.postcode)
+
 
 class CreditCard(models.Model):
     """
@@ -58,3 +65,6 @@ class CreditCard(models.Model):
     number = models.CharField(max_length=16)
     expiry_month = models.CharField(max_length=2)
     expiry_year = models.CharField(max_length=4)
+
+    def __str__(self):
+        return "XXXX XXXX XXXX {0}".format(self.number[-4:])
