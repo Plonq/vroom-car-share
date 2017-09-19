@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     Stores user profile information
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    # All fields must be optional (null=True blank=True) since this object will be created and saved with the user
     date_of_birth = models.DateField(null=True, blank=True)
 
     def is_over_18(self):
