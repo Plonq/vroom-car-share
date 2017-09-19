@@ -9,7 +9,7 @@
     font-family: "Open Sans";
 }
 
-.col-centered{
+.col-centered {
     float: none;
     margin: 0 auto;
 }
@@ -28,13 +28,13 @@
 }
 
 .navbar {
-    border:0px;
+    border: 0px;
     border-radius: 0px;
 }
 
 .navbar li {
-    font-weight:bold;
-    font-size:16px;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 /* Top Navbar */
@@ -52,20 +52,17 @@ ul.nav.navbar-nav li a:hover {
 }
 
 ul.nav.navbar-nav {
-    margin-top: 30px;
+    margin-top: 38px;
 }
 
 .navbar-nav li a {
-    padding-left:10px;
+    padding-left: 10px;
     padding-right: 10px;
 }
 
-
-
 .navbar-toggle {
-    margin-top:35px;
+    margin-top: 35px;
 }
-
 
 .mobile_header {
     width: 250px;
@@ -73,24 +70,10 @@ ul.nav.navbar-nav {
     height: 100px;
 }
 
-
-/*.navbar .navbar-nav {
-    display: inline-block;
-    float: none;
-}
-
-.navbar .navbar-collapse {
-    text-align: center;
-}*/
-
-
-
-
-
 /* Floating Auth Menu */
 #floating_auth {
     position: absolute;
-    top:0px;
+    top: 0px;
     width: 200px;
     background-color: #3399cc;
     height: 35px;
@@ -109,35 +92,117 @@ ul.nav.navbar-nav {
 
 #floating_auth div a {
     color: white;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 #floating_auth div a:hover {
     text-decoration: none;
 }
 
-#floating_auth div:first-child{
-    padding-right:10px;
-    padding-left: 21px;
+#floating_auth div:first-child {
+    padding-right: 10px;
+    padding-left: 25px;
 }
 
-#floating_auth div:nth-child(2){
-    padding-top:5px;
+#floating_auth div:nth-child(2) {
+    padding-top: 5px;
 }
 
-#floating_auth div:nth-child(3){
-    padding-left:10px;
+#floating_auth div:nth-child(3) {
+    padding-left: 10px;
 }
 
+/* Website Footer */
+.website-footer {
+    float: left;
+    margin: auto;
+    width: 216px;
+}
 
+.website-footer-container {
+    width: 650px;
+    margin: auto;
+}
 
+.website-footer ul {
+    list-style: none;
+    text-align: center;
+    margin-left: -40px;
 
+}
 
+.website-footer ul li a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
 
+.website-footer ul li a:hover {
+    color: #33ccff;
+    text-decoration: none;
+}
 
+.site-map-mobile div ul {
+    list-style: none;
+    text-align: center;
+    margin-left: -40px;
+}
 
+.site-map-mobile div ul li a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
 
+.site-map-mobile div {
+    float: left;
+    width: 150px;
+}
 
+.site-map-mobile {
+    width: 305px;
+    margin: auto;
+}
+
+#socials div {
+    width: 490px;
+    margin: auto;
+}
+
+.social_icon {
+    width: 78px;
+    margin-right: 20px;
+}
+
+#last_social {
+    width: 78px;
+}
+
+.small_socials div {
+    width: 235px;
+    margin: auto;
+}
+
+.small_socials2 div {
+    width: 158px;
+    margin: auto;
+}
+
+.small_socials2 div img {
+    width: 75px;
+}
+
+.small_socials div img {
+    width: 75px;
+}
+
+#copyright {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    width: 300px;
+    margin: auto;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -148,7 +213,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 420px;
+    margin-bottom: 388px;
 }
 
 .footer {
@@ -156,62 +221,59 @@ body {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 420px;
+    height: 395px;
     line-height: 60px; /* Vertically center the text there */
     background-color: #006699;
 }
 
-
-
-
 /* Apply to mobile */
-    @media only screen and (min-width : 768px) {
-.navbar .container {
-    width:705px;
-    margin: auto;
-}
-
-
+@media only screen and (min-width: 768px) {
+    .navbar .container {
+        width: 705px;
+        margin: auto;
     }
 
-
-
-
-
+}
 
 /* Media Queries
 --------------------------------------------------- */
 
 /* Custom, iPhone Retina */
-@media only screen and (max-width : 320px)  {
-
-
+@media only screen and (max-width: 320px) {
 
 }
 
-@media only screen and (max-width : 480px) {
+@media only screen and (max-width: 480px) {
 
 }
-
 
 /* Small Devices - This is where the mobile menu activates*/
-@media only screen and (max-width : 767px)  {
-#floating_auth {
-    display: none;
-}
-
-
-
-}
-
-
- /* Medium Devices, Desktops */
-    @media only screen and (max-width : 992px) {
-
+@media only screen and (max-width: 767px) {
+    #floating_auth {
+        display: none;
     }
 
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 530px;
+        line-height: 60px; /* Vertically center the text there */
+        background-color: #006699;
+    }
 
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 530px;
+    }
 
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+
+}
 
 /* IE Conditional */
 
