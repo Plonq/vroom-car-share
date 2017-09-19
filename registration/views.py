@@ -1,9 +1,6 @@
 from django.shortcuts import render
-from registration.forms import UserForm, AddressForm, CreditCardForm
 
-# Create your views here.
-def profile(request):
-    return render(request, 'registration/profile.html')
+from .forms import UserForm, AddressForm, CreditCardForm
 
 
 def register(request):
@@ -26,6 +23,5 @@ def register(request):
         user_form = UserForm()
         address_form = AddressForm()
         credit_card_form = CreditCardForm()
-
 
     return render(request, 'registration/register.html', {'user_form': user_form, 'address_form': address_form, 'credit_card_form': credit_card_form})
