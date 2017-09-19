@@ -19,16 +19,19 @@
 <body>
 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post" class="submission-form">
+<!-- Login Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Have an account? Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" class="submission-form">
                     {% if form.errors %}
                         <p class="error">Sorry, that is not a valid username or password</p>
                     {% endif %}
@@ -38,71 +41,67 @@
                     <input type="password" class="form-control" name="password" id="password">
                     <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
                     {% csrf_token %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
-                          <input type="hidden" name="next" value="{{ next|escape }}"/>
+            </div><!-- There is an error because of the form wrapping... will review -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
+                <input type="hidden" name="next" value="{{ next|escape }}"/>
                 </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Modal -->
-
-
-
-<nav class="navbar navbar-default">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-        <div class="mobile_header">
-      <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" /></a>
             </div>
+        </div>
     </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row bg-light" id="header_container">
+
+        <nav class="navbar navbar-expand-md navbar-light">
+
+            <!-- Mobile menu button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- LOGO -->
+            <a class="navbar-brand col-lg-5 col-md-5 col-sm-9" href="{% url 'index' %}">
+                <img src="{% static "carshare/images/vroom_logo.png" %}" id="logo" alt="Vroom Car Share">
+            </a>
 
 
             <!-- second attempt floating menu -->
             <div class="row" id="floating_auth">
-                <div><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
+                <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
                 <div>|</div>
                 <div><a href="#">REGISTER</a></div>
             </div>
 
 
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">PRICING</a></li>
-          <li><a href="#">FIND A CAR</a></li>
-          <li><a href="#">ABOUT</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HELP<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">FAQs</a></li>
-            <li><a href="#">HOW IT WORKS?</a></li>
-              <li><a href="#">CONTACT US</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
-
-
-
-
-
-
+            <div class="collapse navbar-collapse col-lg-8 col-md-8" id="navbarNavAltMarkup">
+                <div class="navbar-nav" id="top_nav">
+                    <a class="nav-item nav-link active" href="{% url 'index' %}">HOME <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="#">PRICING</a>
+                    <a class="nav-item nav-link" href="#">FIND A CAR</a>
+                    <a class="nav-item nav-link d-md-none" href="{% url 'login' %}">LOGIN</a>
+                    <a class="nav-item nav-link d-md-none" href="#">REGISTER</a>
+                    <a class="nav-item nav-link" href="#">ABOUT</a>
+                    <div class="dropdown">
+                        <a class="nav-item nav-link dropdown dropdown-toggle" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" href="#">HELP</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">FAQs</a>
+                            <a class="dropdown-item" href="#">HOW IT WORKS?</a>
+                            <a class="dropdown-item" href="#">CONTACT US</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- end column -->
+    </div><!-- end row -->
+</div><!-- end container -->
 
 <div class="container-fluid">
     {% block maincontent %}{% endblock %}
