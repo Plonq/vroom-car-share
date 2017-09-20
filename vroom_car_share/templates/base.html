@@ -72,9 +72,15 @@
 
             <!-- second attempt floating menu -->
             <div class="row justify-content-center d-none d-sm-none d-md-flex" id="floating_auth">
-                <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
-                <div>|</div>
-                <div><a href="#">REGISTER</a></div>
+                {% if user.is_authenticated %}
+                    <div><a href="{% url 'logout' %}">LOGOUT</a></div>
+                    <div>|</div>
+                    <div><a href="{% url 'profile' %}">PROFILE</a></div>
+                {% else %}
+                    <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
+                    <div>|</div>
+                    <div><a href="{% url 'register' %}">REGISTER</a></div>
+                {% endif %}
             </div>
 
 
@@ -85,7 +91,7 @@
                     <a class="nav-item nav-link" href="#">PRICING</a>
                     <a class="nav-item nav-link" href="#">FIND A CAR</a>
                     <a class="nav-item nav-link d-md-none" href="{% url 'login' %}">LOGIN</a>
-                    <a class="nav-item nav-link d-md-none" href="#">REGISTER</a>
+                    <a class="nav-item nav-link d-md-none" href="{% url 'register' %}">REGISTER</a>
                     <a class="nav-item nav-link" href="#">ABOUT</a>
                     <div class="dropdown">
                         <a class="nav-item nav-link dropdown dropdown-toggle" data-toggle="dropdown"
@@ -128,7 +134,7 @@
             <div class="d-sm-none d-none d-md-flex mr-xl-auto mr-lg-auto mr-md-auto website-footer">
                 <ul>
                     <li><a href="" data-toggle="modal" data-target="#exampleModal">Login</a></li>
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                     <li><a href="#">My Account</a></li>
                 </ul>
             </div>
@@ -150,7 +156,7 @@
                     <li><a href="#">Make Booking</a></li>
                     <li><a href="#">Find A Car</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                     <li><a href="#">My Account</a></li>
                 </ul>
             </div>
