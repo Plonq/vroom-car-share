@@ -37,6 +37,17 @@
     font-size: 16px;
 }
 
+/*
+ * Crispy-forms tweaks
+ */
+.asteriskField {
+    color: red;
+}
+
+.asteriskField::before {
+    content: " "
+}
+
 /* Top Navbar */
 ul.nav.navbar-nav li a {
     color: black;
