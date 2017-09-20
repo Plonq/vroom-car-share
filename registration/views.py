@@ -19,9 +19,9 @@ def register(request):
         # Validate forms and save
         if user_form.is_valid() and user_profile_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
             user = user_form.save()
-            user_profile_form.save(commit=False)
-            user_profile_form.user = user
-            user_profile_form.save()
+            user_profile = user_profile_form.save(commit=False)
+            user_profile.user = user
+            user_profile.save()
             address = address_form.save(commit=False)
             address.user = user
             address.save()

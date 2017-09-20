@@ -3,6 +3,7 @@ from django.forms import ModelForm, DateInput
 from crispy_forms.helper import FormHelper
 
 from .models import UserProfile, Address, CreditCard
+from datetime import date, timedelta
 
 
 # Implement crispy-forms into built-in auth forms
@@ -40,6 +41,14 @@ class UserProfileForm(ModelForm):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+    def clean(self):
+        # Make sure user is over 18
+        cleaned_data = super(UserProfileForm, self).clean()
+        date_of_birth = cleaned_data.get("date_of_birth")
+
+        if date_of_birth > date.today() - timedelta(days=18*365):
+            self.add_error('date_of_birth', 'You must be over 18 to register.')
 
 
 class AddressForm(ModelForm):
