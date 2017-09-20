@@ -7,7 +7,7 @@ from .forms import UserProfileForm, AddressForm, CreditCardForm
 
 
 def register(request):
-    if request.user:
+    if request.user.is_authenticated:
         # User logged in, redirect to profile
         return redirect('profile')
 
