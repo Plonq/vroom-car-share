@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
+from django.forms import ModelForm, DateInput
 from crispy_forms.helper import FormHelper
 
 from .models import UserProfile, Address, CreditCard
@@ -16,6 +16,9 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['date_of_birth']
+        widgets = {
+            'date_of_birth': DateInput(attrs={'type': 'date'})
+        }
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
