@@ -61,23 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-#
-# class UserProfile(models.Model):
-#     """
-#     Stores user profile information
-#     """
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-#     # All fields must be optional (null=True blank=True) since this object will be created and saved with the user
-#
-#
-#     def is_over_18(self):
-#         """Returns True if date of birth is at least 18 years in the past to the day"""
-#         return self.date_of_birth <= datetime.date.today() - datetime.timedelta(days=18*365)
-#
-#     def __str__(self):
-#         # Appears on django-admin
-#         return self.user.username
-
 
 class Address(models.Model):
     """

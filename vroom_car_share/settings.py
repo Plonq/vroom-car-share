@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'carshare',
-    'registration',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Set user model to our custom model
-AUTH_USER_MODEL = 'registration.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
