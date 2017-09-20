@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'carshare',
     'registration',
 ]
@@ -133,3 +134,6 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Django-crispy-forms - https://github.com/django-crispy-forms/django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

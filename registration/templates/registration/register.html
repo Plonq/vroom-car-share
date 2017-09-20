@@ -4,13 +4,17 @@
 
 <h1> Register </h1>
 
+    {% load crispy_forms_tags %}
     <form action="" method="post">
         {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ user_profile_form.as_p }}
-        {{ address_form.as_p }}
-        {{ credit_card_form.as_p }}
-        <button type="submit">Register</button>
+        <h3>Account Details</h3>
+        {% crispy user_form %}
+        {% crispy user_profile_form %}
+        <h3>Address</h3>
+        {% crispy address_form %}
+        <h3>Credit Card</h3>
+        {% crispy credit_card_form %}
+        <button type="submit" class="btn btn-default">Register</button>
     </form>
 
 {% endblock %}
