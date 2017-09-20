@@ -1,18 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
 
-from registration.models import UserProfile, Address, CreditCard
+from .models import User, Address, CreditCard
+from .forms import UserCreationForm, UserChangeForm
 
 #
 # User and its related profile models (UserProfile, Address, CreditCard)
 #
 
 # Inline admin descriptors
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-    can_delete = False
-    verbose_name_plural = 'Profile'
+# class UserProfileInline(admin.StackedInline):
+#     model = UserProfile
+#     can_delete = False
+#     verbose_name_plural = 'Profile'
 
 
 class AddressInline(admin.StackedInline):
@@ -27,9 +27,35 @@ class CreditCardInline(admin.StackedInline):
     verbose_name_plural = 'Credit Card'
 
 
-# Define new UserAdmin, containing above inlines
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserProfileInline, AddressInline, CreditCardInline)
+    # Add inline forms for address and credit card
+    inlines = (AddressInline, CreditCardInline)
+
+    # The forms to add and change user instances
+    form = UserChangeForm
+    add_form = UserCreationForm
+
+    # The fields to be used in displaying the User model.
+    # These override the definitions on the base UserAdmin
+    # that reference specific fields on auth.User.
+    list_display = ('email', 'date_of_birth', 'is_admin')
+    list_filter = ('is_admin',)
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('date_of_birth',)}),
+        ('Permissions', {'fields': ('is_admin',)}),
+    )
+    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
+    # overrides get_fieldsets to use this attribute when creating a user.
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'date_of_birth', 'password1', 'password2')}
+        ),
+    )
+    search_fields = ('email',)
+    ordering = ('email',)
+    filter_horizontal = ()
 
     def get_inline_instances(self, request, obj=None):
         # Prevents profile fields when creating new user or if user is staff
@@ -37,12 +63,14 @@ class UserAdmin(BaseUserAdmin):
             return list()
         return super(UserAdmin, self).get_inline_instances(request, obj)
 
+
     def get_readonly_fields(self, request, obj=None):
         # Prevent staff changing their own permissions
         rof = super(UserAdmin, self).get_readonly_fields(request, obj)
         if not request.user.is_superuser:
             rof += ('is_staff', 'is_superuser', 'groups', 'user_permissions')
         return rof
+
 
     def has_change_permission(self, request, obj=None):
         # Prevent staff changing other user's who may have higher privileges.
@@ -53,6 +81,6 @@ class UserAdmin(BaseUserAdmin):
                     has = False
         return has
 
-# Re-register user admin
-admin.site.unregister(User)
+
+# Register user admin
 admin.site.register(User, UserAdmin)
