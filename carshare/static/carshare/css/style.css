@@ -229,9 +229,27 @@ span.glyphicon.glyphicon-chevron-right {
     font-size:40px;
 }
 
+.homepage_header {
+    font-size:30px;
+    margin-top:40px;
+    margin-bottom: 40px;
+    color: #3399cc;
+    font-weight:bold;
+}
 
+.blue_section {
+    background-color: #4cc1f6;
+    color: white;
+    padding:20px;
+}
 
+.blue_section h2 {
+    font-weight:bold;
+}
 
+.blue_section p {
+    font-size:18px;
+}
 
 
 
@@ -252,14 +270,14 @@ body {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 395px;
+    height: 400px;
     line-height: 60px; /* Vertically center the text there */
     background-color: #006699;
 }
 
 /* Apply to mobile */
 @media only screen and (min-width: 768px) {
-    .navbar .container {
+    .header_footer {
         width: 705px;
         margin: auto;
     }

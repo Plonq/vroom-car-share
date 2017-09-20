@@ -54,7 +54,7 @@
 
 
 <nav class="navbar navbar-default">
-    <div class="container">
+    <div class="container header_footer">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -74,7 +74,7 @@
         <!-- second attempt floating menu -->
         <div class="row" id="floating_auth">
             {% if user.is_authenticated %}
-                <div><a href="{% url 'logout' %}"">LOGOUT</a></div>
+                <div><a href="{% url 'logout' %}">LOGOUT</a></div>
                 <div>|</div>
                 <div><a href="{% url 'profile' %}">PROFILE</a></div>
             {% else %}
@@ -108,13 +108,10 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-
-
-    {% block maincontent %}{% endblock %}
-
+{% block maincontent %}{% endblock %}
 
 <footer class="footer">
-    <div class="container">
+    <div class="container header_footer">
         <div class="row">
             <div class="website-footer-container hidden-xs">
                 <div class="website-footer">
