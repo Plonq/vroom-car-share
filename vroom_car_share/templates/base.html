@@ -72,9 +72,13 @@
 
             <!-- second attempt floating menu -->
             <div class="row justify-content-center d-none d-sm-none d-md-flex" id="floating_auth">
-                <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
+                {% if user.is_authenticated %}
+                    <div><a href="{% url 'logout' %}">LOGOUT</a></div>
+                {% else %}
+                    <div><a href="#" data-toggle="modal" data-target="#exampleModal">LOGIN</a></div>
+                {% endif %}
                 <div>|</div>
-                <div><a href="#">REGISTER</a></div>
+                <div><a href="{% url 'register' %}">REGISTER</a></div>
             </div>
 
 
@@ -128,7 +132,7 @@
             <div class="d-sm-none d-none d-md-flex mr-xl-auto mr-lg-auto mr-md-auto website-footer">
                 <ul>
                     <li><a href="" data-toggle="modal" data-target="#exampleModal">Login</a></li>
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                     <li><a href="#">My Account</a></li>
                 </ul>
             </div>
@@ -150,7 +154,7 @@
                     <li><a href="#">Make Booking</a></li>
                     <li><a href="#">Find A Car</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="#">Register</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                     <li><a href="#">My Account</a></li>
                 </ul>
             </div>

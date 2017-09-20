@@ -1,9 +1,13 @@
 from django.forms import ModelForm
-from registration.models import UserProfile, Address, CreditCard
-class UserForm(ModelForm):
+
+from .models import UserProfile, Address, CreditCard
+
+
+class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('username',)
+        fields = ('date_of_birth',)
+
 
 class AddressForm(ModelForm):
     class Meta:

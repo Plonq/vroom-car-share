@@ -1,27 +1,45 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
 
-from .forms import UserForm, AddressForm, CreditCardForm
+from .forms import UserProfileForm, AddressForm, CreditCardForm
 
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        address_form = AddressForm(request.POST)
-        credit_card_form = CreditCardForm(request.POST)
-        if user_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
-            user_form.instance.user = request.user
+        user_form = UserCreationForm(request.POST)
+        if user_form.is_valid():
             user = user_form.save()
-            usrs = [user_form, address_form, credit_card_form]
 
-            for us in usrs:
-                us.save(commit=False)
-                us.instance.user = user
-                us.save()
+            user_profile_form = UserProfileForm(request.POST, instance=user.profile)
+            address_form = AddressForm(request.POST)
+            credit_card_form = CreditCardForm(request.POST)
 
-        return render(request, 'carshare/index.html')
+            if user_profile_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
+                user_profile_form.save()
+
+                address = address_form.save(commit=False)
+                address.user = user
+                address.save()
+                credit_card = credit_card_form.save(commit=False)
+                credit_card.user = user
+                credit_card.save()
+
+                # TODO: Login the user
+
+                # Redirect to TODO: change to profile
+                return redirect('index')
+
     else:
-        user_form = UserForm()
+        user_form = UserCreationForm()
+        user_profile_form = UserProfileForm()
         address_form = AddressForm()
         credit_card_form = CreditCardForm()
 
-    return render(request, 'registration/register.html', {'user_form': user_form, 'address_form': address_form, 'credit_card_form': credit_card_form})
+        context = {
+            'user_form': user_form,
+            'user_profile_form': user_profile_form,
+            'address_form': address_form,
+            'credit_card_form': credit_card_form
+        }
+        return render(request, 'registration/register.html', context)
