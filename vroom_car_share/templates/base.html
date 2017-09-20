@@ -29,24 +29,24 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
             </div>
-            <div class="modal-body">
-                <form action="" method="post" class="submission-form">
-                    {% if form.errors %}
-                        <p class="error">Sorry, that is not a valid username or password</p>
-                    {% endif %}
-                    <label for="username">Username:</label>
-                    <input type="text" class="form-control" name="username" id="username"><br/>
-                    <label for="password">Password:</label>
-                    <input type="password" class="form-control" name="password" id="password">
-                    <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
-                    {% csrf_token %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
-                <input type="hidden" name="next" value="{{ next|escape }}"/>
-                </form>
-            </div>
+            <form action="" method="post" class="submission-form">
+                <div class="modal-body">
+                        {% if form.errors %}
+                            <p class="error">Sorry, that is not a valid username or password</p>
+                        {% endif %}
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" name="username" id="username"><br/>
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                        <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
+                        {% csrf_token %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
+                    <input type="hidden" name="next" value="{{ next|escape }}"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -74,7 +74,7 @@
         <!-- second attempt floating menu -->
         <div class="row" id="floating_auth">
             {% if user.is_authenticated %}
-                <div><a href="{% url 'logout' %}"">LOGOUT</a></div>
+                <div><a href="{% url 'logout' %}">LOGOUT</a></div>
                 <div>|</div>
                 <div><a href="{% url 'profile' %}">PROFILE</a></div>
             {% else %}
@@ -105,11 +105,11 @@
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+    </div><!-- /.container -->
 </nav>
 
 
-<div class="container-fluid">
+<div class="container">
     {% block maincontent %}{% endblock %}
 </div>
 

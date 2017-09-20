@@ -228,11 +228,10 @@ body {
 
 /* Apply to mobile */
 @media only screen and (min-width: 768px) {
-    .navbar .container {
+    .container {
         width: 705px;
         margin: auto;
     }
-
 }
 
 /* Media Queries
