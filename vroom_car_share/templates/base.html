@@ -29,22 +29,25 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
             </div>
-            <form action="" method="post" class="submission-form">
+            <form action="{% url 'login' %}" method="post" class="submission-form">
+                {% csrf_token %}
                 <div class="modal-body">
-                        {% if form.errors %}
-                            <p class="error">Sorry, that is not a valid username or password</p>
-                        {% endif %}
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" name="username" id="username"><br/>
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" name="password" id="password">
-                        <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
-                        {% csrf_token %}
+                    <div id="div_id_username" class="form-group">
+                        <label for="id_username" class="control-label  requiredField">Username<span class="asteriskField">*</span> </label>
+                        <div class="controls ">
+                            <input type="text" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_username">
+                        </div>
+                    </div>
+                    <div id="div_id_password" class="form-group">
+                        <label for="id_password" class="control-label  requiredField">Password<span class="asteriskField">*</span></label>
+                        <div class="controls ">
+                            <input type="password" name="password" class="textinput textInput form-control" required="" id="id_password">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
-                    <input type="hidden" name="next" value="{{ next|escape }}"/>
+                    <button type="submit" class="btn btn-primary">Login</button>
                 </div>
             </form>
         </div>
