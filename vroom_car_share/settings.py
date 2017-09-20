@@ -137,3 +137,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Django-crispy-forms - https://github.com/django-crispy-forms/django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# SendGrid email
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"
