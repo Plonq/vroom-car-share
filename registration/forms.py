@@ -1,7 +1,15 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 
 from .models import UserProfile, Address, CreditCard
+
+
+class UserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class UserProfileForm(ModelForm):
@@ -12,6 +20,7 @@ class UserProfileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class AddressForm(ModelForm):
@@ -22,6 +31,7 @@ class AddressForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class CreditCardForm(ModelForm):
@@ -32,3 +42,4 @@ class CreditCardForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreditCardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag = False
