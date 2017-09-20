@@ -5,23 +5,6 @@ import datetime
 
 class UserProfileTestCase(TestCase):
 
-    def test_user_profile_created_when_user_created(self):
-        """
-        UserProfile correctly created when a User is created
-        """
-        user = User.objects.create()
-        self.assertNotEqual(User.objects.get(pk=user.pk).profile, None)
-
-    def test_user_profile_saved_when_user_saved(self):
-        """
-        UserProfile correctly created when a User is created
-        """
-        dob = datetime.date(2017, 9, 14)
-        user = User.objects.create()
-        user.profile.date_of_birth = dob
-        user.save()
-        self.assertEqual(User.objects.get(pk=user.pk).profile.date_of_birth, dob)
-
     def test_is_over_18_with_18_year_old(self):
         """
         is_over_18() returns True for a user 18 years old

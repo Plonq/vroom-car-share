@@ -45,7 +45,7 @@ class UserProfileForm(ModelForm):
 class AddressForm(ModelForm):
     class Meta:
         model = Address
-        fields = ["address_line1", "city", "state", "postcode"]
+        fields = ["address_line_1", "address_line_2", "city", "state", "postcode"]
 
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
@@ -56,7 +56,7 @@ class AddressForm(ModelForm):
 class CreditCardForm(ModelForm):
     class Meta:
         model = CreditCard
-        fields = ["number", "expiry_month", "expiry_year"]
+        fields = ["card_number", "expiry_month", "expiry_year"]
 
     def __init__(self, *args, **kwargs):
         super(CreditCardForm, self).__init__(*args, **kwargs)
