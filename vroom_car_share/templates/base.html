@@ -14,6 +14,7 @@
     <!-- Google Font Open Sans -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
+
     <title>{% block pagetitle %}{% endblock %}</title>
 </head>
 <body>
@@ -72,9 +73,15 @@
 
         <!-- second attempt floating menu -->
         <div class="row" id="floating_auth">
-            <div><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
-            <div>|</div>
-            <div><a href="#">REGISTER</a></div>
+            {% if user.is_authenticated %}
+                <div><a href="{% url 'logout' %}"">LOGOUT</a></div>
+                <div>|</div>
+                <div><a href="{% url 'profile' %}">PROFILE</a></div>
+            {% else %}
+                <div><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
+                <div>|</div>
+                <div><a href="#">REGISTER</a></div>
+            {% endif %}
         </div>
 
 

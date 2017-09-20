@@ -11,11 +11,16 @@ class UserProfile(models.Model):
     Stores user profile information
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    # All fields must be optional (null=True blank=True) since this object will be created and saved with the user
     date_of_birth = models.DateField(null=True, blank=True)
 
     def is_over_18(self):
         """Returns True if date of birth is at least 18 years in the past to the day"""
         return self.date_of_birth <= datetime.date.today() - datetime.timedelta(days=18*365)
+
+    def __str__(self):
+        # Appears on django-admin
+        return self.user.username
 
 
 # Signals to create/save UserProfile object when User is created/saved
@@ -33,7 +38,7 @@ class Address(models.Model):
     """
     Stores an address for a user
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='address')
 
     STATES = (
         ('VIC', 'Victoria'),
@@ -49,16 +54,8 @@ class Address(models.Model):
     state = models.CharField(max_length=3, choices=STATES)
     postcode = models.CharField(max_length=4)
 
-
-# Signals to create/save Address object when User is created/saved
-@receiver(post_save, sender=User)
-def create_address(sender, instance, created, **kwargs):
-    if created:
-        Address.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_address_profile(sender, instance, **kwargs):
-    instance.address.save()
+    def __str__(self):
+        return "{0}, {1}, {2} {3}".format(self.address_line1, self.city, self.state, self.postcode)
 
 
 class CreditCard(models.Model):
@@ -70,12 +67,5 @@ class CreditCard(models.Model):
     expiry_month = models.CharField(max_length=2)
     expiry_year = models.CharField(max_length=4)
 
-# Signals to create/save UserProfile object when User is created/saved
-@receiver(post_save, sender=User)
-def create_credit_card(sender, instance, created, **kwargs):
-    if created:
-        CreditCard.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_credit_card(sender, instance, **kwargs):
-    instance.credit_card.save()
+    def __str__(self):
+        return "XXXX XXXX XXXX {0}".format(self.number[-4:])
