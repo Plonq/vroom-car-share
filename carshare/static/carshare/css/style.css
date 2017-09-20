@@ -9,51 +9,82 @@
     font-family: "Open Sans";
 }
 
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
 #logo {
     width: 195px;
     height: 80px;
-    margin: -20px 0px 0 0px;
+    margin-top: 10px;
+
 }
 
-.footer .container .row a {
-    padding-right: 20px;
+.navbar-brand {
+    line-height: 150px;
+    height: 100px;
+    padding-top: 0;
 }
 
 .navbar {
-    padding-top: 25px;
+    border: 0px;
+    border-radius: 0px;
 }
 
-
-
-
-#top_nav {
+.navbar li {
     font-weight: bold;
+    font-size: 16px;
 }
 
-.navbar-light .navbar-nav .nav-link{
+/* Top Navbar */
+ul.nav.navbar-nav li a {
     color: black;
 }
 
-#top_nav a:hover {
+ul.nav.navbar-nav li a:hover {
     color: #3399cc;
 }
 
-.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background: none;
     color: #3399cc;
 }
 
+ul.nav.navbar-nav {
+    margin-top: 38px;
+}
+
+.navbar-nav li a {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navbar-toggle {
+    margin-top: 35px;
+}
+
+.mobile_header {
+    width: 250px;
+    margin: auto;
+    height: 100px;
+}
+
+/* Floating Auth Menu */
 #floating_auth {
     position: absolute;
-    top:0px;
-    left: 508px;
+    top: 0px;
     width: 200px;
     background-color: #3399cc;
     height: 35px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    float: left;
+    margin-left: 437px;
 }
 
 #floating_auth div {
+    float: left;
     color: white;
     font-weight: bold;
     padding-top: 5px;
@@ -61,103 +92,117 @@
 
 #floating_auth div a {
     color: white;
+    font-size: 16px;
 }
 
 #floating_auth div a:hover {
     text-decoration: none;
 }
 
-#floating_auth div:first-child{
-    padding-right:10px;
+#floating_auth div:first-child {
+    padding-right: 10px;
+    padding-left: 25px;
 }
 
-#floating_auth div:nth-child(2){
-    padding-top:3px;
+#floating_auth div:nth-child(2) {
+    padding-top: 5px;
 }
 
-#floating_auth div:nth-child(3){
-    padding-left:10px;
+#floating_auth div:nth-child(3) {
+    padding-left: 10px;
 }
 
-
-
-.footer .container .row div ul {
-    list-style: none;
-   /* margin-left: -25px;*/
-    width: 100%;
-    text-align: center;
-}
-
-/*.footer .container .row div{
-    width:200px;
-}*/
-
+/* Website Footer */
 .website-footer {
-    width:200px;
+    float: left;
+    margin: auto;
+    width: 216px;
 }
 
+.website-footer-container {
+    width: 650px;
+    margin: auto;
+}
 
-.footer .container .row div li a {
-    color:white;
+.website-footer ul {
+    list-style: none;
+    text-align: center;
+    margin-left: -40px;
+
+}
+
+.website-footer ul li a {
+    color: white;
+    font-size: 16px;
     font-weight: bold;
 }
 
-.footer .container .row div li a:hover {
-    color:#3399cc;
+.website-footer ul li a:hover {
+    color: #33ccff;
     text-decoration: none;
 }
 
-.mobile-footer ul li {
-    margin-left:-50px;
+.site-map-mobile div ul {
+    list-style: none;
+    text-align: center;
+    margin-left: -40px;
 }
 
-
-
-
-
-
-
-
-
-div#socials div {
-    margin-left: 25px;
+.site-map-mobile div ul li a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
 }
 
+.site-map-mobile div {
+    float: left;
+    width: 150px;
+}
 
+.site-map-mobile {
+    width: 305px;
+    margin: auto;
+}
 
-
-#socials div img {
-    width: 75px;
+#socials div {
+    width: 490px;
+    margin: auto;
 }
 
 .social_icon {
-    margin-right: 25px;
+    width: 78px;
+    margin-right: 20px;
 }
 
 #last_social {
-    margin-right: 0px;
+    width: 78px;
 }
 
-#socials div {
-    /*padding-left: 20px;*/
+.small_socials div {
+    width: 235px;
+    margin: auto;
 }
 
-#socials div {
-    width:495px;
+.small_socials2 div {
+    width: 158px;
+    margin: auto;
 }
 
+.small_socials2 div img {
+    width: 75px;
+}
 
-
-#small_socials div div img {
+.small_socials div img {
     width: 75px;
 }
 
 #copyright {
-    color:white;
+    color: white;
     font-weight: bold;
-    margin-left: 10px;
+    font-size: 18px;
+    width: 300px;
+    margin: auto;
 }
-
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -168,7 +213,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 420px;
+    margin-bottom: 388px;
 }
 
 .footer {
@@ -176,52 +221,83 @@ body {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 420px;
+    height: 395px;
     line-height: 60px; /* Vertically center the text there */
     background-color: #006699;
 }
 
+/* Apply to mobile */
+@media only screen and (min-width: 768px) {
+    .navbar .container {
+        width: 705px;
+        margin: auto;
+    }
 
-
-
-
-
-
-
-
-
+}
 
 /* Media Queries
 --------------------------------------------------- */
 
 /* Custom, iPhone Retina */
-@media only screen and (max-width : 320px)  {
+@media only screen and (max-width: 320px) {
 
-    .footer .container .row div li a {
-        font-size: 13px;
-    }
-
-    .footer .container .row div ul {
-        width: 125%;
-    }
-
-    .footer .container .row div li {
-        height: 40px;
-    }
 }
 
-/* Small Devices */
-@media only screen and (max-width : 767px)  {
+@media only screen and (max-width: 480px) {
 
-    .footer .container .row div li a {
-        font-size: 13px;
+}
+
+/* Small Devices - This is where the mobile menu activates*/
+@media only screen and (max-width: 767px) {
+    #floating_auth {
+        display: none;
     }
 
-    .footer .container .row div ul {
-        width: 125%;
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 530px;
+        line-height: 60px; /* Vertically center the text there */
+        background-color: #006699;
     }
 
-    .footer .container .row div li {
-        height: 40px;
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 530px;
     }
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+
+}
+
+/* IE Conditional */
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+    #copyright {
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        width: 310px;
+        margin: auto;
+    }
+
+    /* Floating Auth Menu */
+    #floating_auth {
+        position: absolute;
+        top: 0px;
+        width: 200px;
+        background-color: #3399cc;
+        height: 35px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        float: left;
+        margin-left: 448px;
+    }
+
 }
