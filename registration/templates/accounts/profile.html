@@ -2,4 +2,5 @@
 {% block pagetitle %}Profile{% endblock %}
 {% block maincontent %}
     This is the profile page for {{ user.username }}
+    <a href="{% url 'password_change' %}">Change your password</a>
 {% endblock %}

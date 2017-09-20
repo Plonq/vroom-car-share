@@ -1,10 +1,11 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.forms import ModelForm, DateInput
 from crispy_forms.helper import FormHelper
 
 from .models import UserProfile, Address, CreditCard
 
 
+# Implement crispy-forms into built-in auth forms
 class UserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -12,6 +13,14 @@ class UserCreationForm(UserCreationForm):
         self.helper.form_tag = False
 
 
+class PasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+# Auth ModelForms with crispy-forms
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
