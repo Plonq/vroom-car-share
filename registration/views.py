@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserProfileForm, AddressForm, CreditCardForm
 
 
 def register(request):
-    if request.method == 'POST':
+    if request.user:
+        # User logged in, redirect to profile
+        return redirect('profile')
+
+    elif request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         if user_form.is_valid():
             user = user_form.save()
@@ -43,3 +48,8 @@ def register(request):
             'credit_card_form': credit_card_form
         }
         return render(request, 'registration/register.html', context)
+
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/profile.html')
