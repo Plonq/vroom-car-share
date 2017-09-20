@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block pagetitle %}Profile{% endblock %}
 {% block maincontent %}
-    This is the profile page for {{ user.username }}
+
+    <h3>User Profile</h3>
+
+    <p>Name: {{ user.get_full_name }}</p>
+    <p>Username: {{ user.username }}</p>
+    <p><a href="{% url 'password_change' %}">Change your password</a></p>
 {% endblock %}
