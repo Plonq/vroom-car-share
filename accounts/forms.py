@@ -1,9 +1,11 @@
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from .models import User, Address, CreditCard
+from datetime import date, timedelta
+from .util import is_credit_card_valid, is_digits
 
 
 # Implement crispy-forms into built-in auth forms
@@ -27,6 +29,13 @@ class UserCreationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def clean_date_of_birth(self):
+        # Check that DOB indicates user is over 18
+        dob = self.cleaned_data.get('date_of_birth')
+        if dob > date.today() - timedelta(days=365*18):
+            raise forms.ValidationError('You must be 18 years old to sign up')
+        return dob
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -90,28 +99,6 @@ class AuthenticationForm(AuthenticationForm):
 
 
 # Auth ModelForms with crispy-forms
-# class UserProfileForm(form.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = ['date_of_birth']
-#         widgets = {
-#             'date_of_birth': DateInput(attrs={'type': 'date'})
-#         }
-#
-#     def __init__(self, *args, **kwargs):
-#         super(UserProfileForm, self).__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.form_tag = False
-#
-#     def clean(self):
-#         # Make sure user is over 18
-#         cleaned_data = super(UserProfileForm, self).clean()
-#         date_of_birth = cleaned_data.get("date_of_birth")
-#
-#         if date_of_birth > date.today() - timedelta(days=18*365):
-#             self.add_error('date_of_birth', 'You must be over 18 to register.')
-
-
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
@@ -122,16 +109,57 @@ class AddressForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
 
+    def clean_postcode(self):
+        # Check postcode is exactly 4 digits
+        postcode = self.cleaned_data['postcode']
+        if len(postcode) != 4 or not is_digits(postcode):
+            raise forms.ValidationError('Must be exactly 4 digits')
+        return postcode
+
 
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
         fields = ["card_number", "expiry_month", "expiry_year"]
 
+    def clean_card_number(self):
+        # Checks number is valid credit card number
+        card_number = self.cleaned_data.get('card_number')
+        if not is_credit_card_valid(card_number=card_number):
+            raise forms.ValidationError('Must be a valid credit card number')
+        return card_number
+
+    def clean_expiry_month(self):
+        # Check number is valid month
+        expiry_month = self.cleaned_data.get('expiry_month')
+        if not (is_digits(expiry_month) and 1 <= int(expiry_month) <= 12):
+            raise forms.ValidationError('Must be between 1 and 12 inclusive')
+        return expiry_month
+
+    def clean_expiry_year(self):
+        # Check number is valid year and that it's at least the current year
+        # and no later than 50 years in the future
+        expiry_year = self.cleaned_data.get('expiry_year')
+        current_year = date.today().year
+        if not (is_digits(expiry_year) and current_year <= int(expiry_year) <= (current_year + 50)):
+            raise forms.ValidationError('Must not be in the past or later than {0}'.format(current_year + 50))
+        return expiry_year
+
+    def clean(self):
+        # Check that expiry date is not in the past
+        cleaned_data = super(CreditCardForm, self).clean()
+        expiry_month = cleaned_data.get('expiry_month')
+        expiry_year = cleaned_data.get('expiry_year')
+        # Get date objects for first day of month so we can
+        # compare only month and year
+        t = date.today()
+        first_of_month = date(day=1, month=t.month, year=t.year)
+        expiry_date = date(day=1, month=int(expiry_month), year=int(expiry_year))
+        if expiry_date < first_of_month:
+            raise forms.ValidationError('Expiry date must not be in the past')
+        return cleaned_data
+
     def __init__(self, *args, **kwargs):
         super(CreditCardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-
-
-
