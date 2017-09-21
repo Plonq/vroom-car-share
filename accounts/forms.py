@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
+from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -168,13 +168,15 @@ class CreditCardForm(forms.ModelForm):
         cleaned_data = super(CreditCardForm, self).clean()
         expiry_month = cleaned_data.get('expiry_month')
         expiry_year = cleaned_data.get('expiry_year')
-        # Get date objects for first day of month so we can
-        # compare only month and year
-        t = date.today()
-        first_of_month = date(day=1, month=t.month, year=t.year)
-        expiry_date = date(day=1, month=int(expiry_month), year=int(expiry_year))
-        if expiry_date < first_of_month:
-            raise forms.ValidationError('Expiry date must not be in the past')
+        # Prevents TypeError on int() if data missing
+        if expiry_month and expiry_year:
+            # Get date objects for first day of month so we can
+            # compare only month and year
+            t = date.today()
+            first_of_month = date(day=1, month=t.month, year=t.year)
+            expiry_date = date(day=1, month=int(expiry_month), year=int(expiry_year))
+            if expiry_date < first_of_month:
+                raise forms.ValidationError('Expiry date must not be in the past')
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
