@@ -8,15 +8,26 @@ $(".next").click(function(){
 
     //Error Checking per form page
     if($("#id_email").val().length == 0) {
-        console.log("Email is empty...");
+
         $(".form_error").text("Email is required");
         $(".form_error").show();
+
+		//Scroll to error
+        $('html,body').animate({
+        scrollTop: $(".form_error").offset().top},
+        'slow');
+
+
+
         return false;
     }
     else
     {
         $(".form_error").hide();
     }
+
+
+
 
     if(animating) return false;
 	animating = true;
