@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <!-- Google Font Open Sans -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
+    <!-- Allow templates to add additional headers -->
+    {% block header %} {% endblock %}
 
     <title>{% block pagetitle %}{% endblock %}</title>
 </head>
