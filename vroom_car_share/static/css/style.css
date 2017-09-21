@@ -110,9 +110,14 @@ ul.nav.navbar-nav {
     text-decoration: none;
 }
 
-#floating_auth div:first-child {
+#login {
     padding-right: 10px;
     padding-left: 25px;
+}
+
+#logout {
+    padding-right:10px;
+    padding-left:21px;
 }
 
 #floating_auth div:nth-child(2) {
