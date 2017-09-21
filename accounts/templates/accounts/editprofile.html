@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Profile{% endblock %}
+{% block maincontent %}
+
+    <h2>Edit Profile</h2> <br/>
+    {% load crispy_forms_tags %}
+    <form ACTION="" method="post">
+        {% csrf_token %}
+        <h3> User Details </h3>
+            {% crispy user_form %}
+        <h3>Address</h3>
+            {% crispy address_form %}
+
+        <h3>Credit Card Details </h3>
+        <button type="button" name="creditbutton" onclick="show()"> Edit Credit Card </button><a id="cancel" onclick="hide()" style="display:none;"> cancel </a>
+        <div id="credit" style="display:none;">
+            {% crispy credit_form %}
+        </div>
+      <br/><br/>
+
+        <button type="submit" class="btn btn-primary">Submit</button> <a href="{% url 'profile' %}">Cancel</a>
+    <br/><br/>
+    </form>
+    <br/><br/>
+
+    <script type="text/javascript">
+
+        function show() {
+            document.getElementById('credit').style.display = "block";
+            document.getElementById('cancel').style.display = "block";
+        }
+
+        function hide() {
+            document.getElementById('credit').style.display = "none";
+            document.getElementById('cancel').style.display = "none";
+        }
+
+    </script>
+
+{% endblock %}
+

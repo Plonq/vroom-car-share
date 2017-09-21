@@ -1,10 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, UserChangeForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from .models import User, Address, CreditCard
-from datetime import date, timedelta
 
 
 # Implement crispy-forms into built-in auth forms
@@ -58,16 +57,21 @@ class UserChangeForm(forms.ModelForm):
             'last_name',
             'password',
             'date_of_birth',
-            'is_active',
-            'is_staff',
-            'is_superuser',
           )
+
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
-        return self.initial["password"]
+       return self.initial["password"]
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        del self.fields['password']
+
 
 
 class PasswordChangeForm(PasswordChangeForm):
@@ -78,6 +82,7 @@ class PasswordChangeForm(PasswordChangeForm):
 
 
 class AuthenticationForm(AuthenticationForm):
+
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -127,3 +132,6 @@ class CreditCardForm(forms.ModelForm):
         super(CreditCardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+
+
