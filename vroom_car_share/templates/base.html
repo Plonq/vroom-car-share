@@ -9,6 +9,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+    <!-- Custom Bootstrap Theming -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-theme.css" %}">
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
     <!-- Google Font Open Sans -->
@@ -34,9 +36,9 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div id="div_id_username" class="form-group">
-                        <label for="id_username" class="control-label  requiredField">Username<span class="asteriskField">*</span> </label>
+                        <label for="id_email" class="control-label  requiredField">Username<span class="asteriskField">*</span> </label>
                         <div class="controls ">
-                            <input type="text" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_username">
+                            <input type="text" name="email" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
                         </div>
                     </div>
                     <div id="div_id_password" class="form-group">

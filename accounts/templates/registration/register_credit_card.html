@@ -1,0 +1,21 @@
+{% extends 'registration/register_base.html' %}
+
+{% block regform %}
+    {% load crispy_forms_tags %}
+    <form id="msform" method="post" action="">
+        <!-- progressbar -->
+        <ul id="progressbar">
+            <li class="active">Account Information</li>
+            <li class="active">Address</li>
+            <li class="active">Payment Info</li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset>
+            <h2 class="fs-title">Address</h2>
+            <h3 class="fs-subtitle">Your location to help customise your experience</h3>
+            {% crispy credit_card_form %}
+            <a name="previous" class="btn btn-default" href="{% url 'register_address' %}">Previous</a>
+            <input type="submit" name="next" class="btn btn-primary" value="Finish"/>
+        </fieldset>
+    </form>
+{% endblock %}

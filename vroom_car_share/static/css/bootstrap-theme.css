@@ -1,0 +1,17 @@
+/* inputs/buttons */
+input.form-control,
+textarea.form-control,
+select.form-control {
+    border-radius: 0;
+    height: 40px;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.btn-primary {
+    background: #429bc3;
+    border: 0 none;
+}
