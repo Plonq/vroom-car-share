@@ -183,14 +183,3 @@ class CreditCardForm(forms.ModelForm):
         super(CreditCardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-
-
-#Contact Form
-
-class ContactForm(forms.Form):
-    from_email = forms.EmailField(required=True)
-    subject = forms.CharField(required=True)
-    message = forms.CharField(widget=forms.Textarea, required=True)
-
-
-
