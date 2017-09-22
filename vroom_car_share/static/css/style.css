@@ -306,6 +306,12 @@ body {
         width: 705px;
         margin: auto;
     }
+
+    .middle_content {
+        width: 705px;
+        margin: auto;
+    }
+
 }
 
 /* Media Queries
