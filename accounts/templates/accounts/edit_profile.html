@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Profile{% endblock %}
+{% block maincontent %}
+
+    <h2>Edit Profile</h2> <br/>
+    {% load crispy_forms_tags %}
+    <form action="" method="post">
+        <h3> User Details </h3>
+        {% crispy user_form %}
+
+        <h3>Address</h3>
+        {% crispy address_form %}
+
+        <h3>Credit Card Details </h3>
+        <p><strong>Saved card:</strong> {{ request.user.credit_card }}</p>
+        <button type="button" class="btn btn-default" id="cc-edit" onclick="show()">Edit</button>
+        <button type="button" class="btn btn-default" id="cancel-cc-edit" onclick="hide()" style="display:none;">Cancel Editing</button>
+        <br>
+        <div id="cc-edit-form" style="display:none;">
+            {% crispy credit_form %}
+        </div>
+      <br/><br/>
+
+        <button type="submit" class="btn btn-primary">Save</button> <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
+    <br/><br/>
+    </form>
+    <br/><br/>
+
+    <script type="text/javascript">
+
+        function show() {
+            document.getElementById('cc-edit').style.display = "none";
+            document.getElementById('cc-edit-form').style.display = "block";
+            document.getElementById('cancel-cc-edit').style.display = "block";
+        }
+
+        function hide() {
+            document.getElementById('cc-edit').style.display = "block";
+            document.getElementById('cc-edit-form').style.display = "none";
+            document.getElementById('cancel-cc-edit').style.display = "none";
+        }
+
+    </script>
+
+{% endblock %}
+

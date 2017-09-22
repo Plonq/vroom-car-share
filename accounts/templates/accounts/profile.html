@@ -2,9 +2,21 @@
 {% block pagetitle %}Profile{% endblock %}
 {% block maincontent %}
 
-    <h3>User Profile</h3>
+    <h2>User Profile</h2>
+    <br/>
+    <h4>Name: </h4>
+    {{ user.get_full_name }}
+    <br/><br/>
+    <h4> Birthday: </h4>
+    {{ user.date_of_birth }}
+    <br/><br/>
+    <h4> Address:</h4>
+    {{ user.address }}
+    <br/><br/>
+    <h4> Password </h4>
+    <p></p><a href="{% url 'password_change' %}"> Change your password</a></p>
+    <br/>
+    <p><a class="btn btn-default" href="{% url 'edit_profile' %}"> Edit Profile </a></p>
 
-    <p>Name: {{ user.get_full_name }}</p>
-    <p>Username: {{ user.username }}</p>
-    <p><a href="{% url 'password_change' %}">Change your password</a></p>
 {% endblock %}
+

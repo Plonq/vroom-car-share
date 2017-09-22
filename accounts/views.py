@@ -1,8 +1,9 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
-from .forms import UserCreationForm, AddressForm, CreditCardForm
+from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def register(request):
@@ -14,7 +15,6 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         address_form = AddressForm(request.POST)
         credit_card_form = CreditCardForm(request.POST)
-
         # Validate forms and save
         if user_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
             user = user_form.save()
@@ -46,3 +46,32 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'accounts/profile.html')
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        user_form = UserChangeForm(request.POST, instance=user)
+        address_form = AddressForm(request.POST, instance=user.address)
+        credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
+
+        if user_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
+            user_form.save()
+            address_form.save()
+            credit_card_form.save()
+
+            return redirect('profile')
+    else:
+        user_form = UserChangeForm(instance=user)
+        address_form = AddressForm(instance=user.address)
+        credit_card_form = CreditCardForm(instance=user.credit_card)
+
+    context= {
+        'user_form': user_form,
+        'address_form': address_form,
+        'credit_form': credit_card_form,
+    }
+
+    return render(request, 'accounts/edit_profile.html', context)
+

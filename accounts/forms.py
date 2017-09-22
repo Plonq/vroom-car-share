@@ -52,9 +52,9 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
+    """
+    A form for updating users. This has all the data
+    needed for django-admin
     """
     password = ReadOnlyPasswordHashField()
 
@@ -71,11 +71,34 @@ class UserChangeForm(forms.ModelForm):
             'is_superuser',
           )
 
+
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
-        return self.initial["password"]
+       return self.initial["password"]
+
+
+class UserChangeSelfForm(forms.ModelForm):
+    """
+    A form for regular uses to edit their own details.
+    """
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'date_of_birth',
+          )
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeSelfForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class PasswordChangeForm(PasswordChangeForm):
@@ -86,6 +109,7 @@ class PasswordChangeForm(PasswordChangeForm):
 
 
 class AuthenticationForm(AuthenticationForm):
+
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
