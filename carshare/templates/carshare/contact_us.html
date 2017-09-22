@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Contact Us{% endblock %}
+{% block maincontent %}
+
+    <h3>Contact Us</h3>
+    {% load crispy_forms_tags %}
+    <form method="post">
+        {% crispy contact_form %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+    </form>
+{% endblock %}
