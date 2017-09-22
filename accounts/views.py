@@ -12,12 +12,14 @@ def register_user(request):
         # User logged in, redirect to profile
         return redirect('profile')
 
-    # Redirect to next step if user account already created
-    elif 'user_id' in request.session and User.objects.filter(id=request.session['user_id']).exists():
-        return redirect('register_address')
-
     # Form submitted, save and redirect to next step
     elif request.method == 'POST':
+        # If user was already created, delete it first
+        try:
+            user_obj = User.objects.get(id=request.session['user_id'])
+            user_obj.delete()
+        except User.DoesNotExist:
+            pass
         user_form = UserCreationForm(request.POST)
         # Validate forms and save
         if user_form.is_valid():
@@ -58,17 +60,21 @@ def register_address(request):
     elif 'user_id' not in request.session:
         return redirect('register_user')
 
-    # Redirect to next step if address already saved
-    elif 'address_id' in request.session and Address.objects.filter(id=request.session['address_id']).exists():
-        return redirect('register_credit_card')
-
     # User submitted form, save and redirect to next step
     elif request.method == 'POST':
-        user_obj = User.objects.get(id=request.session['user_id'])
-        address_form = AddressForm(request.POST)
+        # If address was already created, use it
+        if 'address_id' in request.session:
+            try:
+                address_obj = Address.objects.get(id=request.session['address_id'])
+                address_form = AddressForm(request.POST, instance=address_obj)
+            except User.DoesNotExist:
+                address_form = AddressForm(request.POST)
+        else:
+            address_form = AddressForm(request.POST)
         # Validate forms and save
         if address_form.is_valid():
             address = address_form.save(commit=False)
+            user_obj = User.objects.get(id=request.session['user_id'])
             address.user = user_obj
             address.save()
             request.session['address_id'] = address.id
