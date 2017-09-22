@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
         model = User
         fields = ('email', 'first_name', 'last_name', 'date_of_birth')
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'})
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'}, format='%Y-%m-%d')
         }
 
     def clean_password2(self):
@@ -92,7 +92,7 @@ class UserChangeSelfForm(forms.ModelForm):
             'date_of_birth',
           )
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'})
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'}, format='%Y-%m-%d')
         }
 
     def __init__(self, *args, **kwargs):

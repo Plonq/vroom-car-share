@@ -14,7 +14,9 @@ urlpatterns = [
     # Fall back on defaults for everything else
     url(r'^', include('django.contrib.auth.urls')),
     # Other accounts-related pages not included in django auth
-    url(r'^register/$', views.register, name='register'),
+    url(r'^register/$', views.register_user, name='register'),
+    url(r'^register/address/$', views.register_address, name='register_address'),
+    url(r'^register/credit_card/$', views.register_credit_card, name='register_credit_card'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile')
 ]
