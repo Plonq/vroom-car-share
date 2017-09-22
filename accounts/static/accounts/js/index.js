@@ -6,28 +6,37 @@ var animating; //flag to prevent quick multi-click glitches
 
 $(".next").click(function(){
 
-    //Error Checking per form page
-    if($("#id_email").val().length == 0) {
 
-        $(".form_error").text("Email is required");
-        $(".form_error").show();
+    // Check that the required fields are not empty.
+    var page1 = {"id_email": "Email", "id_first_name": "First Name", "id_last_name": "Last Name", "id_date_of_birth": "Date Of Birth",
+                "id_password1": "Password", "id_password2": "Password Confirmation"};
 
-		//Scroll to error
-        $('html,body').animate({
-        scrollTop: $(".form_error").offset().top},
-        'slow');
+    var error = false
 
-
-
-        return false;
-    }
-    else
+    for (var key in page1)
     {
-        $(".form_error").hide();
+        var length = $("#" + key).val().length;
+
+        if (length == 0)
+        {
+            $(".form_error").text(page1[key] + " is a required field");
+            $(".form_error").show();
+
+            // Scroll to the error message
+            $('html,body').animate({
+                scrollTop: $(".form_error").offset().top},
+            'slow');
+
+            error = true
+            return false;
+        }
+
+        // If there is no error then hide the error
+        if (error == false)
+        {
+            $(".form_error").hide();
+        }
     }
-
-
-
 
     if(animating) return false;
 	animating = true;
