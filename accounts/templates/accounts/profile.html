@@ -5,7 +5,7 @@
     <h2>User Profile</h2>
     <br/>
     <h4>Name: </h4>
-    {{ user.first_name }} {{ user.last_name }}
+    {{ user.get_full_name }}
     <br/><br/>
     <h4> Birthday: </h4>
     {{ user.date_of_birth }}
@@ -16,7 +16,7 @@
     <h4> Password </h4>
     <p></p><a href="{% url 'password_change' %}"> Change your password</a></p>
     <br/>
-    <p><a class="btn btn-default" href="{% url 'editprofile' %}"> Edit Profile </a></p>
+    <p><a class="btn btn-default" href="{% url 'edit_profile' %}"> Edit Profile </a></p>
 
 {% endblock %}
 
