@@ -1,9 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeForm
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
 
 
 def register(request):
@@ -52,7 +50,7 @@ def profile(request):
 def edit_profile(request):
     user = request.user
     if request.method == 'POST':
-        user_form = UserChangeForm(request.POST, instance=user)
+        user_form = UserChangeSelfForm(request.POST, instance=user)
         address_form = AddressForm(request.POST, instance=user.address)
         credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
 
@@ -63,7 +61,7 @@ def edit_profile(request):
 
             return redirect('profile')
     else:
-        user_form = UserChangeForm(instance=user)
+        user_form = UserChangeSelfForm(instance=user)
         address_form = AddressForm(instance=user.address)
         credit_card_form = CreditCardForm(instance=user.credit_card)
 

@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
+from django.contrib.auth import forms as auth_forms
 from django import forms
 from crispy_forms.helper import FormHelper
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -101,14 +101,14 @@ class UserChangeSelfForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class PasswordChangeForm(PasswordChangeForm):
+class PasswordChangeForm(auth_forms.PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
 
-class AuthenticationForm(AuthenticationForm):
+class AuthenticationForm(auth_forms.AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
