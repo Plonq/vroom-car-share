@@ -14,7 +14,7 @@
             <h2 class="fs-title">Address</h2>
             <h3 class="fs-subtitle">Your location to help customise your experience</h3>
             {% crispy address_form %}
-            <a name="previous" class="btn btn-default">Previous</a>
+            <a name="previous" class="btn btn-default" href="{% url 'register' %}">Previous</a>
             <input type="submit" name="next" class="btn btn-primary" value="Next"/>
         </fieldset>
     </form>
