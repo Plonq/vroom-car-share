@@ -20,7 +20,7 @@ form_data = {
 }
 
 
-class AccountsRegistrationFormTests(TestCase):
+class AccountsGeneralFormTests(TestCase):
     def test_valid_form_data(self):
         """
         Valid forms successfully validate
@@ -43,6 +43,8 @@ class AccountsRegistrationFormTests(TestCase):
         self.assertFalse(address_form.is_valid())
         self.assertFalse(credit_card_form.is_valid())
 
+
+class AccountsUserCreationFormTests(TestCase):
     def test_email_without_tld(self):
         """
         Email without TLD correctly identified as invalid
@@ -61,13 +63,22 @@ class AccountsRegistrationFormTests(TestCase):
         form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
+    def test_email_without_at_symbol(self):
+        """
+        Email without @ symbol correctly identified as invalid
+        """
+        invalid_form_data = form_data.copy()
+        invalid_form_data['email'] = 'emailtest.com'
+        form = UserCreationForm(data=invalid_form_data)
+        self.assertFalse(form.is_valid())
+
     def test_mismatching_passwords(self):
         """
         Mismatching passwords correctly identified as invalid
         """
         invalid_form_data = form_data.copy()
-        invalid_form_data['password1'] = 'qwerty'
-        invalid_form_data['password2'] = 'ytrewq'
+        invalid_form_data['password1'] = 'dfwew323r23g'
+        invalid_form_data['password2'] = 'fgsdfhgraqt4e5'
         form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
@@ -76,11 +87,13 @@ class AccountsRegistrationFormTests(TestCase):
         Date of birth less than 18 years ago correctly identified as invalid
         """
         invalid_form_data = form_data.copy()
-        seventeen_years_and_364_days_in_the_past = (date.today() - timedelta(days=365*18-1)).__str__()
+        seventeen_years_and_364_days_in_the_past = (date.today() - timedelta(days=365*18-1)).isoformat()
         invalid_form_data['date_of_birth'] = seventeen_years_and_364_days_in_the_past
         form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
+
+class AccountsAddressFormTests(TestCase):
     def test_alpha_postcode(self):
         """
         Alpha postcode correctly identified as invalid
@@ -99,6 +112,8 @@ class AccountsRegistrationFormTests(TestCase):
         form = AddressForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
+
+class AccountsCreditCardFormTests(TestCase):
     def test_invalid_credit_card_number(self):
         """
         Invalid credit card number correctly identified as invalid
