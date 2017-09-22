@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'carshare',
-    'registration',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +102,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Set user model to our custom model
+AUTH_USER_MODEL = 'accounts.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -137,3 +140,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Django-crispy-forms - https://github.com/django-crispy-forms/django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# SendGrid email
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"

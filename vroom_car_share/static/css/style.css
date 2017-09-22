@@ -38,6 +38,17 @@
     font-size: 16px;
 }
 
+/*
+ * Crispy-forms tweaks
+ */
+.asteriskField {
+    color: red;
+}
+
+.asteriskField::before {
+    content: " "
+}
+
 /* Top Navbar */
 ul.nav.navbar-nav li a {
     color: black;
@@ -100,9 +111,14 @@ ul.nav.navbar-nav {
     text-decoration: none;
 }
 
-#floating_auth div:first-child {
+#login {
     padding-right: 10px;
     padding-left: 25px;
+}
+
+#logout {
+    padding-right:10px;
+    padding-left:21px;
 }
 
 #floating_auth div:nth-child(2) {
@@ -290,7 +306,6 @@ body {
         width: 705px;
         margin: auto;
     }
-
 }
 
 /* Media Queries
@@ -359,7 +374,3 @@ body {
     }
 
 }
-
-
-
-

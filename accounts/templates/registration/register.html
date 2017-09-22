@@ -6,15 +6,14 @@
 
     {% load crispy_forms_tags %}
     <form action="" method="post">
-        {% csrf_token %}
         <h3>Account Details</h3>
-        {% crispy user_form %}
-        {% crispy user_profile_form %}
+            {% crispy user_form %}
         <h3>Address</h3>
-        {% crispy address_form %}
+            {% crispy address_form %}
         <h3>Credit Card</h3>
-        {% crispy credit_card_form %}
-        <button type="submit" class="btn btn-default">Register</button>
+            {% crispy credit_card_form %}
+        <button type="submit">Register</button>
     </form>
+    <br/><br/>
 
 {% endblock %}

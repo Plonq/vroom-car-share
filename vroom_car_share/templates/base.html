@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static "carshare/css/style.css" %}">
     <!-- Google Font Open Sans -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
+    <!-- Allow templates to add additional headers -->
+    {% block header %} {% endblock %}
 
     <title>{% block pagetitle %}{% endblock %}</title>
 </head>
@@ -29,24 +30,27 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
             </div>
-            <div class="modal-body">
-                <form action="" method="post" class="submission-form">
-                    {% if form.errors %}
-                        <p class="error">Sorry, that is not a valid username or password</p>
-                    {% endif %}
-                    <label for="username">Username:</label>
-                    <input type="text" class="form-control" name="username" id="username"><br/>
-                    <label for="password">Password:</label>
-                    <input type="password" class="form-control" name="password" id="password">
-                    <p><a href="{% url 'password_reset' %}" class="form-text text-muted">Lost password?</a></p>
-                    {% csrf_token %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-primary" value="Login" formaction="{% url 'login' %}">
-                <input type="hidden" name="next" value="{{ next|escape }}"/>
-                </form>
-            </div>
+            <form action="{% url 'login' %}" method="post" class="submission-form">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div id="div_id_username" class="form-group">
+                        <label for="id_username" class="control-label  requiredField">Username<span class="asteriskField">*</span> </label>
+                        <div class="controls ">
+                            <input type="text" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_username">
+                        </div>
+                    </div>
+                    <div id="div_id_password" class="form-group">
+                        <label for="id_password" class="control-label  requiredField">Password<span class="asteriskField">*</span></label>
+                        <div class="controls ">
+                            <input type="password" name="password" class="textinput textInput form-control" required="" id="id_password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -74,11 +78,11 @@
         <!-- second attempt floating menu -->
         <div class="row" id="floating_auth">
             {% if user.is_authenticated %}
-                <div><a href="{% url 'logout' %}">LOGOUT</a></div>
+                <div id="logout"><a href="{% url 'logout' %}">LOGOUT</a></div>
                 <div>|</div>
                 <div><a href="{% url 'profile' %}">PROFILE</a></div>
             {% else %}
-                <div><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
+                <div id="login"><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
                 <div>|</div>
                 <div><a href="{% url 'register' %}">REGISTER</a></div>
             {% endif %}
@@ -88,7 +92,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="{% url 'index' %}">HOME <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">PRICING</a></li>
                 <li><a href="#">FIND A CAR</a></li>
                 <li><a href="{% url 'login' %}" class="hidden-lg hidden-md hidden-sm">LOGIN</a></li>
@@ -105,10 +109,13 @@
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+    </div><!-- /.container -->
 </nav>
 
-{% block maincontent %}{% endblock %}
+
+<div class="container">
+    {% block maincontent %}{% endblock %}
+</div>
 
 <footer class="footer">
     <div class="container header_footer">
