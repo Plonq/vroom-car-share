@@ -16,7 +16,7 @@ form_data = {
     'postcode': '3000',
     'card_number': '6823119834248189', # Valid CC number
     'expiry_month': '12',
-    'expiry_year': str(date.today().year), # Jan of current year should always be valid
+    'expiry_year': str(date.today().year), # December of current year should always be valid
 }
 
 
