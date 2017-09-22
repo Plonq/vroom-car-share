@@ -1,43 +1,20 @@
 {% extends 'registration/register_base.html' %}
-{% block maincontent %}
 
-    <!-- MultiStep Form -->
-    <div>
-        <div class="row test">
-
-
-            <h1>Register</h1>
-            <p>Welcome to Vroom Car Share. Please provide the requested information on the following pages, and you'll
-                be on
-                your way.</p><br/>
-            <p>These items will be required to complete this form:</p><br/>
-            <ol>
-                <li>A valid credit card linked to your preferred membership address.</li>
-                <li>Your driver's license</li>
-                <li>You must be 18 years or older, some exceptions apply</li>
-                <li>Any Corporate/Member Discount Program or Frequent Traveler Numbers</li>
-            </ol>
-
-            <div class="col-md-12 col-md-offset-0">
-                {% load crispy_forms_tags %}
-                <form id="msform" method="post" action="">
-                    <!-- progressbar -->
-                    <ul id="progressbar">
-                        <li class="active">Account Information</li>
-                        <li>Address</li>
-                        <li>Payment Info</li>
-                    </ul>
-                    <!-- fieldsets -->
-                    <fieldset>
-                        <h2 class="fs-title">Account Information</h2>
-                        <h3 class="fs-subtitle">Tell us a bit about you</h3>
-                        {% crispy user_form %}
-                        <input type="submit" name="next" class="next action-button" value="Next"/>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
+{% block regform %}
+    {% load crispy_forms_tags %}
+    <form id="msform" method="post" action="">
+        <!-- progressbar -->
+        <ul id="progressbar">
+            <li class="active">Account Information</li>
+            <li>Address</li>
+            <li>Payment Info</li>
+        </ul>
+        <!-- fieldsets -->
+        <fieldset>
+            <h2 class="fs-title">Account Information</h2>
+            <h3 class="fs-subtitle">Tell us a bit about you</h3>
+            {% crispy user_form %}
+            <input type="submit" name="next" class="btn btn-primary" value="Next"/>
+        </fieldset>
+    </form>
 {% endblock %}
