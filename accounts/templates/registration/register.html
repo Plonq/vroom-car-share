@@ -1,59 +1,64 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block header %}<link href="{% static "accounts/css/style.css" %}" rel="stylesheet">{% endblock %}
+{% block header %}
+    <link href="{% static "accounts/css/style.css" %}" rel="stylesheet">
+{% endblock %}
 {% block pagetitle %}Register{% endblock %}
 {% block maincontent %}
 
-  <!-- MultiStep Form -->
-<div class="row test">
+    <!-- MultiStep Form -->
+    <div class="container middle_content">
+        <div class="row test">
 
 
-    <h1>Register</h1>
-    <p>Welcome to Vroom Car Share. Please provide the requested information on the following pages, and you'll be on your way.</p><br/>
-    <p>These items will be required to complete this form:</p><br />
-    <ol>
-        <li>A valid credit card linked to your preferred membership address.</li>
-        <li>Your driver's license</li>
-        <li>You must be 18 years or older, some exceptions apply</li>
-        <li>Any Corporate/Member Discount Program or Frequent Traveler Numbers</li>
-    </ol>
+            <h1>Register</h1>
+            <p>Welcome to Vroom Car Share. Please provide the requested information on the following pages, and you'll
+                be on
+                your way.</p><br/>
+            <p>These items will be required to complete this form:</p><br/>
+            <ol>
+                <li>A valid credit card linked to your preferred membership address.</li>
+                <li>Your driver's license</li>
+                <li>You must be 18 years or older, some exceptions apply</li>
+                <li>Any Corporate/Member Discount Program or Frequent Traveler Numbers</li>
+            </ol>
 
-    <div class="col-md-12 col-md-offset-0">
-        {% load crispy_forms_tags %}
-        <form id="msform" method="post" action="">
-            <!-- progressbar -->
-            <ul id="progressbar">
-                <li class="active">Account Information</li>
-                <li>Address</li>
-                <li>Payment Info</li>
-            </ul>
-            <!-- fieldsets -->
-            <fieldset>
-                <h2 class="fs-title">Account Information</h2>
-                <h3 class="fs-subtitle">Tell us a bit about you</h3>
-                <div class="form_error alert alert-danger" style="display: none;">Error on the form.</div>
-                 {% crispy user_form %}
-                <input type="button" name="next" class="next action-button" value="Next"/>
-            </fieldset>
-            <fieldset>
-                <h2 class="fs-title">Address</h2>
-                <h3 class="fs-subtitle">Your location to help customise your experience</h3>
-                {% crispy address_form %}
-                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                <input type="button" name="next" class="next action-button" value="Next"/>
-            </fieldset>
-            <fieldset>
-                <h2 class="fs-title">Payment Information</h2>
-                <h3 class="fs-subtitle">Please complete your billing information</h3>
-                {% crispy credit_card_form %}
-                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                <input type="submit" name="submit" class="submit action-button" value="Register"/>
-            </fieldset>
-        </form>
+            <div class="col-md-12 col-md-offset-0">
+                {% load crispy_forms_tags %}
+                <form id="msform" method="post" action="">
+                    <!-- progressbar -->
+                    <ul id="progressbar">
+                        <li class="active">Account Information</li>
+                        <li>Address</li>
+                        <li>Payment Info</li>
+                    </ul>
+                    <!-- fieldsets -->
+                    <fieldset>
+                        <h2 class="fs-title">Account Information</h2>
+                        <h3 class="fs-subtitle">Tell us a bit about you</h3>
+                        <div class="form_error alert alert-danger" style="display: none;">Error on the form.</div>
+                        {% crispy user_form %}
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Address</h2>
+                        <h3 class="fs-subtitle">Your location to help customise your experience</h3>
+                        {% crispy address_form %}
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Payment Information</h2>
+                        <h3 class="fs-subtitle">Please complete your billing information</h3>
+                        {% crispy credit_card_form %}
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                        <input type="submit" name="submit" class="submit action-button" value="Register"/>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
     </div>
-</div>
-
-
 
 {% endblock %}
 
