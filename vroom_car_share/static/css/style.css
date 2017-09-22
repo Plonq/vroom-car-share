@@ -30,6 +30,7 @@
 .navbar {
     border: 0px;
     border-radius: 0px;
+    margin-bottom: 0px;
 }
 
 .navbar li {
@@ -220,6 +221,63 @@ ul.nav.navbar-nav {
     margin: auto;
 }
 
+
+
+
+
+
+/* INDEX carousel */
+.item img {
+    width: 100%;
+}
+
+span.glyphicon.glyphicon-chevron-left {
+    left: 30px;
+}
+
+span.glyphicon.glyphicon-chevron-right {
+    right: 30px;
+}
+
+.carousel-caption {
+    top:30%;
+    color: white;
+    font-size:40px;
+}
+
+.homepage_header {
+    font-size:30px;
+    margin-top:40px;
+    margin-bottom: 40px;
+    color: #3399cc;
+    font-weight:bold;
+}
+
+.blue_section {
+    background-color: #4cc1f6;
+    color: white;
+    padding:20px;
+}
+
+.blue_section h2 {
+    font-weight:bold;
+}
+
+.blue_section p {
+    font-size:18px;
+}
+
+.carousel {
+   max-height: 500px;
+   max-width: 100%;
+   overflow: hidden;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}
+
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -229,7 +287,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 388px;
+    margin-bottom: 400px;
 }
 
 .footer {
@@ -237,14 +295,14 @@ body {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 395px;
+    height: 400px;
     line-height: 60px; /* Vertically center the text there */
     background-color: #006699;
 }
 
 /* Apply to mobile */
 @media only screen and (min-width: 768px) {
-    .container {
+    .header_footer {
         width: 705px;
         margin: auto;
     }

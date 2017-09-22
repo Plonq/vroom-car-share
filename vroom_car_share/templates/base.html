@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
     <!-- Google Font Open Sans -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <!-- Allow templates to add additional headers -->
@@ -58,7 +58,7 @@
 
 
 <nav class="navbar navbar-default">
-    <div class="container">
+    <div class="container header_footer">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -70,7 +70,7 @@
             </button>
             <div class="mobile_header">
                 <a class="navbar-brand" href="{% url 'index' %}"><img
-                        src="{% static 'images/vroom_logo.png' %}" id="logo"/></a>
+                        src="{% static "images/vroom_logo.png" %}" id="logo"/></a>
             </div>
         </div>
 
@@ -118,7 +118,7 @@
 </div>
 
 <footer class="footer">
-    <div class="container">
+    <div class="container header_footer">
         <div class="row">
             <div class="website-footer-container hidden-xs">
                 <div class="website-footer">
