@@ -245,6 +245,10 @@ span.glyphicon.glyphicon-chevron-right {
     font-size:40px;
 }
 
+.carousel-caption img{
+    width: 10%;
+}
+
 .homepage_header {
     font-size:30px;
     margin-top:40px;
