@@ -9,6 +9,7 @@ select.form-control {
 .btn {
     padding: 10px;
     border-radius: 25px;
+    min-width:70px;
 }
 
 .btn-primary {

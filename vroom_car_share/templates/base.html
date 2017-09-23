@@ -36,9 +36,9 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div id="div_id_username" class="form-group">
-                        <label for="id_email" class="control-label  requiredField">Username<span class="asteriskField">*</span> </label>
+                        <label for="id_email" class="control-label  requiredField">Email<span class="asteriskField">*</span> </label>
                         <div class="controls ">
-                            <input type="text" name="email" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
+                            <input type="text" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
                         </div>
                     </div>
                     <div id="div_id_password" class="form-group">
@@ -116,9 +116,13 @@
 
 
     {% block homepage %}{% endblock %}
-    <div class="middle_content">
-        {% block maincontent %}{% endblock %}
-    </div>
+
+    {% url 'index' as home_url %}
+    {% if not request.get_full_path == home_url %}
+        <div class="middle_content notflush">
+            {% block maincontent %}{% endblock %}
+        </div>
+    {% endif %}
 
 <footer class="footer">
     <div class="container header_footer">
