@@ -5,7 +5,7 @@
     <h3>Login</h3>
 
     {% load crispy_forms_tags %}
-    <form method="post" action="{% url 'login' %}">
+    <form class="validated-form" method="post" action="{% url 'login' %}">
         {% crispy form %}
         <button type="submit" class="btn btn-primary">Login</button>
     <input type="hidden" name="next" value="{{ next }}" />

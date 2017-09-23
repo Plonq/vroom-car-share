@@ -32,13 +32,13 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
             </div>
-            <form action="{% url 'login' %}" method="post" class="submission-form">
+            <form action="{% url 'login' %}" method="post" class="submission-form validated-form">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div id="div_id_username" class="form-group">
                         <label for="id_email" class="control-label  requiredField">Email<span class="asteriskField">*</span> </label>
                         <div class="controls ">
-                            <input type="text" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
+                            <input type="email" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
                         </div>
                     </div>
                     <div id="div_id_password" class="form-group">
@@ -218,6 +218,31 @@
 <script src="{% static "js/jquery-3.2.1.js" %}"></script>
 <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js" type="text/javascript"></script>
 <script src="{% static "js/bootstrap.js" %}"></script>
+{# JQuery Validation Plugin, customized for Bootstrap #}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'></script>
+    <script>
+        $.validator.setDefaults({
+            highlight: function(element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function(error, element) {
+                if(element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+        // Validate all forms with .validated-form
+        $('.validated-form').each(function() {
+            $(this).validate();
+        });
+    </script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

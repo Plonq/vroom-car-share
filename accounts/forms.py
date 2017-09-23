@@ -109,6 +109,7 @@ class PasswordChangeForm(auth_forms.PasswordChangeForm):
 
 
 class AuthenticationForm(auth_forms.AuthenticationForm):
+    username = forms.EmailField(max_length=255)
 
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
