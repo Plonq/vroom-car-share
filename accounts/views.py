@@ -15,11 +15,12 @@ def register_user(request):
     # Form submitted, save and redirect to next step
     elif request.method == 'POST':
         # If user was already created, delete it first
-        try:
-            user_obj = User.objects.get(id=request.session['user_id'])
-            user_obj.delete()
-        except User.DoesNotExist:
-            pass
+        if 'user_id' in request.session:
+            try:
+                user_obj = User.objects.get(id=request.session['user_id'])
+                user_obj.delete()
+            except User.DoesNotExist:
+                pass
         user_form = UserCreationForm(request.POST)
         # Validate forms and save
         if user_form.is_valid():
@@ -142,6 +143,21 @@ def register_credit_card(request):
         'credit_card_form': credit_card_form
     }
     return render(request, 'registration/register_credit_card.html', context)
+
+
+def register_cancel(request):
+    try:
+        # Must try deleting in this order, because if address doesn't exist, it will skip to except block
+        user_obj = User.objects.get(id=request.session['user_id'])
+        user_obj.delete()
+        del request.session['user_id']
+        address_obj = Address.objects.get(id=request.session['address_id'])
+        address_obj.delete()
+        del request.session['address_id']
+    except (User.DoesNotExist, Address.DoesNotExist, KeyError):
+        pass
+
+    return redirect('index')
 
 
 @login_required
