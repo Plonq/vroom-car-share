@@ -46,6 +46,16 @@
     font-size: 16px;
 }
 
+/* Global message alert */
+.messages .alert {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.messages .row:last-child {
+    margin-bottom: 10px;
+}
+
 /*
  * Crispy-forms tweaks
  */

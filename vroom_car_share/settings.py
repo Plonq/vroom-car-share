@@ -13,6 +13,8 @@ import os
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.contrib import messages
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -144,3 +146,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # SendGrid email
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = "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"
+
+# Customise messages framework
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger' # To match the Bootstrap3 class
+}
