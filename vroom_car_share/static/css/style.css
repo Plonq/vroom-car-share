@@ -253,6 +253,11 @@ ul.nav.navbar-nav {
     font-size:18px;
 }
 
+.messages {
+    position: fixed;
+    top:0px;
+    z-index: 99999999;
+}
 
 
 

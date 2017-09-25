@@ -97,7 +97,7 @@
                 <li><a href="#">PRICING</a></li>
                 <li><a href="#">FIND A CAR</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <a href="#" class="dropdown-toggle hidden-lg hidden-md hidden-sm" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">ACCOUNT<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
@@ -126,11 +126,14 @@
 
 <!-- Global alert for messages (e.g. account created successfully -->
 {% if messages %}
-    <div class="messages">
+    <div class="messages col-xs-12 col-lg-offset-1 col-lg-10">
         {% for message in messages %}
             <div class="row">
-            <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 alert alert-{{ message.tags }}" role="alert">
+            <div class="text-center alert alert-{{ message.tags }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
                 {{ message }}
+
             </div>
             </div>
         {% endfor %}
@@ -265,6 +268,13 @@
             $(this).validate();
         });
     </script>
+
+<script>
+    $(function() {
+        $('.messages').delay(2500).fadeOut();
+    });
+</script>
+
 {% block scripts %}{% endblock %}
 </body>
 </html>
