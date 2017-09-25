@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^register/credit_card/$', views.register_credit_card, name='register_credit_card'),
     url(r'^register/cancel/$', views.register_cancel, name='register_cancel'),
     url(r'^profile/$', views.profile, name='profile'),
-    url(r'^profile/edit/$', views.edit_profile, name='edit_profile')
+    url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
+    url(r'^profile/edit/update_credit_card/$', views.update_credit_card, name='update_credit_card'),
 ]
