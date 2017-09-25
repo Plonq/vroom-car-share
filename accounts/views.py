@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
-from .models import User, Address, CreditCard
+from .models import User, Address
 
 
 def register_user(request):
@@ -171,24 +171,39 @@ def edit_profile(request):
     if request.method == 'POST':
         user_form = UserChangeSelfForm(request.POST, instance=user)
         address_form = AddressForm(request.POST, instance=user.address)
-        credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
 
-        if user_form.is_valid() and address_form.is_valid() and credit_card_form.is_valid():
+        if user_form.is_valid() and address_form.is_valid():
             user_form.save()
             address_form.save()
-            credit_card_form.save()
 
             return redirect('profile')
     else:
         user_form = UserChangeSelfForm(instance=user)
         address_form = AddressForm(instance=user.address)
-        credit_card_form = CreditCardForm(instance=user.credit_card)
 
-    context= {
+    context = {
         'user_form': user_form,
         'address_form': address_form,
-        'credit_form': credit_card_form,
     }
 
     return render(request, 'accounts/edit_profile.html', context)
 
+@login_required
+def update_credit_card(request):
+    user = request.user
+    if request.method == 'POST':
+        credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
+
+        if credit_card_form.is_valid():
+            credit_card_form.save()
+
+            return redirect('edit_profile')
+    else:
+        # We don't create form from instance because we don't want to display the card details
+        credit_card_form = CreditCardForm()
+
+    context = {
+        'credit_form': credit_card_form,
+    }
+
+    return render(request, 'accounts/update_credit_card.html', context)
