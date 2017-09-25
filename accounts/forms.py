@@ -144,8 +144,12 @@ class CreditCardForm(forms.ModelForm):
     def clean_card_number(self):
         # Checks number is valid credit card number
         card_number = self.cleaned_data.get('card_number')
-        if not is_credit_card_valid(card_number=card_number):
-            raise forms.ValidationError('Must be a valid credit card number')
+        try:
+            int(card_number)
+            if not is_credit_card_valid(card_number=card_number):
+                raise forms.ValidationError('Must be a valid credit card number')
+        except ValueError:
+            raise forms.ValidationError('Credit card must be numeric')
         return card_number
 
     def clean_expiry_month(self):
