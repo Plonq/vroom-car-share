@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
@@ -129,9 +130,10 @@ def register_credit_card(request):
             del request.session['user_id']
             del request.session['address_id']
 
-            # Auto-login as new user
+            # Auto-login as new user and display success message
             login(request, user_obj)
-            # TODO: Set success message
+            messages.success(request, 'Account successfully created')
+
             return redirect('profile')
 
     # User just came from previous step, display blank form
@@ -157,6 +159,8 @@ def register_cancel(request):
     except (User.DoesNotExist, Address.DoesNotExist, KeyError):
         pass
 
+
+    messages.info(request, 'Registration cancelled')
     return redirect('index')
 
 
@@ -176,6 +180,7 @@ def edit_profile(request):
             user_form.save()
             address_form.save()
 
+            messages.success(request, 'Changes saved')
             return redirect('profile')
     else:
         user_form = UserChangeSelfForm(instance=user)
@@ -197,6 +202,7 @@ def update_credit_card(request):
         if credit_card_form.is_valid():
             credit_card_form.save()
 
+            messages.success(request, 'Credit card updated')
             return redirect('edit_profile')
     else:
         # We don't create form from instance because we don't want to display the card details
