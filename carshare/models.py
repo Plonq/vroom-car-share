@@ -35,7 +35,7 @@ class Vehicle(models.Model):
     A Vroom vehicle
     """
     type = models.ForeignKey(VehicleType, related_name='type')
-    pod = models.OneToOneField(Pod)
+    pod = models.OneToOneField(Pod, null=True, blank=True)
     name = models.CharField(max_length=30)
     make = models.CharField(max_length=30)
     model = models.CharField(max_length=30)
