@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
 {% block pagetitle %}Vroom Car Share - Find a Car{% endblock pagetitle %}
+{% block header %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ {% endblock %}
 {% block homepage %}
     <style>
+
+    #test {
+        position: absolute;
+        width: 250px;
+        height:300px;
+        background-color: lightblue;
+        top:200px;
+        right: 25%;
+        z-index: 999999999;
+    }
+
+
+
+
         #map {
             height: 500px;
             width: 100%;
@@ -9,8 +26,15 @@
     </style>
     </head>
     <body>
+
+
+<div style="width:100%;height: 500px;">
+    <div id="test">Test</div>
     <div id="map"></div>
+</div>
     <script>
+        $("#test").hide();
+        //document.getElementById("test").style.display = 'none';
 
         //Get users location
         //Add checks if there is no HTML5 and add default starting location
@@ -46,7 +70,8 @@
             var markers = locations.map(function (location, i) {
                 return new google.maps.Marker({
                     position: location,
-                    label: labels[i % labels.length]
+                    label: labels[i % labels.length],
+                    tst: location["car"]
                 });
 
 
@@ -60,7 +85,11 @@
             // Add a click listener to the markers
             markers.forEach(function (pod) {
                     pod.addListener('click', function () {
+                        // Center the marker when clicked on
                         map.setCenter(pod.getPosition());
+                        //document.getElementById("test").style.display = 'block';
+                        $("#test").text(pod.tst);
+                        $("#test").fadeIn("slow");
                     });
 
                 });
@@ -71,11 +100,17 @@
 
         // These will need to be pulled from the database
         var locations = [
-            {lat: -37.814993, lng: 144.960791},
-            {lat: -37.812569, lng: 144.963065},
+            {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3"},
+            {lat: -37.812569, lng: 144.963065, car: "Huon the Ford Falcon"},
             {lat: -37.814112, lng: 144.957229},
             {lat: -37.816531, lng: 144.969385}
         ]
+
+
+
+        // Multidimensional dictionary
+        //var loc = {1: {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3" }};
+
 
 
         // Hide all POI
@@ -93,7 +128,6 @@
                 },
             ]
         };
-
 
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
