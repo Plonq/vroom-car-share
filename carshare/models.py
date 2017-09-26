@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 
 from accounts.models import User
@@ -11,9 +12,10 @@ class VehicleType(models.Model):
     """
     description = models.CharField(max_length=30)
     hourly_rate = models.DecimalField(max_digits=6, decimal_places=2)
+    daily_rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return "{0}: ${1}".format(self.description, self.hourly_rate)
+        return "{0} - Hourly: ${1} Daily: ${2}".format(self.description, self.hourly_rate, self.daily_rate)
 
 
 class Pod(models.Model):
@@ -83,6 +85,17 @@ class Booking(models.Model):
 
     def is_cancelled(self):
         return self.cancelled is not None
+
+    def calculate_cost(self):
+        """
+        Calculates total cost of booking, taking into account hourly rate and daily rate of the vehicle
+        :return: float
+        """
+        booking_length = self.schedule_end - self.schedule_start
+        booking_length_hours_total = booking_length.days * 24 + booking_length.seconds / 60 / 60
+        booking_days = int(booking_length_hours_total / 24)
+        booking_hours = int(booking_length_hours_total % 24)
+        return float((booking_days * Decimal(self.vehicle.type.daily_rate)) + (booking_hours * Decimal(self.vehicle.type.hourly_rate)))
 
     def is_ended(self):
         return self.ended is not None

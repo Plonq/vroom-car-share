@@ -13,6 +13,12 @@ two_days_from_now = timezone.now() + timedelta(days=2)
 
 
 class CarshareBookingModelTests(TestCase):
+    def setUp(self):
+        vt = VehicleType.objects.create(description='Premium', hourly_rate=12.50, daily_rate=80.00)
+        p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
+        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012)
+        u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
+
     def test_active_booking(self):
         """
         Active booking returns expected results
@@ -49,6 +55,39 @@ class CarshareBookingModelTests(TestCase):
         self.assertTrue(cancelled_booking.is_cancelled())
         self.assertFalse(cancelled_booking.is_ended())
 
+    def test_booking_cost_two_days_ten_hours(self):
+        """
+        Booking cost calculated correctly for a mix of daily and hourly rate
+        """
+        u = User.objects.get(email='test@test.com')
+        v = Vehicle.objects.get(name='Vehicle1')
+        fixed_start = timezone.make_aware(datetime.strptime('2017-09-01 12:00:00', '%Y-%m-%d %H:%M:%S'))
+        fixed_end = timezone.make_aware(datetime.strptime('2017-09-03 22:00:00', '%Y-%m-%d %H:%M:%S'))
+        b = Booking.objects.create(user=u, vehicle=v, schedule_start=fixed_start, schedule_end=fixed_end)
+        self.assertEqual(b.calculate_cost(), 285.0)
+
+    def test_booking_cost_two_days_zero_hours(self):
+        """
+        Booking cost calculated correctly for a round number of days
+        """
+        u = User.objects.get(email='test@test.com')
+        v = Vehicle.objects.get(name='Vehicle1')
+        fixed_start = timezone.make_aware(datetime.strptime('2017-09-01 12:00:00', '%Y-%m-%d %H:%M:%S'))
+        fixed_end = timezone.make_aware(datetime.strptime('2017-09-03 12:00:00', '%Y-%m-%d %H:%M:%S'))
+        b = Booking.objects.create(user=u, vehicle=v, schedule_start=fixed_start, schedule_end=fixed_end)
+        self.assertEqual(b.calculate_cost(), 160.0)
+
+    def test_booking_cost_zero_days_5_hours(self):
+        """
+        Booking cost calculated correctly for less than a day
+        """
+        u = User.objects.get(email='test@test.com')
+        v = Vehicle.objects.get(name='Vehicle1')
+        fixed_start = timezone.make_aware(datetime.strptime('2017-09-01 12:00:00', '%Y-%m-%d %H:%M:%S'))
+        fixed_end = timezone.make_aware(datetime.strptime('2017-09-01 17:00:00', '%Y-%m-%d %H:%M:%S'))
+        b = Booking.objects.create(user=u, vehicle=v, schedule_start=fixed_start, schedule_end=fixed_end)
+        self.assertEqual(b.calculate_cost(), 62.5)
+
 
 class CarshareInvoiceModelTests(TestCase):
     def test_non_overdue_invoice(self):
@@ -70,7 +109,7 @@ class CarshareInvoiceModelTests(TestCase):
 
 class CarshareVehicleModelTests(TestCase):
     def setUp(self):
-        vt = VehicleType.objects.create(description='Premium', hourly_rate='12.50')
+        vt = VehicleType.objects.create(description='Premium', hourly_rate='12.50', daily_rate='80.00')
         p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
         p2 = Pod.objects.create(latitude='60.34523453', longitude='109.53524344', description='Pod 2')
         v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012)
