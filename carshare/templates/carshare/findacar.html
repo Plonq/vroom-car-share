@@ -172,12 +172,12 @@
         function initMap(pos) {
 
             // Position of user
-            //var crd = pos.coords;
+            var crd = pos.coords;
 
             //Commented out for testing uncomment the line below to test geolocation
-            //var user = {lat: crd.latitude, lng: crd.longitude};
+            var user = {lat: crd.latitude, lng: crd.longitude};
             //Set user location to melbourne CBD
-            var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
+            //var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
                 center: user
