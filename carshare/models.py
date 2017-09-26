@@ -1,7 +1,8 @@
 from django.db import models
 
 from accounts.models import User
-from datetime import date, datetime
+from datetime import date
+from django.utils import timezone
 
 
 class VehicleType(models.Model):
@@ -41,12 +42,24 @@ class Vehicle(models.Model):
     model = models.CharField(max_length=30)
     year = models.PositiveSmallIntegerField()
     active = models.BooleanField(default=True)
+    registration = models.CharField(max_length=6)
 
     def is_active(self):
         return self.active
 
+    def is_available(self):
+        """
+        Is the vehicle available for booking right now?
+        """
+        current_bookings = self.booking_set.all()
+        active_bookings = [b for b in current_bookings if b.is_active()]
+        if not active_bookings:
+            return True
+        else:
+            return False
+
     def __str__(self):
-        # Jackie - 2014 Toyota Corolla
+        # E.g. 'Jackie - 2014 Toyota Corolla'
         return "{0} - {1} {2} {3}".format(self.name, self.year, self.make, self.model)
 
 
@@ -54,8 +67,8 @@ class Booking(models.Model):
     """
     Details about particular booking by a user for a vehicle
     """
-    user = models.ForeignKey(User, related_name='user')
-    vehicle = models.ForeignKey(Vehicle, related_name='vehicle')
+    user = models.ForeignKey(User)
+    vehicle = models.ForeignKey(Vehicle)
     schedule_start = models.DateTimeField()
     schedule_end = models.DateTimeField()
     ended = models.DateTimeField(null=True, blank=True)
@@ -63,7 +76,7 @@ class Booking(models.Model):
 
     def is_active(self):
         return (
-            self.schedule_start < datetime.now() < self.schedule_end and
+            self.schedule_start < timezone.now() < self.schedule_end and
             self.ended is None and
             self.cancelled is None
         )
