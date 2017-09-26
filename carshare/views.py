@@ -30,3 +30,6 @@ def contact_us(request):
 
     contact_form = ContactForm()
     return render(request, "carshare/contact_us.html", {'contact_form': contact_form})
+
+def findacar(request):
+    return render(request, "carshare/findacar.html")
