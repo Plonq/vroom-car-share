@@ -1,138 +1,182 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block pagetitle %}Vroom Car Share - Find a Car{% endblock pagetitle %}
 {% block header %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
- {% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
 {% block homepage %}
-    <style>
+<style>
 
-    #test {
+    #Booking_Container {
         position: absolute;
         width: 250px;
-        height:300px;
-        background-color: lightblue;
-        top:200px;
-        right: 25%;
-        z-index: 999999999;
+        height: 300px;
+        background-color: #006699;
+        top: 50%;
+        margin-top:-150px;
+        right: 15%;
+        z-index: 999;
+
+        border-radius: 25px;
+        color:white;
+
+    }
+
+    #booking {
+        position: relative;
+
+    }
+
+    #close_map_popup {
+        position: absolute;
+        top:16px;
+        right:16px;
+    }
+
+    #close_map_popup:hover {
+        color: #4cc1f6;
+    }
+
+    #mapsearch {
+        position: absolute;
+        top: 0px;
+        z-index: 999;
+
+    }
+
+    #map_contain {
+        width: 100%;
+        height: 500px;
+        position: relative;
+    }
+
+    #map {
+        height: 500px;
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+
+
+<div id="map_contain" style="">
+
+
+    <div id="Booking_Container" class="text-center">
+        <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span> </div>
+        <h3>Car Available</h3>
+        <div id="booking"></div>
+        <button class="b"></button>
+    </div>
+
+
+    <div id="mapsearch" class="col-lg-2">Find a Vroom car</div>
+    <div id="map"></div>
+</div>
+<script>
+    $("#Booking_Container").hide();
+
+    //Get users location
+    //Add checks if there is no HTML5 and add default starting location
+    navigator.geolocation.getCurrentPosition(initMap)
+
+    function initMap(pos) {
+
+        // Position of user
+        //var crd = pos.coords;
+
+        //Commented out for testing uncomment the line below to test geolocation
+        //var user = {lat: crd.latitude, lng: crd.longitude};
+        //Set user location to melbourne CBD
+        var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: user
+        });
+        map.setOptions({styles: styles['hide']});
+        var marker = new google.maps.Marker({
+            position: user,
+            map: map
+        });
+
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function (location, i) {
+            return new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length],
+                carname: location["car"]
+            });
+
+
+        });
+
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+        // Add a click listener to the markers
+        markers.forEach(function (pod) {
+            pod.addListener('click', function () {
+                // Center the marker when clicked on
+                map.setCenter(pod.getPosition());
+                //document.getElementById("test").style.display = 'block';
+                $("#booking").text(pod.carname);
+                $("#Booking_Container").fadeIn("slow");
+            });
+
+        });
+
+
+    }
+
+
+    // These will need to be pulled from the database
+    var locations = [
+        {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3"},
+        {lat: -37.812569, lng: 144.963065, car: "Huon the Ford Falcon"},
+        {lat: -37.814112, lng: 144.957229},
+        {lat: -37.816531, lng: 144.969385}
+    ]
+
+
+    // Multidimensional dictionary
+    //var loc = {1: {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3" }};
+
+
+    // Hide all POI
+    var styles = {
+        default: null,
+        hide: [
+            {
+                featureType: 'poi',
+                stylers: [{visibility: 'off'}]
+            },
+            {
+                featureType: 'transit',
+                elementType: 'labels.icon',
+                stylers: [{visibility: 'off'}]
+            },
+        ]
+    };
+
+    function hide_popup() {
+        $("#Booking_Container").fadeOut("slow");
     }
 
 
 
-
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-    </head>
-    <body>
-
-
-<div style="width:100%;height: 500px;">
-    <div id="test">Test</div>
-    <div id="map"></div>
-</div>
-    <script>
-        $("#test").hide();
-        //document.getElementById("test").style.display = 'none';
-
-        //Get users location
-        //Add checks if there is no HTML5 and add default starting location
-        navigator.geolocation.getCurrentPosition(initMap)
-
-        function initMap(pos) {
-
-            // Position of user
-            //var crd = pos.coords;
-
-            //Commented out for testing uncomment the line below to test geolocation
-            //var user = {lat: crd.latitude, lng: crd.longitude};
-            //Set user location to melbourne CBD
-            var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 16,
-                center: user
-            });
-            map.setOptions({styles: styles['hide']});
-            var marker = new google.maps.Marker({
-                position: user,
-                map: map
-            });
-
-
-            // Create an array of alphabetical characters used to label the markers.
-            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-            // Add some markers to the map.
-            // Note: The code uses the JavaScript Array.prototype.map() method to
-            // create an array of markers based on a given "locations" array.
-            // The map() method here has nothing to do with the Google Maps API.
-            var markers = locations.map(function (location, i) {
-                return new google.maps.Marker({
-                    position: location,
-                    label: labels[i % labels.length],
-                    tst: location["car"]
-                });
-
-
-            });
-
-
-            // Add a marker clusterer to manage the markers.
-            var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
-            // Add a click listener to the markers
-            markers.forEach(function (pod) {
-                    pod.addListener('click', function () {
-                        // Center the marker when clicked on
-                        map.setCenter(pod.getPosition());
-                        //document.getElementById("test").style.display = 'block';
-                        $("#test").text(pod.tst);
-                        $("#test").fadeIn("slow");
-                    });
-
-                });
-
-
-        }
-
-
-        // These will need to be pulled from the database
-        var locations = [
-            {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3"},
-            {lat: -37.812569, lng: 144.963065, car: "Huon the Ford Falcon"},
-            {lat: -37.814112, lng: 144.957229},
-            {lat: -37.816531, lng: 144.969385}
-        ]
-
-
-
-        // Multidimensional dictionary
-        //var loc = {1: {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3" }};
-
-
-
-        // Hide all POI
-        var styles = {
-            default: null,
-            hide: [
-                {
-                    featureType: 'poi',
-                    stylers: [{visibility: 'off'}]
-                },
-                {
-                    featureType: 'transit',
-                    elementType: 'labels.icon',
-                    stylers: [{visibility: 'off'}]
-                },
-            ]
-        };
-
-    </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-    </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
-    </script>
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
+</script>
 {% endblock homepage %}
