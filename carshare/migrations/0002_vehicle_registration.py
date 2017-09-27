@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='vehicle',
             name='registration',
-            field=models.CharField(default='AAA-111', max_length=6),
+            field=models.CharField(default='AAA111', max_length=6),
             preserve_default=False,
         ),
     ]
