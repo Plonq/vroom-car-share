@@ -190,21 +190,59 @@
 
 
             // Create an array of alphabetical characters used to label the markers.
-            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            //var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
             // Add some markers to the map.
             // Note: The code uses the JavaScript Array.prototype.map() method to
             // create an array of markers based on a given "locations" array.
             // The map() method here has nothing to do with the Google Maps API.
-            var markers = locations.map(function (location, i) {
+
+            /* custom marker code here */
+
+            var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+            var icons = {
+                parking: {
+                    icon: iconBase + 'parking_lot_maps.png'
+                },
+                library: {
+                    icon: iconBase + 'library_maps.png'
+                },
+                info: {
+                    icon: iconBase + 'info-i_maps.png'
+                }
+            };
+
+            // Define the locations
+            // Type: available or not
+            var features = [
+
+                {
+                    lat: -37.814993,
+                    lng: 144.960791,
+                    type: 'info',
+                    car: "Steven the Mazda 3",
+                    available: false
+                },
+                {
+                    lat: -37.812569,
+                    lng: 144.963065,
+                    type: 'parking',
+                    car: "Huon the Ford Falcon",
+                    available: false
+                }];
+
+
+            var markers = features.map(function (location, i) {
                 return new google.maps.Marker({
                     position: location,
-                    label: labels[i % labels.length],
-                    carname: location["car"]
+                    //label: labels[i % labels.length],
+                    icon: icons[location.type].icon,
+                    carname: location.car,
+                    //available: location["available"]
                 });
-
-
             });
+
+            /* End custom marker code */
 
 
             // Add a marker clusterer to manage the markers.
@@ -216,7 +254,6 @@
                 pod.addListener('click', function () {
                     // Center the marker when clicked on
                     map.setCenter(pod.getPosition());
-                    //document.getElementById("test").style.display = 'block';
                     $("#booking").text(pod.carname);
                     $("#Booking_Container").fadeIn("slow");
                 });
@@ -224,14 +261,7 @@
             });
 
 
-            // new code here
-
-            /*function initAutocomplete() {
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                      center: {lat: -33.8688, lng: 151.2195},
-                      zoom: 13,
-                      mapTypeId: 'roadmap'
-                    });*/
+            // new code here: Google places API code here.
 
             // Create the search box and link it to the UI element.
             var input = document.getElementById('pac-input');
@@ -291,30 +321,19 @@
                 });
                 map.fitBounds(bounds);
             });
-            /*}*/
 
             // Add support for search button
             document.getElementById('findcar').onclick = function () {
                 var input = document.getElementById('pac-input');
 
                 google.maps.event.trigger(input, 'focus')
-                google.maps.event.trigger(input, 'keydown', { keyCode: 40 }); // 40 = keydown
-                google.maps.event.trigger(input, 'keydown', { keyCode: 13 }); // 13 = enter
-};
-
+                google.maps.event.trigger(input, 'keydown', {keyCode: 40}); // 40 = keydown
+                google.maps.event.trigger(input, 'keydown', {keyCode: 13}); // 13 = enter
+            };
 
 
             //end
         }
-
-
-        // These will need to be pulled from the database
-        var locations = [
-            {lat: -37.814993, lng: 144.960791, car: "Steven the mazda 3"},
-            {lat: -37.812569, lng: 144.963065, car: "Huon the Ford Falcon"},
-            {lat: -37.814112, lng: 144.957229},
-            {lat: -37.816531, lng: 144.969385}
-        ]
 
 
         // Hide all POI
