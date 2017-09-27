@@ -220,25 +220,26 @@
                     lat: -37.814993,
                     lng: 144.960791,
                     type: 'info',
-                    car: "Steven the Mazda 3",
-                    available: false
+                    carname: "Steven",
+                    model: "Mazda 3",
+                    pod_description: ""
                 },
                 {
                     lat: -37.812569,
                     lng: 144.963065,
                     type: 'parking',
-                    car: "Huon the Ford Falcon",
-                    available: false
+                    carname: "Huon",
+                    model: "Ford Falcon",
+                    pod_description: ""
                 }];
 
-
+            // Place markers on the map
             var markers = features.map(function (location, i) {
                 return new google.maps.Marker({
                     position: location,
-                    //label: labels[i % labels.length],
                     icon: icons[location.type].icon,
-                    carname: location.car,
-                    //available: location["available"]
+                    carname: location.carname,
+                    model: location.model,
                 });
             });
 
@@ -254,7 +255,7 @@
                 pod.addListener('click', function () {
                     // Center the marker when clicked on
                     map.setCenter(pod.getPosition());
-                    $("#booking").text(pod.carname);
+                    $("#booking").text(pod.carname + " the " + pod.model);
                     $("#Booking_Container").fadeIn("slow");
                 });
 
@@ -304,13 +305,14 @@
                         scaledSize: new google.maps.Size(25, 25)
                     };
 
-                    // Create a marker for each place.
-                    markers.push(new google.maps.Marker({
+                    // This creates a special marker for the searched location
+                    // Currently turned off
+                    /*markers.push(new google.maps.Marker({
                         map: map,
                         icon: icon,
                         title: place.name,
                         position: place.geometry.location
-                    }));
+                    }));*/
 
                     if (place.geometry.viewport) {
                         // Only geocodes have viewport.
