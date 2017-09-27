@@ -156,9 +156,9 @@
         <!-- Floating box for car bookings -->
         <div id="Booking_Container" class="text-center">
             <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
-            <h3>Car Available</h3>
+            <h3 id="car_availability">Car Available</h3>
             <div id="booking"></div><!-- the car name, make and model is listed here -->
-            <h4>Located:</h4>
+            <h4>Location:</h4>
             <div id="pod_description"></div><!-- pod description listed here -->
 
             <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
@@ -202,8 +202,6 @@
             });
 
 
-            // Create an array of alphabetical characters used to label the markers.
-            //var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
             // Add some markers to the map.
             // Note: The code uses the JavaScript Array.prototype.map() method to
@@ -211,17 +209,12 @@
             // The map() method here has nothing to do with the Google Maps API.
 
             /* custom marker code here */
-
-            var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
             var icons = {
-                parking: {
-                    icon: iconBase + 'parking_lot_maps.png'
+                unavailable: {
+                    icon: "{% static "carshare/images/Geo_icon_unavailable.png" %}"
                 },
-                library: {
-                    icon: iconBase + 'library_maps.png'
-                },
-                info: {
-                    icon: iconBase + 'info-i_maps.png'
+                available: {
+                    icon: "{% static "carshare/images/Geo_icon.png" %}"
                 }
             };
 
@@ -231,35 +224,25 @@
             var features = [];
 
             {% for car in vehicles %}
-                {% if car.is_available %}
                     features.push(
                         {
                             id: {{ car.id }},
                             lat: {{ car.pod.latitude }},
                             lng: {{ car.pod.longitude }},
-                            type: 'info',
+                            {% if car.is_available %}
+                                type: 'available',
+                                available: true,
+                                {% else %}
+                                type: 'unavailable',
+                                available: false,
+                            {% endif %}
+                            //type: 'info',
                             carname: "{{ car.name }}",
                             make: "{{ car.make }}",
                             model: "{{ car.model }}",
                             pod_description: "{{ car.pod.description }}"
                         }
                     )
-                {% else %}
-                    features.push(
-                        {
-                            id: {{ car.id }},
-                            lat: {{ car.pod.latitude }},
-                            lng: {{ car.pod.longitude }},
-                            type: 'parking',
-                            carname: "{{ car.name }}",
-                            make: "{{ car.make }}",
-                            model: "{{ car.model }}",
-                            pod_description: "{{ car.pod.description }}"
-                        }
-                    )
-                {% endif %}
-
-
             {% endfor %}
 
 
@@ -272,6 +255,7 @@
                     make: location.make,
                     model: location.model,
                     pod_description: location.pod_description,
+                    availability: location.available,
                 });
             });
 
@@ -288,7 +272,20 @@
                     // Center the marker when clicked on
                     map.panTo(pod.getPosition());
                     $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
-                    $("#pod_description").text(pod.pod_description)
+                    $("#pod_description").text(pod.pod_description);
+                    if (pod.availability) {
+                        $("#car_availability").text("Car Available")
+                        $("#booking_button").text("Book Now");
+                        $("#booking_button").removeClass("disabled")
+                    }
+                    else
+                    {
+                        $("#car_availability").text("Car In Use")
+                        $("#booking_button").text("Unavailable");
+                        $("#booking_button").addClass("disabled");
+                    }
+                    console.log(pod.icon.toString());
+
                     $("#Booking_Container").fadeIn("slow");
                 });
 
