@@ -213,3 +213,14 @@ def update_credit_card(request):
     }
 
     return render(request, 'accounts/update_credit_card.html', context)
+
+#Deletes user account
+@login_required
+def delete_account(request):
+    user = request.user
+    user.delete()
+
+    return redirect('index')
+
+def delete_confirmation(request):
+    return render(request, 'accounts/delete_confirmation.html')
