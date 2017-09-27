@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block pagetitle %}Vroom Car Share - Find a Car{% endblock pagetitle %}
+{% block header %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+{% endblock %}
+{% block homepage %}
+    <style>
+
+        #Booking_Container {
+            position: absolute;
+            width: 250px;
+            height: 300px;
+            background-color: #006699;
+            top: 50%;
+            margin-top: -150px;
+            right: 5%;
+            z-index: 999;
+
+            border-radius: 25px;
+            color: white;
+
+        }
+
+        #booking {
+            position: relative;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        div#pod_description {
+            margin-top: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        button#booking_button {
+            bottom: 15px;
+            position: absolute;
+            left: 50%;
+            margin-left: -43px;
+        }
+
+        #close_map_popup {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+        }
+
+        #close_map_popup:hover {
+            color: #4cc1f6;
+        }
+
+        #mapsearch {
+            position: absolute;
+            top: 50%;
+            margin-top: -100px;
+            left: 5%;
+            z-index: 999;
+            width: 250px;
+            height: 200px;
+            background-color: #006699;
+            border-radius: 25px;
+            color: white;
+
+        }
+
+        #map_contain {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        #description {
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        #infowindow-content .title {
+            font-weight: bold;
+        }
+
+        #infowindow-content {
+            display: none;
+        }
+
+        #map #infowindow-content {
+            display: inline;
+        }
+
+        .pac-card {
+            margin: 10px 10px 0 0;
+            border-radius: 2px 0 0 2px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+            font-family: Roboto;
+        }
+
+        #pac-container {
+            padding-bottom: 12px;
+            margin-right: 12px;
+        }
+
+        .pac-controls {
+            display: inline-block;
+            padding: 5px 11px;
+        }
+
+        .pac-controls label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        #pac-input {
+            background-color: #fff;
+            /*font-family: Roboto;*/
+            font-size: 15px;
+            font-weight: 300;
+            margin: auto;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 200px;
+            color: black;
+        }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+        }
+
+        #title {
+            color: #fff;
+            background-color: #4d90fe;
+            font-size: 25px;
+            font-weight: 500;
+            padding: 6px 12px;
+        }
+
+        #target {
+            width: 345px;
+        }
+    </style>
+
+    <div id="map_contain" style="">
+
+        <!-- Floating box for car bookings -->
+        <div id="Booking_Container" class="text-center">
+            <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
+            <h3 id="car_availability"></h3>
+            <div id="booking"></div><!-- the car name, make and model is listed here -->
+            <h4>Location:</h4>
+            <div id="pod_description"></div><!-- pod description listed here -->
+
+            <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
+
+        </div>
+
+        <!-- map search box -->
+        <div id="mapsearch" class="text-center">
+            <h3>Find a Vroom car</h3>
+            <br/>
+            <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Address">
+            <br/>
+            <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script>
+        $("#Booking_Container").hide();
+
+        //Get users location
+        //Add checks if there is no HTML5 and add default starting location
+
+        function initMap() {
+
+
+            // Try HTML5 geolocation.
+
+
+
+            // Position of user
+            //var crd = pos.coords;
+
+            //Commented out for testing uncomment the line below to test geolocation
+            //var user = {lat: crd.latitude, lng: crd.longitude};
+            //Set user location to melbourne CBD
+            var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: user
+            });
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: user,
+                map: map
+            });
+
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    //console.log(pos);
+                    map.setCenter(pos);
+
+
+
+            map.setOptions({styles: styles['hide']});
+            var marker = new google.maps.Marker({
+                position: pos,
+                map: map
+            });
+
+
+                });
+            };
+
+
+
+            /*end tst*/
+
+
+
+            // Add some markers to the map.
+            // Note: The code uses the JavaScript Array.prototype.map() method to
+            // create an array of markers based on a given "locations" array.
+            // The map() method here has nothing to do with the Google Maps API.
+
+            /* custom marker code here */
+            var icons = {
+                unavailable: {
+                    icon: "{% static "carshare/images/Geo_icon_unavailable.png" %}"
+                },
+                available: {
+                    icon: "{% static "carshare/images/Geo_icon.png" %}"
+                }
+            };
+
+            // Define the locations
+            // Type: available or not
+
+            var features = [];
+
+            {% for car in vehicles %}
+                features.push(
+                    {
+                        id: {{ car.id }},
+                        lat: {{ car.pod.latitude }},
+                        lng: {{ car.pod.longitude }},
+                        {% if car.is_available %}
+                            type: 'available',
+                            available: true,
+                        {% else %}
+                            type: 'unavailable',
+                            available: false,
+                        {% endif %}
+                        carname: "{{ car.name }}",
+                        make: "{{ car.make }}",
+                        model: "{{ car.model }}",
+                        pod_description: "{{ car.pod.description }}"
+                    }
+                )
+            {% endfor %}
+
+
+            // Place markers on the map
+            var markers = features.map(function (location, i) {
+                return new google.maps.Marker({
+                    id: location.id,
+                    position: location,
+                    icon: icons[location.type].icon,
+                    carname: location.carname,
+                    make: location.make,
+                    model: location.model,
+                    pod_description: location.pod_description,
+                    availability: location.available,
+                });
+            });
+
+            /* End custom marker code */
+
+
+            // Add a marker clusterer to manage the markers.
+            var markerCluster = new MarkerClusterer(map, markers,
+                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+            // Add a click listener to the markers
+            markers.forEach(function (pod) {
+                pod.addListener('click', function () {
+                    // Center the marker when clicked on
+                    map.panTo(pod.getPosition());
+                    $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
+                    $("#pod_description").text(pod.pod_description);
+                    if (pod.availability) {
+                        $("#car_availability").text("Car Available")
+                        $("#booking_button").text("Book Now");
+                        $("#booking_button").removeClass("disabled");
+                        $("#booking_button").click(function () {
+                            window.location.replace("booking/" + pod.id + "/")
+                        });
+                    }
+                    else {
+                        $("#car_availability").text("Car In Use")
+                        $("#booking_button").text("Unavailable");
+                        $("#booking_button").addClass("disabled");
+                    }
+
+                    $("#Booking_Container").fadeIn("slow");
+                });
+
+            });
+
+
+            // new code here: Google places API code here.
+
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            map.addListener('bounds_changed', function () {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function () {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+                    var icon = {
+                        url: place.icon,
+                        size: new google.maps.Size(71, 71),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(17, 34),
+                        scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    // This creates a special marker for the searched location
+                    // Currently turned off
+                    /*markers.push(new google.maps.Marker({
+                        map: map,
+                        icon: icon,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));*/
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+            // Add support for search button
+            document.getElementById('findcar').onclick = function () {
+                var input = document.getElementById('pac-input');
+
+                google.maps.event.trigger(input, 'focus')
+                google.maps.event.trigger(input, 'keydown', {keyCode: 40}); // 40 = keydown
+                google.maps.event.trigger(input, 'keydown', {keyCode: 13}); // 13 = enter
+            };
+
+
+            //end
+        }
+
+
+        // Hide all POI
+        var styles = {
+            default: null,
+            hide: [
+                {
+                    featureType: 'poi',
+                    stylers: [{visibility: 'off'}]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'labels.icon',
+                    stylers: [{visibility: 'off'}]
+                },
+            ]
+        };
+
+        function hide_popup() {
+            $("#Booking_Container").fadeOut("slow");
+        }
+
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+      <!--<script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
+      </script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
+            async defer></script>
+{% endblock homepage %}

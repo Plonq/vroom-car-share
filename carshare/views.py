@@ -1,7 +1,10 @@
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render
+
 from .forms import ContactForm
+from .models import Vehicle
+
 
 # Create your views here.
 def index(request):
@@ -30,3 +33,10 @@ def contact_us(request):
 
     contact_form = ContactForm()
     return render(request, "carshare/contact_us.html", {'contact_form': contact_form})
+
+def findacar(request):
+    active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
+    context = {
+        'vehicles': active_vehicles_with_pods
+    }
+    return render(request, "carshare/findacar.html", context)
