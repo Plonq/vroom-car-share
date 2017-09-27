@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Logged Out{% endblock %}
+{% block maincontent %}
+
+    <h3>Are you Sure?</h3>
+    <p><a class="btn btn-primary" href="{% url 'delete_account' %}">Yes</a></p>
+    <p><a class="btn btn-primary" href="{% url 'profile' %}"> No </a></p>
+
+{% endblock %}
