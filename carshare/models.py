@@ -14,7 +14,7 @@ class VehicleType(models.Model):
     daily_rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return "{0} - Hourly: ${1} Daily: ${2}".format(self.description, self.hourly_rate, self.daily_rate)
+        return "{0} - Hourly: ${1:.2f} Daily: ${2:.2f}".format(self.description, float(self.hourly_rate), float(self.daily_rate))
 
 
 class Pod(models.Model):
