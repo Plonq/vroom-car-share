@@ -2,7 +2,6 @@ from decimal import Decimal
 from django.db import models
 
 from accounts.models import User
-from datetime import date
 from django.utils import timezone
 
 
@@ -106,12 +105,12 @@ class Invoice(models.Model):
     Invoice for a single booking
     """
     booking = models.OneToOneField(Booking, related_name='booking')
-    date = models.DateField(default=date.today)
+    date = models.DateField(default=timezone.now)
     due = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
 
     def is_overdue(self):
-        return self.due < date.today()
+        return self.due < timezone.now().date()
 
     def overdue_days(self):
         """
@@ -120,4 +119,4 @@ class Invoice(models.Model):
         if not self.is_overdue():
             return 0
         else:
-            return (date.today() - self.due).days
+            return (timezone.now().date() - self.due).days
