@@ -29,7 +29,10 @@ class Pod(models.Model):
         return "{0},{1}".format(self.latitude, self.longitude)
 
     def __str__(self):
-        return self.description
+        str = "{0}".format(self.description)
+        if hasattr(self, 'vehicle'):
+            str += " ({0})".format(self.vehicle.name)
+        return str
 
 
 class Vehicle(models.Model):
