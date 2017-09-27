@@ -29,7 +29,10 @@ class Pod(models.Model):
         return "{0},{1}".format(self.latitude, self.longitude)
 
     def __str__(self):
-        return self.description
+        str = "{0}".format(self.description)
+        if hasattr(self, 'vehicle'):
+            str += " ({0})".format(self.vehicle.name)
+        return str
 
 
 class Vehicle(models.Model):
@@ -108,6 +111,7 @@ class Invoice(models.Model):
     date = models.DateField(default=timezone.now)
     due = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
+    paid = models.BooleanField(default=False)
 
     def is_overdue(self):
         return self.due < timezone.now().date()

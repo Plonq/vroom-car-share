@@ -21,7 +21,7 @@ class VehicleTypeAdmin(admin.ModelAdmin):
     ordering = ['description']
 
 class PodAdmin(admin.ModelAdmin):
-    list_display = ['description']
+    list_display = ['description', 'vehicle']
     ordering = ['description']
 
 admin.site.register(VehicleType, VehicleTypeAdmin)
