@@ -156,7 +156,7 @@
         <!-- Floating box for car bookings -->
         <div id="Booking_Container" class="text-center">
             <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
-            <h3 id="car_availability">Car Available</h3>
+            <h3 id="car_availability"></h3>
             <div id="booking"></div><!-- the car name, make and model is listed here -->
             <h4>Location:</h4>
             <div id="pod_description"></div><!-- pod description listed here -->
@@ -249,6 +249,7 @@
             // Place markers on the map
             var markers = features.map(function (location, i) {
                 return new google.maps.Marker({
+                    id: location.id,
                     position: location,
                     icon: icons[location.type].icon,
                     carname: location.carname,
@@ -276,7 +277,8 @@
                     if (pod.availability) {
                         $("#car_availability").text("Car Available")
                         $("#booking_button").text("Book Now");
-                        $("#booking_button").removeClass("disabled")
+                        $("#booking_button").removeClass("disabled");
+                        $("#booking_button").click(function () { window.location.replace("booking/" + pod.id + "/") });
                     }
                     else
                     {
@@ -284,7 +286,6 @@
                         $("#booking_button").text("Unavailable");
                         $("#booking_button").addClass("disabled");
                     }
-                    console.log(pod.icon.toString());
 
                     $("#Booking_Container").fadeIn("slow");
                 });
