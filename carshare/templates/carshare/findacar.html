@@ -25,7 +25,21 @@
 
         #booking {
             position: relative;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
 
+        div#pod_description {
+            margin-top: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        button#booking_button {
+            bottom: 15px;
+            position: absolute;
+            left: 50%;
+            margin-left: -43px;
         }
 
         #close_map_popup {
@@ -136,9 +150,6 @@
             width: 345px;
         }
     </style>
-    </head>
-    <body>
-
 
     <div id="map_contain" style="">
 
@@ -146,9 +157,11 @@
         <div id="Booking_Container" class="text-center">
             <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
             <h3>Car Available</h3>
-            <div id="booking"></div>
-            <br/><br/><br/><br/><br/>
-            <button type="button" class="btn btn-primary" value="Book Now">Book Now</button>
+            <div id="booking"></div><!-- the car name, make and model is listed here -->
+            <h4>Located:</h4>
+            <div id="pod_description"></div><!-- pod description listed here -->
+
+            <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
 
         </div>
 
@@ -167,17 +180,17 @@
 
         //Get users location
         //Add checks if there is no HTML5 and add default starting location
-        navigator.geolocation.getCurrentPosition(initMap)
+        //navigator.geolocation.getCurrentPosition(initMap)
 
         function initMap(pos) {
 
             // Position of user
-            var crd = pos.coords;
+            //var crd = pos.coords;
 
             //Commented out for testing uncomment the line below to test geolocation
-            var user = {lat: crd.latitude, lng: crd.longitude};
+            //var user = {lat: crd.latitude, lng: crd.longitude};
             //Set user location to melbourne CBD
-            //var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
+            var user = {lat: -37.813628, lng: 144.963058}; //comment this line to test geolocation
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
                 center: user
@@ -214,24 +227,41 @@
 
             // Define the locations
             // Type: available or not
-            var features = [
 
-                {
-                    lat: -37.814993,
-                    lng: 144.960791,
-                    type: 'info',
-                    carname: "Steven",
-                    model: "Mazda 3",
-                    pod_description: ""
-                },
-                {
-                    lat: -37.812569,
-                    lng: 144.963065,
-                    type: 'parking',
-                    carname: "Huon",
-                    model: "Ford Falcon",
-                    pod_description: ""
-                }];
+            var features = [];
+
+            {% for car in vehicles %}
+                {% if car.is_available %}
+                    features.push(
+                        {
+                            id: {{ car.id }},
+                            lat: {{ car.pod.latitude }},
+                            lng: {{ car.pod.longitude }},
+                            type: 'info',
+                            carname: "{{ car.name }}",
+                            make: "{{ car.make }}",
+                            model: "{{ car.model }}",
+                            pod_description: "{{ car.pod.description }}"
+                        }
+                    )
+                {% else %}
+                    features.push(
+                        {
+                            id: {{ car.id }},
+                            lat: {{ car.pod.latitude }},
+                            lng: {{ car.pod.longitude }},
+                            type: 'parking',
+                            carname: "{{ car.name }}",
+                            make: "{{ car.make }}",
+                            model: "{{ car.model }}",
+                            pod_description: "{{ car.pod.description }}"
+                        }
+                    )
+                {% endif %}
+
+
+            {% endfor %}
+
 
             // Place markers on the map
             var markers = features.map(function (location, i) {
@@ -239,7 +269,9 @@
                     position: location,
                     icon: icons[location.type].icon,
                     carname: location.carname,
+                    make: location.make,
                     model: location.model,
+                    pod_description: location.pod_description,
                 });
             });
 
@@ -254,8 +286,9 @@
             markers.forEach(function (pod) {
                 pod.addListener('click', function () {
                     // Center the marker when clicked on
-                    map.setCenter(pod.getPosition());
-                    $("#booking").text(pod.carname + " the " + pod.model);
+                    map.panTo(pod.getPosition());
+                    $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
+                    $("#pod_description").text(pod.pod_description)
                     $("#Booking_Container").fadeIn("slow");
                 });
 
