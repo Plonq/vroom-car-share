@@ -108,6 +108,7 @@ class Invoice(models.Model):
     date = models.DateField(default=timezone.now)
     due = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
+    paid = models.BooleanField(default=False)
 
     def is_overdue(self):
         return self.due < timezone.now().date()
