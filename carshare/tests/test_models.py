@@ -16,7 +16,7 @@ class CarshareBookingModelTests(TestCase):
     def setUp(self):
         vt = VehicleType.objects.create(description='Premium', hourly_rate=12.50, daily_rate=80.00)
         p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
-        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012)
+        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012, registration='AAA222')
         u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
 
     def test_active_booking(self):
@@ -112,8 +112,8 @@ class CarshareVehicleModelTests(TestCase):
         vt = VehicleType.objects.create(description='Premium', hourly_rate='12.50', daily_rate='80.00')
         p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
         p2 = Pod.objects.create(latitude='60.34523453', longitude='109.53524344', description='Pod 2')
-        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012)
-        v2 = Vehicle.objects.create(pod=p2, type=vt, name='Vehicle2', make='Mazda', model='2', year=2014)
+        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012, registration='AAA111')
+        v2 = Vehicle.objects.create(pod=p2, type=vt, name='Vehicle2', make='Mazda', model='2', year=2014, registration='AAA112')
         u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
 
         # Booking for Vehicle1 that should make Vehicle1 unavailable

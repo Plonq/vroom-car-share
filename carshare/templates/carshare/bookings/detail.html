@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Booking {{ booking.id }}{% endblock %}
+
+{% block maincontent %}
+    <h3>Booking {{ booking.id }}</h3>
+    <br>
+    <h4>Start time: </h4>
+    {{ booking.schedule_start }}
+    <br/><br/>
+    <h4>End time: </h4>
+    {{ booking.schedule_end }}
+    <br/><br/>
+    <h4>Vehicle:</h4>
+    {{ booking.vehicle }}
+{% endblock %}
