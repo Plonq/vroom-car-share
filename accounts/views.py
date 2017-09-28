@@ -3,6 +3,10 @@ from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+
+from django.core.mail import send_mail
+from django.conf import settings
 
 from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
 from .models import User, Address
@@ -126,6 +130,12 @@ def register_credit_card(request):
             credit_card.user = user_obj
             credit_card.save()
 
+            subject = 'Thank you for joining Vroom!'
+            message = render_to_string('registration/account_confirmation.html')
+            from_email = settings.EMAIL_HOST_USER
+            to_list = [user_obj.email, settings.EMAIL_HOST_USER]
+            send_mail(subject, message, from_email, to_list)
+
             # Clear registration-related session vars
             del request.session['user_id']
             del request.session['address_id']
@@ -222,5 +232,17 @@ def delete_account(request):
 
     return redirect('index')
 
+#Allow user to delete disable account
 def delete_confirmation(request):
     return render(request, 'accounts/delete_confirmation.html')
+
+#Disable User
+@login_required
+def disable_account(request):
+    user = request.user
+    user.is_active = False
+    user.save()
+
+#Allow user to confirm disable account
+def disable_confirmation(request):
+    return render(request, 'accounts/disable_confirmation.html')
