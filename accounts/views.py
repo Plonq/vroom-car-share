@@ -131,10 +131,10 @@ def register_credit_card(request):
             credit_card.save()
 
             subject = 'Thank you for joining Vroom!'
-            message = render_to_string('registration/account_confirmation.html')
+            message = render_to_string('registration/email/account_confirmation.html')
             from_email = settings.EMAIL_HOST_USER
             to_list = [user_obj.email, settings.EMAIL_HOST_USER]
-            msg_html = render_to_string('registration/account_confirmation.html', {'firstname': user_obj.first_name})
+            msg_html = render_to_string('registration/email/account_confirmation.html', {'firstname': user_obj.first_name})
             send_mail(subject, message, from_email, to_list, html_message=msg_html)
 
             # Clear registration-related session vars
