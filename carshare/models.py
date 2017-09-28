@@ -73,8 +73,8 @@ class Booking(models.Model):
     """
     user = models.ForeignKey(User)
     vehicle = models.ForeignKey(Vehicle)
-    schedule_start = models.DateTimeField()
-    schedule_end = models.DateTimeField()
+    schedule_start = models.DateTimeField(verbose_name='Start time')
+    schedule_end = models.DateTimeField(verbose_name='End time')
     ended = models.DateTimeField(null=True, blank=True)
     cancelled = models.DateTimeField(null=True, blank=True)
 
