@@ -41,12 +41,12 @@ class Vehicle(models.Model):
     """
     type = models.ForeignKey(VehicleType, related_name='type')
     pod = models.OneToOneField(Pod, null=True, blank=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     make = models.CharField(max_length=30)
     model = models.CharField(max_length=30)
     year = models.PositiveSmallIntegerField()
     active = models.BooleanField(default=True)
-    registration = models.CharField(max_length=6)
+    registration = models.CharField(max_length=6, unique=True)
 
     def is_active(self):
         return self.active
