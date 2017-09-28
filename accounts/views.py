@@ -134,7 +134,8 @@ def register_credit_card(request):
             message = render_to_string('registration/account_confirmation.html')
             from_email = settings.EMAIL_HOST_USER
             to_list = [user_obj.email, settings.EMAIL_HOST_USER]
-            send_mail(subject, message, from_email, to_list)
+            msg_html = render_to_string('registration/account_confirmation.html', {'firstname': user_obj.first_name})
+            send_mail(subject, message, from_email, to_list, html_message=msg_html)
 
             # Clear registration-related session vars
             del request.session['user_id']

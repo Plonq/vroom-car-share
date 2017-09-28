@@ -1,5 +1,10 @@
-{% autoescape off %}
-Hi {{ user.username }},
+{% extends 'email_base.html' %}
+{% block email_body %}
+	<h1 style="color: #006599; font-size:45px; font-weight:bold;">Hi {{ firstname }}!</h1>
+    <p style="font-size:16px;">Thanks for choosing <strong>Vroom</strong> as your prefered transport provider. <br />
+        We look forward to giving you the best experience possible.</p>
 
-Welcome to Vroom! Car Share. Thank you for joining the family.
-{% endautoescape %}
+    <p style="font-size:16px;">To get started head over to our "<strong><a href="#">How it works</a></strong>" section you get yourself informed
+        <br />and start enjoying the benefits.</p>
+{% endblock email_body %}
+
