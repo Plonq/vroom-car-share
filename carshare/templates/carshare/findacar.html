@@ -8,6 +8,10 @@
 {% block homepage %}
     <style>
 
+    .notflush{
+        padding-bottom: 0px;
+    }
+
         #Booking_Container {
             position: absolute;
             width: 250px;
@@ -58,7 +62,7 @@
             margin-top: -100px;
             left: 5%;
             z-index: 999;
-            width: 250px;
+            width: 300px;
             height: 200px;
             background-color: #006699;
             border-radius: 25px;
@@ -68,12 +72,12 @@
 
         #map_contain {
             width: 100%;
-            height: 500px;
+            height: 700px;
             position: relative;
         }
 
         #map {
-            height: 500px;
+            height: 700px;
             width: 100%;
         }
 
@@ -130,7 +134,7 @@
             margin: auto;
             padding: 0 11px 0 13px;
             text-overflow: ellipsis;
-            width: 200px;
+            width: 265px;
             color: black;
         }
 
@@ -149,7 +153,26 @@
         #target {
             width: 345px;
         }
+
+    .findcartop {
+        width:100%;
+        background-color: #006699;
+        color:white;
+        margin: 0px;
+        padding:0px;
+        height:60px;
+    }
+
+    .findcartop h1 {
+        margin:0px;
+        padding-top: 10px;
+    }
+
     </style>
+
+    <div class="text-center findcartop">
+    <h1>Find a Vroom Car</h1>
+    </div>
 
     <div id="map_contain" style="">
 
@@ -187,7 +210,6 @@
             // Try HTML5 geolocation.
 
 
-
             // Position of user
             //var crd = pos.coords;
 
@@ -217,21 +239,19 @@
                     map.setCenter(pos);
 
 
-
-            map.setOptions({styles: styles['hide']});
-            var marker = new google.maps.Marker({
-                position: pos,
-                map: map
-            });
+                    map.setOptions({styles: styles['hide']});
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map
+                    });
 
 
                 });
-            };
-
+            }
+            ;
 
 
             /*end tst*/
-
 
 
             // Add some markers to the map.
@@ -277,7 +297,7 @@
 
 
             // Place markers on the map
-            var markers = features.map(function (location, i) {
+            window.markers = features.map(function (location, i) {
                 return new google.maps.Marker({
                     id: location.id,
                     position: location,
@@ -294,14 +314,29 @@
 
 
             // Add a marker clusterer to manage the markers.
-            var markerCluster = new MarkerClusterer(map, markers,
+            var markerCluster = new MarkerClusterer(map, window.markers,
                 {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
+
+            //disable all marker animations
+            function stopmarkers() {
+                for (var i in window.markers) {
+                    window.markers[i].setAnimation(null);
+                }
+            }
+
+
             // Add a click listener to the markers
-            markers.forEach(function (pod) {
+            window.markers.forEach(function (pod) {
+
                 pod.addListener('click', function () {
+
+                    stopmarkers();
+
+
                     // Center the marker when clicked on
                     map.panTo(pod.getPosition());
+                    pod.setAnimation(google.maps.Animation.BOUNCE);
                     $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
                     $("#pod_description").text(pod.pod_description);
                     if (pod.availability) {
@@ -414,19 +449,27 @@
                     stylers: [{visibility: 'off'}]
                 },
             ]
-        };
+        }
+
+        //disable all marker animations
+        function stopmarkers() {
+            for (var i in window.markers) {
+                window.markers[i].setAnimation(null);
+            }
+        }
 
         function hide_popup() {
             $("#Booking_Container").fadeOut("slow");
+            stopmarkers();
         }
 
 
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
-      <!--<script async defer
-              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
-      </script>-->
+    <!--<script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
+    </script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
             async defer></script>
 {% endblock homepage %}
