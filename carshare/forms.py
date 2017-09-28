@@ -1,7 +1,7 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from datetimewidget.widgets import DateTimeWidget, DateWidget
+from datetimewidget.widgets import DateTimeWidget
 
 from .models import Booking
 from django.utils import timezone
@@ -27,6 +27,7 @@ class BookingForm(forms.ModelForm):
             'format': 'yyyy-mm-dd hh:00',
             'minView': 1,
             'minuteStep': 60,
+            'startDate': timezone.now().date().isoformat(),
         }
         widgets = {
             'schedule_start': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions),
