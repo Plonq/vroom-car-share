@@ -64,7 +64,7 @@ def register_address(request):
 
     # User hasn't completed step one, redirect to first step
     elif 'user_id' not in request.session:
-        return redirect('register_user')
+        return redirect('register')
 
     # User submitted form, save and redirect to next step
     elif request.method == 'POST':
@@ -114,7 +114,7 @@ def register_credit_card(request):
 
     # User hasn't completed step one, redirect to first step
     elif 'user_id' not in request.session:
-        return redirect('register_user')
+        return redirect('register')
 
     # User hasn't completed step two, redirect to second step
     elif 'address_id' not in request.session:
