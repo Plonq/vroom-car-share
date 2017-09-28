@@ -8,6 +8,10 @@
 {% block homepage %}
     <style>
 
+    .notflush{
+        padding-bottom: 0px;
+    }
+
         #Booking_Container {
             position: absolute;
             width: 250px;
@@ -58,7 +62,7 @@
             margin-top: -100px;
             left: 5%;
             z-index: 999;
-            width: 250px;
+            width: 300px;
             height: 200px;
             background-color: #006699;
             border-radius: 25px;
@@ -68,12 +72,12 @@
 
         #map_contain {
             width: 100%;
-            height: 500px;
+            height: 700px;
             position: relative;
         }
 
         #map {
-            height: 500px;
+            height: 700px;
             width: 100%;
         }
 
@@ -130,7 +134,7 @@
             margin: auto;
             padding: 0 11px 0 13px;
             text-overflow: ellipsis;
-            width: 200px;
+            width: 265px;
             color: black;
         }
 
@@ -150,6 +154,10 @@
             width: 345px;
         }
     </style>
+
+    <div style="width:100%; background-color: #006699; color:white; margin: 0px; padding:0px; height:60px;" class="text-center">
+    <h1 style="margin:0px; padding-top: 10px;">Find a Vroom Car</h1>
+    </div>
 
     <div id="map_contain" style="">
 
