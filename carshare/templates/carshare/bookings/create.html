@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block pagetitle %}New Booking{% endblock %}
+{% block header %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock %}
+
+{% block maincontent %}
+    <h3>New Booking for  {{ vehicle.name }}</h3>
+    {% load crispy_forms_tags %}
+        {% crispy booking_form %}
+
+    {% for booking in vehicle.booking_set.all %}
+        {{ booking.schedule_start }} - {{ booking.schedule_end }} <br>
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $( ".datepicker" ).datepicker();
+    </script>
+{% endblock %}

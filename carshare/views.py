@@ -67,7 +67,7 @@ def new_booking(request, vehicle_name):
         'vehicle': vehicle,
         'booking_form': booking_form,
     }
-    return render(request, "carshare/bookings/new.html", context)
+    return render(request, "carshare/bookings/create.html", context)
 
 @login_required
 def booking_detail(request, booking_id):
