@@ -6,3 +6,4 @@ whitenoise==3.2
 sendgrid==3.6.5
 sendgrid-django==4.0.4
 django-crispy-forms==1.6.1
+django-datetime-widget==0.9.3

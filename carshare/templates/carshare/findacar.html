@@ -270,7 +270,8 @@
                         carname: "{{ car.name }}",
                         make: "{{ car.make }}",
                         model: "{{ car.model }}",
-                        pod_description: "{{ car.pod.description }}"
+                        pod_description: "{{ car.pod.description }}",
+                        booking_url: "{% url 'new_booking' car.name %}"
                     }
                 )
             {% endfor %}
@@ -287,6 +288,7 @@
                     model: location.model,
                     pod_description: location.pod_description,
                     availability: location.available,
+                    booking_url: location.booking_url,
                 });
             });
 
@@ -309,7 +311,7 @@
                         $("#booking_button").text("Book Now");
                         $("#booking_button").removeClass("disabled");
                         $("#booking_button").click(function () {
-                            window.location.replace("booking/" + pod.id + "/")
+                            window.location.replace(pod.booking_url)
                         });
                     }
                     else {
