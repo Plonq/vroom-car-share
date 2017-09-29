@@ -37,12 +37,12 @@ def contact_us(request):
 
     return render(request, "carshare/contact_us.html", {'contact_form': contact_form})
 
-def findacar(request):
+def find_a_car(request):
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
     }
-    return render(request, "carshare/findacar.html", context)
+    return render(request, "carshare/find_a_car.html", context)
 
 @login_required
 def new_booking(request, vehicle_name):
