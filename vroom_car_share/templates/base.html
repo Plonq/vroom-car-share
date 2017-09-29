@@ -47,7 +47,7 @@
                     <div id="div_id_username" class="form-group">
                         <label for="id_email" class="control-label  requiredField">Email<span class="asteriskField">*</span> </label>
                         <div class="controls ">
-                            <input type="email" name="username" autofocus="" maxlength="254" class="textinput textInput form-control" required="" id="id_email">
+                            <input type="email" name="username" autofocus maxlength="254" class="textinput textInput form-control" required="" id="id_email">
                         </div>
                     </div>
                     <div id="div_id_password" class="form-group">
@@ -276,6 +276,13 @@
 <script>
     $(function() {
         $('.messages').delay(2500).fadeOut();
+    });
+</script>
+
+<script>
+    // Focus email on modal login form
+    $('.modal').on('shown.bs.modal', function() {
+        $(this).find('[autofocus]').focus();
     });
 </script>
 
