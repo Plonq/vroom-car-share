@@ -84,7 +84,7 @@ class Booking(models.Model):
             # We add an hour to the current time, because if it's e.g. 9:15 and a car is booked from
             # 10:00 to 11:00, the user cannot book it right now (can't choose 10:00 as it's in the past)
             # TODO: Update this if we decide to do half-hour bookings
-            self.schedule_start < (timezone.now() + timedelta(days=1/24)) < self.schedule_end and
+            self.schedule_start < (timezone.now() + timedelta(hours=1)) < self.schedule_end and
             self.ended is None and
             self.cancelled is None
         )
