@@ -127,6 +127,9 @@
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">HOW IT WORKS?</a></li>
                         <li><a href="{% url 'contact_us' %}">CONTACT US</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="/admin/">ADMIN</a></li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>
