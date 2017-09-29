@@ -64,7 +64,7 @@ def register_address(request):
 
     # User hasn't completed step one, redirect to first step
     elif 'user_id' not in request.session:
-        return redirect('register_user')
+        return redirect('register')
 
     # User submitted form, save and redirect to next step
     elif request.method == 'POST':
@@ -114,7 +114,7 @@ def register_credit_card(request):
 
     # User hasn't completed step one, redirect to first step
     elif 'user_id' not in request.session:
-        return redirect('register_user')
+        return redirect('register')
 
     # User hasn't completed step two, redirect to second step
     elif 'address_id' not in request.session:
@@ -132,8 +132,8 @@ def register_credit_card(request):
 
             subject = 'Thank you for joining Vroom!'
             message = render_to_string('registration/email/account_confirmation.html')
-            from_email = settings.EMAIL_HOST_USER
-            to_list = [user_obj.email, settings.EMAIL_HOST_USER]
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_list = [user_obj.email]
             msg_html = render_to_string('registration/email/account_confirmation.html', {'firstname': user_obj.first_name})
             send_mail(subject, message, from_email, to_list, html_message=msg_html)
 

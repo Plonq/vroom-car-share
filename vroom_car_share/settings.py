@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'datetimewidget',
     'carshare',
     'accounts',
 ]
@@ -146,14 +147,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # SendGrid email
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = "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"
+DEFAULT_FROM_EMAIL = 'admin@vroomcs.org'
 
 # Customise messages framework
 MESSAGE_TAGS = {
     messages.ERROR: 'danger' # To match the Bootstrap3 class
 }
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'progproject2017@gmail.com'
-EMAIL_HOST_PASSWORD = 'thisisthepassword'
-EMAIL_PORT = 587
+# Backup email
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'progproject2017@gmail.com'
+# EMAIL_HOST_PASSWORD = 'thisisthepassword'
+# EMAIL_PORT = 587

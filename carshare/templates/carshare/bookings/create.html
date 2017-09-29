@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block pagetitle %}New Booking{% endblock %}
+
+{% block maincontent %}
+    <h3>New Booking for  {{ vehicle.name }}</h3>
+    {% load crispy_forms_tags %}
+    {% crispy booking_form %}
+{% endblock %}
