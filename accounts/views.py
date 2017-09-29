@@ -29,8 +29,10 @@ def register_user(request):
         user_form = UserCreationForm(request.POST)
         # Validate forms and save
         if user_form.is_valid():
-            # Otherwise save new user
-            user = user_form.save()
+            # Otherwise save new user, and make inactive for now
+            user = user_form.save(commit=False)
+            user.is_active = False
+            user.save()
             request.session['user_id'] = user.id
 
             # Send user to next step
@@ -126,10 +128,15 @@ def register_credit_card(request):
         credit_card_form = CreditCardForm(request.POST)
         # Validate forms and save
         if credit_card_form.is_valid():
+            # Activate the user now they've completed reg
+            user_obj.is_active = True
+            user_obj.save()
+            # Save CC info
             credit_card = credit_card_form.save(commit=False)
             credit_card.user = user_obj
             credit_card.save()
 
+            # Send welcome email
             subject = 'Thank you for joining Vroom!'
             message = render_to_string('registration/email/account_confirmation.html')
             from_email = settings.DEFAULT_FROM_EMAIL
