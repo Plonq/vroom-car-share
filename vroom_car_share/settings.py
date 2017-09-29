@@ -153,8 +153,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger' # To match the Bootstrap3 class
 }
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'progproject2017@gmail.com'
-EMAIL_HOST_PASSWORD = 'thisisthepassword'
-EMAIL_PORT = 587
+# Backup email
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'progproject2017@gmail.com'
+# EMAIL_HOST_PASSWORD = 'thisisthepassword'
+# EMAIL_PORT = 587
