@@ -1,7 +1,9 @@
 from django.contrib.auth import forms as auth_forms
 from django import forms
-from crispy_forms.helper import FormHelper
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Field
 
 from .models import User, Address, CreditCard
 from datetime import date, timedelta
@@ -127,6 +129,13 @@ class AddressForm(forms.ModelForm):
         super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('address_line_1', autofocus='autofocus'),
+            Field('address_line_2'),
+            Field('city'),
+            Field('state'),
+            Field('postcode'),
+        )
 
     def clean_postcode(self):
         # Check postcode is exactly 4 digits
@@ -188,3 +197,8 @@ class CreditCardForm(forms.ModelForm):
         super(CreditCardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('card_number', autofocus='autofocus'),
+            Field('expiry_month'),
+            Field('expiry_year'),
+        )
