@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
+from django.shortcuts import reverse
 
 from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
 from .models import User, Address
@@ -224,25 +225,37 @@ def update_credit_card(request):
 
     return render(request, 'accounts/update_credit_card.html', context)
 
-#Deletes user account
+# Delete account confirmation, delete if POST
 @login_required
 def delete_account(request):
-    user = request.user
-    user.delete()
+    if request.method == 'POST':
+        if request.POST['confirm'] == '1':
+            request.user.delete()
+            return redirect('index')
+    else:
+        return render(request, 'accounts/delete_confirmation.html')
 
-    return redirect('index')
+# Allow user to delete disable account
+# @login_required
+# def delete_confirmation(request):
+#     # Redirect user to homepage if they didn't actually click delete
+#     if request.META.HTTP_REFERER != reverse('delete_account'):
+#         return redirect('index')
+#     return render(request, 'accounts/delete_confirmation.html')
 
-#Allow user to delete disable account
-def delete_confirmation(request):
-    return render(request, 'accounts/delete_confirmation.html')
 
-#Disable User
+# Disable account confirmation, disable if POST
 @login_required
 def disable_account(request):
-    user = request.user
-    user.is_active = False
-    user.save()
+    if request.method == 'POST':
+        if request.POST['confirm'] == '1':
+            request.user.is_active = False
+            request.user.save()
+            return redirect('index')
+    else:
+        return render(request, 'accounts/disable_confirmation.html')
 
-#Allow user to confirm disable account
-def disable_confirmation(request):
-    return render(request, 'accounts/disable_confirmation.html')
+# Allow user to confirm disable account
+# @login_required
+# def disable_confirmation(request):
+#     return render(request, 'accounts/disable_confirmation.html')
