@@ -3,6 +3,9 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+import datetime as dt
 
 from .forms import ContactForm, BookingForm
 from .models import Vehicle, Booking
@@ -51,15 +54,35 @@ def new_booking(request, vehicle_name):
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
-            # Process form and create booking
-            booking = booking_form.save(commit=False)
-            print(booking.schedule_start)
-            booking.user = request.user
-            booking.vehicle = vehicle
-            booking.save()
+            # Combine separate date/time into datetime objects
+            data = booking_form.cleaned_data
+            booking_start = timezone.make_aware(dt.datetime.combine(data['booking_start_date'], data['booking_start_time']))
+            booking_end = timezone.make_aware(dt.datetime.combine(data['booking_end_date'], data['booking_end_time']))
+            # Prevent booking overlapping with existing booking
+            is_valid_booking = True
+            existing_bookings = Booking.objects.filter(vehicle=vehicle)
+            for b in existing_bookings:
+                start = b.schedule_start
+                end = b.schedule_end
+                if (booking_start < b.schedule_end and booking_end >= b.schedule_end) or \
+                        booking_start <= b.schedule_start and booking_end > b.schedule_start:
+                    is_valid_booking = False
+                    break
+            if is_valid_booking:
+                # Process form and create booking
+                booking = Booking(
+                    user=request.user,
+                    vehicle=vehicle,
+                    schedule_start=booking_start,
+                    schedule_end=booking_end,
+                )
+                booking.save()
 
-            messages.success(request, 'Booking created successfully')
-            return redirect('booking_detail', booking.pk)
+                messages.success(request, 'Booking created successfully')
+                return redirect('booking_detail', booking.pk)
+            else:
+                booking_form.add_error(None, "Sorry, the selected vehicle is unavailable within the chosen times")
+
     else:
         booking_form = BookingForm()
 
