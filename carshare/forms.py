@@ -48,7 +48,7 @@ class BookingForm(forms.Form):
     )
     dateTimeOptions = {
         'format': 'dd/mm/yyyy',
-        'startDate': timezone.now().date().isoformat(),
+        'startDate': timezone.localtime().date().isoformat(),
     }
     booking_start_date = forms.DateField(widget=DateWidget(options=dateTimeOptions, bootstrap_version=3))
     booking_start_time = forms.ChoiceField(choices=TIMES)
