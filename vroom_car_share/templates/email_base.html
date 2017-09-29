@@ -1,0 +1,14 @@
+{% autoescape off %}
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body>
+<div style="width:800px; margin:auto; height: 400px; background-color:#e4e4e6;text-align:center;font-family: 'Open Sans';">
+    <img src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png" width="250" height="100" alt="Vroom Car Share" style="margin-top:15px;" />
+    <hr style="width:750px;" />
+    {% block email_body %}
+    {% endblock %}
+</div>
+</body></html>
+{% endautoescape %}

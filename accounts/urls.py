@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
     url(r'^profile/edit/update-credit-card/$', views.update_credit_card, name='update_credit_card'),
+    url(r'^delete/$', views.delete_account, name='delete_account'),
+    url(r'^disable/$', views.disable_account, name='disable_account'),
 ]

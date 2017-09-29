@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Disable Account{% endblock %}
+{% block maincontent %}
+
+    <h3>Are you Sure?</h3>
+    <h5> To re-activate account, please contact us via the contact us page</h5>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="confirm" value="1">
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <a class="btn btn-default" href="{% url 'profile' %}"> No </a>
+    </form>
+
+{% endblock %}
