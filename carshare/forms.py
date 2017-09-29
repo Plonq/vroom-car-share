@@ -7,8 +7,6 @@ from crispy_forms.bootstrap import FormActions
 from datetimewidget.widgets import DateWidget
 import datetime as dt
 
-from .models import Booking
-
 
 class ContactForm(forms.Form):
     contact_name = forms.CharField(label='Your name', max_length=60)
@@ -58,21 +56,21 @@ class BookingForm(forms.Form):
     booking_end_time = forms.ChoiceField(choices=TIMES)
 
     def clean_booking_start_time(self):
-        booking_start_time = self.cleaned_data['booking_start_time']
+        booking_start_time = self.cleaned_data.get('booking_start_time')
         # Convert to time object
         booking_start_time = dt.datetime.strptime(booking_start_time, '%H:%M').time()
         return booking_start_time
 
     def clean_booking_end_time(self):
-        booking_end_time = self.cleaned_data['booking_end_time']
+        booking_end_time = self.cleaned_data.get('booking_end_time')
         # Convert to time object
         booking_end_time = dt.datetime.strptime(booking_end_time, '%H:%M').time()
         return booking_end_time
 
     def clean(self):
         cleaned_data = super(BookingForm, self).clean()
-        schedule_start = cleaned_data.get('schedule_start')
-        schedule_end = cleaned_data.get('schedule_end')
+        schedule_start = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']))
+        schedule_end = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']))
         if schedule_start and schedule_end:
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
@@ -80,6 +78,12 @@ class BookingForm(forms.Form):
             # Make sure schedule_start is in the future
             if schedule_start <= timezone.now():
                 raise forms.ValidationError('Start time must be in the future')
+            # Make sure end is after start (not the same as)
+            if schedule_start == schedule_end:
+                raise forms.ValidationError('End time must not be the same as the start time')
+        # Insert parsed dates into cleaned_data so the view doesn't have to
+        cleaned_data['schedule_start'] = schedule_start
+        cleaned_data['schedule_end'] = schedule_end
         return cleaned_data
 
     def __init__(self, *args, **kwargs):

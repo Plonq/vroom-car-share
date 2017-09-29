@@ -3,9 +3,6 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-
-import datetime as dt
 
 from .forms import ContactForm, BookingForm
 from .models import Vehicle, Booking
@@ -56,8 +53,8 @@ def new_booking(request, vehicle_name):
         if booking_form.is_valid():
             # Combine separate date/time into datetime objects
             data = booking_form.cleaned_data
-            booking_start = timezone.make_aware(dt.datetime.combine(data['booking_start_date'], data['booking_start_time']))
-            booking_end = timezone.make_aware(dt.datetime.combine(data['booking_end_date'], data['booking_end_time']))
+            booking_start = data['schedule_start']
+            booking_end = data['schedule_end']
             # Prevent booking overlapping with existing booking
             is_valid_booking = True
             existing_bookings = Booking.objects.filter(vehicle=vehicle)
