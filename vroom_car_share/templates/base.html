@@ -113,9 +113,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_home }}">HOME <span class="sr-only">(current)</span></a></li>
+                <li {% if request.path == url_home %} class="active" {% endif %}><a href="{{ url_home }}">HOME <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">PRICING</a></li>
-                <li><a href="{{ url_find_a_car }}">FIND A CAR</a></li>
+                <li {% if request.path == url_find_a_car %} class="active" {% endif %}><a href="{{ url_find_a_car }}">FIND A CAR</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle hidden-lg hidden-md hidden-sm" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">ACCOUNT<span class="caret"></span></a>
@@ -136,7 +136,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">HOW IT WORKS?</a></li>
-                        <li><a href="{{ url_contact_us }}">CONTACT US</a></li>
+                        <li {% if request.path == url_contact_us %} class="active" {% endif %}><a href="{{ url_contact_us }}">CONTACT US</a></li>
                         {% if user.is_staff %}
                             <li><a href="/admin/">ADMIN</a></li>
                         {% endif %}
