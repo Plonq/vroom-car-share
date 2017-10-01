@@ -179,7 +179,7 @@ def register_cancel(request):
 
 
     messages.info(request, 'Registration cancelled')
-    return redirect('index')
+    return redirect('carshare:index')
 
 
 @login_required
@@ -238,17 +238,9 @@ def delete_account(request):
     if request.method == 'POST':
         if request.POST['confirm'] == '1':
             request.user.delete()
-            return redirect('index')
+            return redirect('carshare:index')
     else:
         return render(request, 'accounts/delete_confirmation.html')
-
-# Allow user to delete disable account
-# @login_required
-# def delete_confirmation(request):
-#     # Redirect user to homepage if they didn't actually click delete
-#     if request.META.HTTP_REFERER != reverse('delete_account'):
-#         return redirect('index')
-#     return render(request, 'accounts/delete_confirmation.html')
 
 
 # Disable account confirmation, disable if POST
@@ -258,11 +250,6 @@ def disable_account(request):
         if request.POST['confirm'] == '1':
             request.user.is_active = False
             request.user.save()
-            return redirect('index')
+            return redirect('carshare:index')
     else:
         return render(request, 'accounts/disable_confirmation.html')
-
-# Allow user to confirm disable account
-# @login_required
-# def disable_confirmation(request):
-#     return render(request, 'accounts/disable_confirmation.html')

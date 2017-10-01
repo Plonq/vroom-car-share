@@ -9,8 +9,8 @@ urlpatterns = [
     # Override django auth templates with our own
     url(r'^login/$', LoginView.as_view(form_class=AuthenticationForm)),
     url(r'^logout/$', LogoutView.as_view(template_name='accounts/logged_out.html')),
-    url(r'^password-change/$', PasswordChangeView.as_view(template_name='accounts/password_change_form.html', form_class=PasswordChangeForm), name='vroom_password_change'),
-    url(r'^password-change/done/$', PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html')),
+    url(r'^password_change/$', PasswordChangeView.as_view(template_name='accounts/password_change_form.html', form_class=PasswordChangeForm)),
+    url(r'^password_change/done/$', PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html')),
     # Fall back on defaults for everything else
     url(r'^', include('django.contrib.auth.urls')),
     # Other accounts-related pages not included in django auth
