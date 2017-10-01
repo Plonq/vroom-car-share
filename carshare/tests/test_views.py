@@ -13,14 +13,14 @@ class CarshareIndexViewTests(TestCase):
         """
         Homepage correctly returns status code 200
         """
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('carshare:index'))
         self.assertEqual(response.status_code, 200)
 
     def test_homepage_contains_text_home(self):
         """
         Homepage correctly contains "Home"
         """
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('carshare:index'))
         self.assertContains(response, 'Home')
 
 
@@ -36,7 +36,7 @@ class CarshareContactUsViewTests(TestCase):
             'contact_email': 'contactemail@test.com',
             'message': 'This is the message.',
         }
-        response = self.client.post(reverse('contact_us'), data=form)
+        response = self.client.post(reverse('carshare:contact_us'), data=form)
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(len(mail.outbox), 1)
