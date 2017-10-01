@@ -32,6 +32,8 @@ DEBUG = os.environ.get('DEBUG', False)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'carshare',
+    'accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,8 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'datetimewidget',
-    'carshare',
-    'accounts',
 ]
 
 MIDDLEWARE = [

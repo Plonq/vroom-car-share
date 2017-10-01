@@ -1,5 +1,15 @@
 <!-- BASE TEMPLATE -->
 {% load static %}
+
+{# Variables for repeated use #}
+{% url 'carshare:index' as url_home %}
+{% url 'carshare:contact_us' as url_contact_us %}
+{% url 'carshare:find_a_car' as url_find_a_car %}
+{% url 'login' as url_login %}
+{% url 'logout' as url_logout %}
+{% url 'profile' as url_profile %}
+{% url 'register' as url_register %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +51,7 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">Have an account? Login</h4>
             </div>
-            <form action="{% url 'login' %}" method="post" class="submission-form validated-form">
+            <form action="{{ url_login }}" method="post" class="submission-form validated-form">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div id="div_id_username" class="form-group">
@@ -80,7 +90,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="mobile_header">
-                <a class="navbar-brand" href="{% url 'index' %}"><img
+                <a class="navbar-brand" href="{{ url_home }}"><img
                         src="{% static "images/vroom_logo.png" %}" id="logo"/></a>
             </div>
         </div>
@@ -89,13 +99,13 @@
         <!-- second attempt floating menu -->
         <div class="row" id="floating_auth">
             {% if user.is_authenticated %}
-                <div id="logout"><a href="{% url 'logout' %}">LOGOUT</a></div>
+                <div id="logout"><a href="{{ url_logout }}">LOGOUT</a></div>
                 <div>|</div>
-                <div><a href="{% url 'profile' %}">PROFILE</a></div>
+                <div><a href="{{ url_profile }}">PROFILE</a></div>
             {% else %}
                 <div id="login"><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
                 <div>|</div>
-                <div><a href="{% url 'register' %}">REGISTER</a></div>
+                <div><a href="{{ url_register }}">REGISTER</a></div>
             {% endif %}
         </div>
 
@@ -103,19 +113,19 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{% url 'index' %}">HOME <span class="sr-only">(current)</span></a></li>
+                <li {% if request.path == url_home %} class="active" {% endif %}><a href="{{ url_home }}">HOME <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">PRICING</a></li>
-                <li><a href="{% url 'find_a_car' %}">FIND A CAR</a></li>
+                <li {% if request.path == url_find_a_car %} class="active" {% endif %}><a href="{{ url_find_a_car }}">FIND A CAR</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle hidden-lg hidden-md hidden-sm" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">ACCOUNT<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'logout' %}" class="hidden-lg hidden-md hidden-sm">LOGOUT</a></li>
-                            <li><a href="{% url 'profile' %}" class="hidden-lg hidden-md hidden-sm">PROFILE</a></li>
+                            <li><a href="{{ url_logout }}" class="hidden-lg hidden-md hidden-sm">LOGOUT</a></li>
+                            <li><a href="{{ url_profile }}" class="hidden-lg hidden-md hidden-sm">PROFILE</a></li>
                         {% else %}
-                            <li><a href="{% url 'login' %}" class="hidden-lg hidden-md hidden-sm">LOGIN</a></li>
-                            <li><a href="{% url 'register' %}" class="hidden-lg hidden-md hidden-sm">REGISTER</a></li>
+                            <li><a href="{{ url_login }}" class="hidden-lg hidden-md hidden-sm">LOGIN</a></li>
+                            <li><a href="{{ url_register }}" class="hidden-lg hidden-md hidden-sm">REGISTER</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -126,7 +136,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">HOW IT WORKS?</a></li>
-                        <li><a href="{% url 'contact_us' %}">CONTACT US</a></li>
+                        <li {% if request.path == url_contact_us %} class="active" {% endif %}><a href="{{ url_contact_us }}">CONTACT US</a></li>
                         {% if user.is_staff %}
                             <li><a href="/admin/">ADMIN</a></li>
                         {% endif %}
@@ -155,8 +165,7 @@
 
     {% block homepage %}{% endblock %}
 
-    {% url 'index' as home_url %}
-    {% if not request.get_full_path == home_url %}
+    {% if not request.get_full_path == url_home %}
         <div class="middle_content notflush">
             {% block maincontent %}{% endblock %}
         </div>
@@ -168,7 +177,7 @@
             <div class="website-footer-container hidden-xs">
                 <div class="website-footer">
                     <ul>
-                        <li><a href="#">Home</a></li>
+                        <li><a href="{{ url_home }}">Home</a></li>
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
@@ -176,7 +185,7 @@
                 <div class="website-footer">
                     <ul>
                         <li><a href="#">Make Booking</a></li>
-                        <li><a href="{% url 'find_a_car' %}">Find A Car</a></li>
+                        <li><a href="{{ url_find_a_car }}">Find A Car</a></li>
                         <li><a href="#">How It Works</a></li>
                         <li><a href="#">Pricing</a></li>
                     </ul>
@@ -184,7 +193,7 @@
                 <div class="website-footer">
                     <ul>
                         <li><a href="" data-toggle="modal" data-target="#myModal">Login</a></li>
-                        <li><a href="{% url 'register' %}">Register</a></li>
+                        <li><a href="{{ url_register }}">Register</a></li>
                         <li><a href="#">My Account</a></li>
                     </ul>
                 </div>
@@ -195,7 +204,7 @@
             <div class="site-map-mobile hidden-sm hidden-md hidden-lg">
                 <div>
                     <ul>
-                        <li><a href="#">Home</a></li>
+                        <li><a href="{{ url_home }}">Home</a></li>
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Pricing</a></li>
@@ -207,9 +216,9 @@
                     <ul>
                         <li><a href="#">Make Booking</a></li>
                         <li><a href="#">Find A Car</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'register' %}">Register</a></li>
-                        <li><a href="#">My Account</a></li>
+                        <li><a href="{{ url_login }}">Login</a></li>
+                        <li><a href="{{ url_register }}">Register</a></li>
+                        <li><a href="{{ url_profile }}">My Account</a></li>
                     </ul>
                 </div>
             </div>

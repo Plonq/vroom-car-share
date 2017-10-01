@@ -94,7 +94,7 @@ def booking_detail(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
-        return redirect('index')
+        return redirect('carshare:index')
     context = {
         'booking': booking,
     }
