@@ -18,17 +18,19 @@
     <form class="validated-form" id="msform" method="post" action="">
         <!-- progressbar -->
         <ul id="progressbar">
-            <li class="active">Account Information</li>
-            <li>Address</li>
-            <li>Payment Info</li>
+            <li class="active text-center">Account Information</li>
+            <li class="text-center">Address</li>
+            <li class="text-center">Payment Info</li>
         </ul>
         <!-- fieldsets -->
         <fieldset>
-            <h2 class="fs-title">Account Information</h2>
-            <h3 class="fs-subtitle">Tell us a bit about you</h3>
+            <h2 class="fs-title text-center">Account Information</h2>
+            <h3 class="fs-subtitle text-center">Tell us a bit about you</h3>
             {% crispy user_form %}
-            <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
-            <input type="submit" name="next" class="btn btn-primary" value="Next"/>
+            <div class="controls text-center">
+                <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
+                <input type="submit" name="next" class="btn btn-primary" value="Next"/>
+            </div>
         </fieldset>
     </form>
 {% endblock %}
