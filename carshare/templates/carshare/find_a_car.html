@@ -67,7 +67,6 @@
             background-color: #006699;
             border-radius: 25px;
             color: white;
-
         }
 
         #map_contain {
@@ -168,16 +167,134 @@
         padding-top: 10px;
     }
 
+
+    #mobile_search {
+        background-color: #006699;
+        color: white;
+    }
+
+    #mobile_search h3 {
+        padding-top:20px;
+    }
+
+
+    /* Small Devices - This is where the mobile menu activates*/
+    @media only screen and (max-width: 767px) {
+
+        #pac-input-mobile {
+            width:90%;
+            margin: auto;
+
+        }
+
+        #findcar {
+            width:90%;
+            margin-bottom: 20px;
+        }
+
+
+        #map_contain {
+            width: 100%;
+            height: 450px;
+            position: relative;
+        }
+
+        #map {
+            height: 450px;
+            width: 100%;
+        }
+
+        #Booking_Container_mobile {
+            width: 100%;
+            height: 275px;
+            background-color: #4cc1f5;
+            color: white;
+            padding-top: 30px;
+        }
+
+        #booking_container_mobile h3 {
+            font-weight: bold;
+            font-size:30px;
+        }
+
+        #location_mobile {
+            font-weight: bold;
+            font-size:20px;
+            margin-top: 10px;
+        }
+
+        #booking_button_mobile {
+            width:90%;
+            margin-top: 20px;
+        }
+
+.start-again-button {
+    margin-bottom: 20px;
+    margin-top: 5px;
+    width: 90%;
+}
+
+
+div#Booking_Container_mobile {
+    padding: 1px;
+}
+
+
+        div#pod_description {
+            margin-top: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #booking_button {
+            bottom: 15px;
+            position: absolute;
+            left: 50%;
+            margin-left: -43px;
+        }
+
+        #close_map_popup {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+        }
+
+        #close_map_popup:hover {
+            color: #4cc1f6;
+        }
+
+
+
+
+
+
+
+
+    }
+
     </style>
 
-    <div class="text-center findcartop">
+    <div class="text-center findcartop hidden-xs">
     <h1>Find a Vroom Car</h1>
     </div>
 
-    <div id="map_contain" style="">
+    <!-- mobile map search -->
+
+        <!-- map search box -->
+        <div id="mobile_search" class="text-center hidden-sm hidden-md hidden-lg">
+            <h3>Search for an address</h3>
+            <br/>
+            <input id="pac-input-mobile" class="controls form-control" type="text" placeholder="Enter Address">
+            <br/>
+            <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
+        </div>
+
+
+
+    <div id="map_contain">
 
         <!-- Floating box for car bookings -->
-        <div id="Booking_Container" class="text-center">
+        <div id="Booking_Container" class="text-center hidden-xs">
             <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
             <h3 id="car_availability"></h3>
             <div id="booking"></div><!-- the car name, make and model is listed here -->
@@ -189,7 +306,7 @@
         </div>
 
         <!-- map search box -->
-        <div id="mapsearch" class="text-center">
+        <div id="mapsearch" class="text-center hidden-xs">
             <h3>Find a Vroom car</h3>
             <br/>
             <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Address">
@@ -198,20 +315,29 @@
         </div>
         <div id="map"></div>
     </div>
+
+            <!-- Mobile box for car bookings -->
+        <div id="Booking_Container_mobile" class="text-center hidden-sm hidden-md hidden-lg">
+            <h3 id="car_availability_mobile"></h3>
+            <div id="booking_mobile"></div>
+            <h4 id="location_mobile">Location:</h4>
+            <div id="pod_description_mobile"></div>
+
+            <button type="button" class="btn btn-primary" id="booking_button_mobile" value="Book Now">Book Now</button>
+            <button type="button" class="btn btn-warning start-again-button" onclick="hide_popup_mobile()" value="Reset">Start Again</button>
+
+        </div>
+    <!-- End mobile bookings -->
+
     <script>
         $("#Booking_Container").hide();
+        //Hide mobile bookings
+        $("#Booking_Container_mobile").hide();
 
         //Get users location
         //Add checks if there is no HTML5 and add default starting location
 
         function initMap() {
-
-
-            // Try HTML5 geolocation.
-
-
-            // Position of user
-            //var crd = pos.coords;
 
             //Commented out for testing uncomment the line below to test geolocation
             //var user = {lat: crd.latitude, lng: crd.longitude};
@@ -341,21 +467,35 @@
                     pod.setAnimation(google.maps.Animation.BOUNCE);
                     $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
                     $("#pod_description").text(pod.pod_description);
+                    //mobile
+                    $("#booking_mobile").text(pod.carname + " the " + pod.make + " " + pod.model);
+                    $("#pod_description_mobile").text(pod.pod_description);
+
                     if (pod.availability) {
-                        $("#car_availability").text("Car Available")
+                        $("#car_availability").text("Car Available");
+                        $("#car_availability_mobile").text("Car Available");
                         $("#booking_button").text("Book Now");
                         $("#booking_button").removeClass("disabled");
                         $("#booking_button").click(function () {
                             window.location.replace(pod.booking_url)
                         });
+                        $("#booking_button_mobile").text("Book Now");
+                        $("#booking_button_mobile").removeClass("disabled");
+                        $("#booking_button_mobile").click(function () {
+                            window.location.replace(pod.booking_url)
+                        });
                     }
                     else {
-                        $("#car_availability").text("Car In Use")
+                        $("#car_availability").text("Car In Use");
                         $("#booking_button").text("Unavailable");
                         $("#booking_button").addClass("disabled");
+                        $("#car_availability_mobile").text("Car In Use");
+                        $("#booking_button_mobile").text("Unavailable");
+                        $("#booking_button_mobile").addClass("disabled");
                     }
 
                     $("#Booking_Container").fadeIn("slow");
+                    $("#Booking_Container_mobile").fadeIn("slow");
                 });
 
             });
@@ -466,6 +606,12 @@
         }
 
 
+       function hide_popup_mobile() {
+            $("#Booking_Container_mobile").fadeOut("slow");
+            stopmarkers();
+        }
+
+
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
@@ -474,4 +620,6 @@
     </script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
             async defer></script>
+
+
 {% endblock homepage %}
