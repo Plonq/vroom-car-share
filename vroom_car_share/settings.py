@@ -31,6 +31,7 @@ DEBUG = os.environ.get('DEBUG', False)
 # Application definition
 
 INSTALLED_APPS = [
+    'flat_responsive',
     'django.contrib.admin',
     'carshare',
     'accounts',
