@@ -4,15 +4,18 @@
 
     <h2>User Profile</h2>
     <br/>
+    <h4>Email: </h4>
+    {{ user.email }}
+    <br/>
     <h4>Name: </h4>
     {{ user.get_full_name }}
-    <br/><br/>
+    <br/>
     <h4> Birthday: </h4>
     {{ user.date_of_birth }}
-    <br/><br/>
+    <br/>
     <h4> Address:</h4>
     {{ user.address }}
-    <br/><br/>
+    <br/>
     <h4> Password </h4>
     <p></p><a href="{% url 'password_change' %}"> Change your password</a></p>
     <br/>
