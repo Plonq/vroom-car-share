@@ -1,9 +1,11 @@
+from datetimewidget.widgets import DateWidget
 from django.contrib.auth import forms as auth_forms
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field
+from crispy_forms.layout import Layout, Div, Submit, Field
 
 from .models import User, Address, CreditCard
 from datetime import date, timedelta
@@ -20,8 +22,13 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'date_of_birth')
+        dateTimeOptions = {
+            'format': 'dd/mm/yyyy',
+            'endDate': timezone.localtime().date().isoformat(),
+            'startView': 4,
+        }
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'}, format='%Y-%m-%d')
+            'date_of_birth': DateWidget(options=dateTimeOptions, bootstrap_version=3)
         }
 
     def clean_password2(self):
@@ -88,7 +95,6 @@ class UserChangeSelfForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            'email',
             'first_name',
             'last_name',
             'date_of_birth',

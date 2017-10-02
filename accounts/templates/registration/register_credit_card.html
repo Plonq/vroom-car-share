@@ -5,18 +5,20 @@
     <form class="validated-form" id="msform" method="post" action="">
         <!-- progressbar -->
         <ul id="progressbar">
-            <li class="active">Account Information</li>
-            <li class="active">Address</li>
-            <li class="active">Payment Info</li>
+            <li class="active text-center">Account Information</li>
+            <li class="active text-center">Address</li>
+            <li class="active text-center">Payment Info</li>
         </ul>
         <!-- fieldsets -->
         <fieldset>
             <h2 class="fs-title">Payment Information</h2>
             <h3 class="fs-subtitle">Please provide your billing information</h3>
             {% crispy credit_card_form %}
-            <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
-            <a name="previous" class="btn btn-default" href="{% url 'register_address' %}">Previous</a>
-            <input type="submit" name="next" class="btn btn-primary" value="Finish"/>
+            <div class="controls text-center">
+                <a class="btn btn-link" href="{% url 'register_cancel' %}">Cancel</a>
+                <a name="previous" class="btn btn-default" href="{% url 'register_address' %}">Previous</a>
+                <input type="submit" name="next" class="btn btn-primary" value="Finish"/>
+            </div>
         </fieldset>
     </form>
 {% endblock %}
