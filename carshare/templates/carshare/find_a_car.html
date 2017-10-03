@@ -427,7 +427,7 @@
                         make: "{{ car.make }}",
                         model: "{{ car.model }}",
                         pod_description: "{{ car.pod.description }}",
-                        booking_url: "{% url 'carshare:new_booking' car.name %}"
+                        booking_url: "{% url 'carshare:booking_create' car.id %}"
                     }
                 )
             {% endfor %}
