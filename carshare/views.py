@@ -51,20 +51,29 @@ def new_booking(request, vehicle_name):
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
-            # Combine separate date/time into datetime objects
             data = booking_form.cleaned_data
             booking_start = data['schedule_start']
             booking_end = data['schedule_end']
-            # Prevent booking overlapping with existing booking
+
+            # Custom validation
             is_valid_booking = True
+            # Prevent booking overlapping with existing booking
             existing_bookings = Booking.objects.filter(vehicle=vehicle)
             for b in existing_bookings:
-                start = b.schedule_start
-                end = b.schedule_end
                 if (booking_start < b.schedule_end and booking_end >= b.schedule_end) or \
                         booking_start <= b.schedule_start and booking_end > b.schedule_start:
                     is_valid_booking = False
+                    booking_form.add_error(None, "Sorry, the selected vehicle is unavailable within the chosen times")
                     break
+            # Prevent multiple bookings for the same user during the same time period
+            user_bookings = request.user.booking_set.all()
+            for b in user_bookings:
+                if (booking_start < b.schedule_end and booking_end >= b.schedule_end) or \
+                        booking_start <= b.schedule_start and booking_end > b.schedule_start:
+                    is_valid_booking = False
+                    booking_form.add_error(None, "Sorry, you cannot book multiple vehicles for the same time period")
+                    break
+
             if is_valid_booking:
                 # Process form and create booking
                 booking = Booking(
@@ -77,8 +86,7 @@ def new_booking(request, vehicle_name):
 
                 messages.success(request, 'Booking created successfully')
                 return redirect('carshare:booking_detail', booking.pk)
-            else:
-                booking_form.add_error(None, "Sorry, the selected vehicle is unavailable within the chosen times")
+            # Else, continue and render the same page with form errors
 
     else:
         booking_form = BookingForm()
