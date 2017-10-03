@@ -71,6 +71,11 @@
     content: " "
 }
 
+/* Align buttons to the right */
+.buttons-right {
+    text-align: right;
+}
+
 /* Top Navbar */
 ul.nav.navbar-nav li a {
     color: black;

@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, Field, Fieldset
+from crispy_forms.layout import Layout, Div, Submit, Field, Fieldset, Button
 from crispy_forms.bootstrap import FormActions
 from datetimewidget.widgets import DateWidget
 import datetime as dt
@@ -91,16 +91,17 @@ class BookingForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_class = 'validated-form'
         self.helper.form_show_labels = False
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             Fieldset('Booking Start',
                 Div(
                     Div(
                         Field('booking_start_date', css_class='datepicker', placeholder='Date'),
-                        css_class='col-sm-5',
+                        css_class='col-sm-8',
                     ),
                     Div(
                         'booking_start_time',
-                        css_class='col-sm-3',
+                        css_class='col-sm-4',
                     ),
                     css_class='row',
                 )
@@ -109,16 +110,13 @@ class BookingForm(forms.Form):
                 Div(
                     Div(
                         Field('booking_end_date', css_class='datepicker', placeholder='Date'),
-                        css_class='col-sm-5',
+                        css_class='col-sm-8',
                     ),
                     Div(
                         'booking_end_time',
-                        css_class='col-sm-3',
+                        css_class='col-sm-4',
                     ),
                     css_class='row',
                 )
-            ),
-            FormActions(
-                Submit('submit', 'Book', css_class='btn btn-primary'),
             )
         )
