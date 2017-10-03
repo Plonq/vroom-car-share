@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .forms import ContactForm, BookingForm
@@ -45,8 +45,8 @@ def find_a_car(request):
     return render(request, "carshare/find_a_car.html", context)
 
 @login_required
-def new_booking(request, vehicle_name):
-    vehicle = Vehicle.objects.get(name__iexact=vehicle_name)
+def booking_create(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
