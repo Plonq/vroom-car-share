@@ -76,7 +76,7 @@ def new_booking(request, vehicle_name):
                 booking.save()
 
                 messages.success(request, 'Booking created successfully')
-                return redirect('booking_detail', booking.pk)
+                return redirect('carshare:booking_detail', booking.pk)
             else:
                 booking_form.add_error(None, "Sorry, the selected vehicle is unavailable within the chosen times")
 
