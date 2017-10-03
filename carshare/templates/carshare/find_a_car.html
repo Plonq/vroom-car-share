@@ -184,8 +184,6 @@
                 position: relative;
             }
 
-
-
             #pac-input-mobile {
                 width: 90%;
                 margin: auto;
@@ -493,6 +491,8 @@
 
                     $("#Booking_Container").fadeIn("slow");
                     $("#Booking_Container_mobile").fadeIn("slow");
+                    $("#Booking_Container_mobile").scrollintoview({duration: "normal"});
+
                 });
 
             });
@@ -674,17 +674,19 @@
         function hide_popup_mobile() {
             $("#Booking_Container_mobile").fadeOut("slow");
             stopmarkers();
+            $(".mobile_header").scrollintoview({duration: "normal"});
         }
 
 
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
-    <!--<script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap">
-    </script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
             async defer></script>
 
 
 {% endblock homepage %}
+
+{% block scripts %}
+    <script src="{% static "carshare/js/jquery.scrollintoview.js" %}"></script>
+{% endblock %}
