@@ -71,6 +71,17 @@
     content: " "
 }
 
+/* Align buttons to the right */
+.buttons-right {
+    text-align: right;
+}
+
+/* Make the date picker square on the right */
+.input-group-addon:last-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 /* Top Navbar */
 ul.nav.navbar-nav li a {
     color: black;

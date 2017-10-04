@@ -1,0 +1,27 @@
+#map {
+    height: 250px;
+    width: 100%;
+}
+
+.booking-info div {
+    padding: 1px 3px;
+}
+
+.booking-info .row:first-child {
+    background-color: #006699;
+    color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.booking-info .row.coloured-odd {
+    background-color: #c4ebfc;
+}
+
+.booking-info .row.coloured-even {
+    background-color: #f2f2f2;
+}
+
+.bottom-spacer {
+    margin-bottom: 15px;
+}

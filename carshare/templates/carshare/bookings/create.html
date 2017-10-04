@@ -2,8 +2,97 @@
 {% load staticfiles %}
 {% block pagetitle %}New Booking{% endblock %}
 
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/booking_create.css' %}">
+{% endblock %}
+
 {% block maincontent %}
-    <h3>New Booking for  {{ vehicle.name }}</h3>
-    {% load crispy_forms_tags %}
-    {% crispy booking_form %}
+    <!-- Intro spiel -->
+    <div class="row bottom-spacer">
+        <div class="col-xs-12 text-center">
+            <h2>New Booking for {{ vehicle.name }}</h2>
+            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the information
+            below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
+            conditions.</p>
+            <p>You will receive an email confirmation upon approval of the booking.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Map and accompanying booking info -->
+        <div class="col-sm-6 bottom-spacer">
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+            <div class="booking-info">
+                <div class="row text-center">
+                    <strong>Booking Information</strong>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.name }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Make</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.make }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.model }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Location</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ vehicle.pod.description }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Booking form -->
+        <div class="col-sm-6">
+            {% load crispy_forms_tags %}
+            <form method="post">
+            {% crispy booking_form %}
+            <div class="buttons-right">
+                <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
+                <button type="submit" class="btn btn-primary">Book</button>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function initMap() {
+            var vehicle = {
+                lat: {{ vehicle.pod.latitude }},
+                lng: {{ vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle
+            });
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
