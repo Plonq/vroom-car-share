@@ -19,14 +19,15 @@ def register_user(request):
 
     # Form submitted, save and redirect to next step
     elif request.method == 'POST':
-        # If user was already created, delete it first
+        user_form = UserCreationForm(request.POST)
+        # If user was already created, update existing user
         if 'user_id' in request.session:
             try:
                 user_obj = User.objects.get(id=request.session['user_id'])
-                user_obj.delete()
+                user_form.instance = user_obj
+                # user_obj.delete()
             except User.DoesNotExist:
                 pass
-        user_form = UserCreationForm(request.POST)
         # Validate forms and save
         if user_form.is_valid():
             # Otherwise save new user, and make inactive for now
