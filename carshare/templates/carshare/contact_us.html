@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block pagetitle %}Contact Us{% endblock %}
 {% block header %}
-    <style>
-        textarea#id_message {
-            height: 200px;
-       }
-    </style>
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/contact_us.css' %}">
 {% endblock header %}
 {% block maincontent %}
 
