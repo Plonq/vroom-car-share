@@ -2,8 +2,7 @@ from django import forms
 from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, Field, Fieldset, Button
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Field, Fieldset
 from datetimewidget.widgets import DateWidget
 import datetime as dt
 
@@ -100,7 +99,8 @@ class BookingForm(forms.Form):
         self.helper.form_show_labels = False
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Fieldset('Booking Start',
+            Fieldset(
+                'Booking Start',
                 Div(
                     Div(
                         Field('booking_start_date', css_class='datepicker', placeholder='Date'),
@@ -113,7 +113,8 @@ class BookingForm(forms.Form):
                     css_class='row',
                 )
             ),
-            Fieldset('Booking End',
+            Fieldset(
+                'Booking End',
                 Div(
                     Div(
                         Field('booking_end_date', css_class='datepicker', placeholder='Date'),
@@ -136,14 +137,28 @@ class ExtendBookingForm(forms.Form):
     dateTimeOptions = {
         'format': 'dd/mm/yyyy',
     }
-    booking_start_date = forms.DateField()
-    booking_start_time = forms.ChoiceField(choices=BookingForm.TIMES)
+    new_end_date = forms.DateField()
+    new_end_time = forms.ChoiceField(choices=BookingForm.TIMES)
+
+    def clean(self):
+        cleaned_data = super(ExtendBookingForm, self).clean()
+        new_schedule_end = timezone.make_aware(dt.datetime.combine(
+            cleaned_data['new_end_date'],
+            cleaned_data['new_end_time']
+        ))
+        if new_schedule_end:
+            # Make sure new end date is not before previous end date
+            if new_schedule_end < self.min_datetime:
+                raise forms.ValidationError('New end date must not come before the existing end date')
+        # Insert parsed date into cleaned_data so the view doesn't have to
+        cleaned_data['new_schedule_end'] = new_schedule_end
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         super(ExtendBookingForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        # Set date and time fields minimum to current booking end datetime
+        # Set date minimum TODO: Set time minimum???
         self.min_datetime = kwargs.pop('min_datetime')
         self.dateTimeOptions['startDate'] = self.min_datetime.date().isoformat()
-        self.fields['booking_start_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
+        self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
