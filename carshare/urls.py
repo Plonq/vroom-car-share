@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'find-a-car/$', views.find_a_car, name='find_a_car'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/$', views.booking_create, name='booking_create'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
+    url(r'bookings/(?P<booking_id>[0-9]+)/extend/$', views.booking_extend, name='booking_extend'),
     url(r'bookings/$', views.booking_index, name='booking_index'),
 ]
