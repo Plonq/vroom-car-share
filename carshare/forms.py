@@ -120,3 +120,23 @@ class BookingForm(forms.Form):
                 )
             )
         )
+
+
+class ExtendBookingForm(forms.Form):
+    """
+    Form for extending a booking
+    """
+    dateTimeOptions = {
+        'format': 'dd/mm/yyyy',
+    }
+    booking_start_date = forms.DateField()
+    booking_start_time = forms.ChoiceField(choices=BookingForm.TIMES)
+
+    def __init__(self, *args, **kwargs):
+        super(ExtendBookingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        # Set date and time fields minimum to current booking end datetime
+        self.min_datetime = kwargs.pop('min_datetime')
+        self.dateTimeOptions['startDate'] = self.min_datetime.date().isoformat()
+        self.fields['booking_start_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
