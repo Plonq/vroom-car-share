@@ -58,6 +58,14 @@ class UserCreationForm(forms.ModelForm):
         super(UserCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('email', autofocus='autofocus'),
+            Field('first_name'),
+            Field('last_name'),
+            Field('date_of_birth'),
+            Field('password1'),
+            Field('password2'),
+        )
 
 
 class UserChangeForm(forms.ModelForm):
