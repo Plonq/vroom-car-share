@@ -1,30 +1,88 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block pagetitle %}Profile{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
 {% block maincontent %}
 
-    <h2>User Profile</h2>
-    <br/>
-    <h4>Email: </h4>
-    {{ user.email }}
-    <br/>
-    <h4>Name: </h4>
-    {{ user.get_full_name }}
-    <br/>
-    <h4> Birthday: </h4>
-    {{ user.date_of_birth }}
-    <br/>
-    <h4> Address:</h4>
-    {{ user.address }}
-    <br/>
-    <h4> Password </h4>
-    <p></p><a href="{% url 'password_change' %}"> Change your password</a></p>
-    <br/>
-    <p><a class="btn btn-default" href="{% url 'edit_profile' %}"> Edit Profile </a></p>
-    <br/>
-    <p><a class="btn btn-danger" href="{% url 'delete_account' %}"> Delete Account </a>
-    <a class="btn btn-warning" href="{% url 'disable_account' %}"> Disable Account </a></p>
+    <h2>Profile</h2>
 
-
-
+    <div class="row">
+        <!-- Actions -->
+        <div class="col-sm-4 col-sm-push-8">
+            <div class="profile-actions">
+                <h4 class="text-center">Actions</h4>
+                <hr>
+                <p><a href="{% url 'edit_profile' %}"><span class="glyphicon glyphicon-edit"></span> Edit Profile</a></p>
+                <p><a href="{% url 'update_credit_card' %}"><span class="glyphicon glyphicon-usd"></span> Update Payment Details</a></p>
+                <p><a href="{% url 'password_change' %}"><span class="glyphicon glyphicon-lock"></span> Change Password</a></p>
+                <p><a class="text-danger" href="{% url 'delete_account' %}"><span class="glyphicon glyphicon-remove"></span> Delete Account</a></p>
+            </div>
+        </div>
+        <!-- Information -->
+        <div class="col-sm-8 col-sm-pull-4">
+            <!-- General Information -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>General Information</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Name:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.get_full_name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Date of birth:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.date_of_birth }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Address:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.address }}</p>
+                </div>
+            </div>
+            <!-- Contact Information -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>Contact Information</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Email:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+            <!-- Payment Information -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>Payment Information</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Credit card number:</strong></p>
+                </div>
+                <div class="col-sm-6">
+                    <p>{{ user.credit_card }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
