@@ -16,6 +16,7 @@ from .models import Vehicle, Booking
 def index(request):
     return render(request, 'carshare/index.html')
 
+
 def contact_us(request):
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)
@@ -41,12 +42,14 @@ def contact_us(request):
 
     return render(request, "carshare/contact_us.html", {'contact_form': contact_form})
 
+
 def find_a_car(request):
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
     }
     return render(request, "carshare/find_a_car.html", context)
+
 
 @login_required
 def booking_create(request, vehicle_id):
@@ -113,6 +116,7 @@ def booking_create(request, vehicle_id):
     }
     return render(request, "carshare/bookings/create.html", context)
 
+
 @login_required
 def booking_detail(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
@@ -124,6 +128,7 @@ def booking_detail(request, booking_id):
     }
     return render(request, "carshare/bookings/detail.html", context)
 
+
 @login_required
 def booking_index(request):
     bookings = request.user.booking_set.all().order_by('-schedule_start')
@@ -131,6 +136,7 @@ def booking_index(request):
         'bookings': bookings,
     }
     return render(request, "carshare/bookings/index.html", context)
+
 
 @login_required
 def booking_extend(request, booking_id):
@@ -148,16 +154,19 @@ def booking_extend(request, booking_id):
             # Make sure new end date doesn't clash with existing booking
             existing_bookings = Booking.objects.filter(vehicle=booking.vehicle)
             for b in existing_bookings:
-                if booking.schedule_start <= b.schedule_start and new_schedule_end > b.schedule_start:
+                if booking.schedule_start <= b.schedule_start < new_schedule_end:
                     is_valid_booking = False
-                    extend_booking_form.add_error(None, "Sorry, the new end date overlaps with existing booking") # TODO: Put dates of existing booking here
+                    # TODO: Put dates of existing booking in error message
+                    extend_booking_form.add_error(None, "Sorry, the new end date overlaps with existing booking")
                     break
             # Prevent multiple bookings for the same user during the same time period
             user_bookings = request.user.booking_set.all()
             for b in user_bookings:
-                if booking.schedule_start <= b.schedule_start and new_schedule_end > b.schedule_start:
+                if booking.schedule_start <= b.schedule_start < new_schedule_end:
                     is_valid_booking = False
-                    extend_booking_form.add_error(None, "Sorry, the new booking end overlaps with one of your existing bookings")
+                    extend_booking_form.add_error(
+                        None, "Sorry, the new booking end overlaps with one of your existing bookings"
+                    )
                     break
 
             if is_valid_booking:
@@ -176,7 +185,9 @@ def booking_extend(request, booking_id):
                 text_message = strip_tags(html_message)
                 send_mail(subject, text_message, from_email, to_list, html_message=html_message)
 
-                messages.success(request, "Your current booking has been extended. You will receive email confirmation shortly.")
+                messages.success(
+                    request, "Your current booking has been extended. You will receive email confirmation shortly."
+                )
                 return redirect('booking_detail', booking_id)
     else:
         extend_booking_form = ExtendBookingForm(min_datetime=booking.schedule_end)
