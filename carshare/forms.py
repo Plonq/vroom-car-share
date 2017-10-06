@@ -157,7 +157,25 @@ class ExtendBookingForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ExtendBookingForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_class = 'validated-form'
+        self.helper.form_show_labels = False
         self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Fieldset(
+                'New Booking End',
+                Div(
+                    Div(
+                        Field('new_end_date', css_class='datepicker', placeholder='Date'),
+                        css_class='col-sm-8',
+                    ),
+                    Div(
+                        'new_end_time',
+                        css_class='col-sm-4',
+                    ),
+                    css_class='row',
+                )
+            ),
+        )
         # Set date minimum TODO: Set time minimum???
         self.min_datetime = kwargs.pop('min_datetime')
         self.dateTimeOptions['startDate'] = self.min_datetime.date().isoformat()

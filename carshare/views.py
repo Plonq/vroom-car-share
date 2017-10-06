@@ -157,9 +157,10 @@ def booking_extend(request, booking_id):
                 if booking.schedule_start <= b.schedule_start < new_schedule_end:
                     is_valid_booking = False
                     # TODO: Put dates of existing booking in error message
-                    extend_booking_form.add_error(None, "Sorry, the new end date overlaps with existing booking")
+                    extend_booking_form.add_error(None, "Sorry, the new end date overlaps with existing booking. "
+                                                        "The latest date you can choose is {0}".format(b.schedule_start))
                     break
-            # Prevent multiple bookings for the same user during the same time period
+            # Make sure new end date doesn't overlap with user's existing booking
             user_bookings = request.user.booking_set.all()
             for b in user_bookings:
                 if booking.schedule_start <= b.schedule_start < new_schedule_end:
