@@ -109,13 +109,13 @@ ul.nav.navbar-nav li a:hover {
 
 /* Floating Auth Menu */
 #floating_auth {
-    width: 210px;
+    /*width: 210px;*/
     background-color: #3399cc;
     height: 35px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     float: right;
-    padding: 4px;
+    padding: 4px 15px;
     color: white;
     font-weight: bold;
     font-size: 16px;
