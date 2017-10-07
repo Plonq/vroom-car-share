@@ -45,6 +45,10 @@ span.glyphicon.glyphicon-chevron-right {
     padding:15px;
 }
 
+.homepage-middle {
+    max-width: 1170px;
+}
+
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 992px) {
     .carousel-caption {
