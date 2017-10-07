@@ -81,7 +81,29 @@
 
 
 <nav class="navbar navbar-default">
-    <div class="container header_footer">
+    <div class="container">
+
+
+        <!-- second attempt floating menu -->
+        <div class="text-center" id="floating_auth">
+            <div class="left-link">
+                {% if user.is_authenticated %}
+                    <span id="logout"><a href="{{ url_logout }}">LOGOUT</a></span>
+                {% else %}
+                    <span id="login"><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></span>
+                {% endif %}
+            </div>
+            <span class="glyphicon glyphicon-user"></span>
+            <div class="right-link">
+                {% if user.is_authenticated %}
+                    <a href="{{ url_profile }}">PROFILE</a>
+                {% else %}
+                    <a href="{{ url_register }}">REGISTER</a>
+                {% endif %}
+            </div>
+        </div>
+
+
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -98,23 +120,9 @@
         </div>
 
 
-        <!-- second attempt floating menu -->
-        <div class="row" id="floating_auth">
-            {% if user.is_authenticated %}
-                <div id="logout"><a href="{{ url_logout }}">LOGOUT</a></div>
-                <div>|</div>
-                <div><a href="{{ url_profile }}">PROFILE</a></div>
-            {% else %}
-                <div id="login"><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></div>
-                <div>|</div>
-                <div><a href="{{ url_register }}">REGISTER</a></div>
-            {% endif %}
-        </div>
-
-
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
                 <li {% if request.path == url_home %} class="active" {% endif %}><a href="{{ url_home }}">HOME <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">PRICING</a></li>
                 <li {% if request.path == url_find_a_car %} class="active" {% endif %}><a href="{{ url_find_a_car }}">FIND A CAR</a></li>
@@ -168,13 +176,13 @@
     {% block homepage %}{% endblock %}
 
     {% if not request.get_full_path == url_home %}
-        <div class="middle_content notflush">
+        <div class="container notflush main-content">
             {% block maincontent %}{% endblock %}
         </div>
     {% endif %}
 
 <footer class="footer">
-    <div class="container header_footer">
+    <div class="container">
         <!-- Three column layout for small up -->
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4">
