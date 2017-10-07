@@ -69,9 +69,10 @@ class BookingForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(BookingForm, self).clean()
-        schedule_start = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']))
-        schedule_end = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']))
-        if schedule_start and schedule_end:
+        if 'booking_start_date' in cleaned_data and 'booking_start_time' in cleaned_data \
+            and 'booking_end_date' in cleaned_data and 'booking_end_time' in cleaned_data:
+            schedule_start = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']))
+            schedule_end = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']))
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
                 raise forms.ValidationError('End time must be after the start time')
@@ -81,9 +82,9 @@ class BookingForm(forms.Form):
             # Make sure end is after start (not the same as)
             if schedule_start == schedule_end:
                 raise forms.ValidationError('End time must not be the same as the start time')
-        # Insert parsed dates into cleaned_data so the view doesn't have to
-        cleaned_data['schedule_start'] = schedule_start
-        cleaned_data['schedule_end'] = schedule_end
+            # Insert parsed dates into cleaned_data so the view doesn't have to
+            cleaned_data['schedule_start'] = schedule_start
+            cleaned_data['schedule_end'] = schedule_end
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
