@@ -65,7 +65,7 @@
         <!-- Booking form -->
         <div class="col-sm-6">
             {% load crispy_forms_tags %}
-            <form method="post">
+            <form class="validated-form" method="post">
             {% crispy booking_form %}
             <div class="buttons-right">
                 <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
