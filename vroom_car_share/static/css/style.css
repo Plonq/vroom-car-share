@@ -10,7 +10,7 @@
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 800px;
 }
 
 .main-content {
@@ -126,23 +126,31 @@ ul.nav.navbar-nav {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     /*float: right;*/
-    padding: 5px;
+    padding: 4px;
     color: white;
     font-weight: bold;
+    font-size: 16px;
 }
 
 #floating_auth div {
     display: inline-block;
+    padding: 1px 10px;
 }
 
-#floating_auth .glyphicon {
-    padding-left: 3px;
-    padding-right: 3px;
+#floating_auth div:first-child {
+    border-right: 2px solid #e4e4e4;
+}
+
+#floating_auth div:last-child {
+    /*border-left: 1px solid white;*/
+}
+
+#floating_auth .auth-divider {
+    height: 22px;
 }
 
 #floating_auth a {
     color: white;
-    font-size: 16px;
 }
 
 #floating_auth a:hover {
