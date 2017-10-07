@@ -6,7 +6,7 @@
     <h4>Enter new credit card details</h4>
     <br>
     {% load crispy_forms_tags %}
-    <form action="" method="post">
+    <form class="validated-form" action="" method="post">
         {% crispy credit_form %}
         <button type="submit" class="btn btn-primary">Update</button> <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
     </form>
