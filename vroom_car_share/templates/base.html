@@ -174,7 +174,7 @@
     {% block homepage %}{% endblock %}
 
     {% if not request.get_full_path == url_home %}
-        <div class="container notflush main-content">
+        <div class="container notflush">
             {% block maincontent %}{% endblock %}
         </div>
     {% endif %}
