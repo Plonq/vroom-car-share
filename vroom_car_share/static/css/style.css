@@ -222,14 +222,6 @@ body {
 /* Media Queries
 --------------------------------------------------- */
 
-/* Custom, iPhone Retina */
-@media only screen and (max-width: 320px) {
-
-}
-
-@media only screen and (max-width: 480px) {
-
-}
 
 /* Small Devices - This is where the mobile menu activates*/
 @media only screen and (max-width: 767px) {
@@ -249,38 +241,6 @@ body {
     body {
         /* Margin bottom by footer height */
         margin-bottom: 530px;
-    }
-
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width: 992px) {
-
-}
-
-/* IE Conditional */
-
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-
-    #copyright {
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        width: 310px;
-        margin: auto;
-    }
-
-    /* Floating Auth Menu */
-    #floating_auth {
-        position: absolute;
-        top: 0px;
-        width: 200px;
-        background-color: #3399cc;
-        height: 35px;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        float: left;
-        margin-left: 448px;
     }
 
 }
