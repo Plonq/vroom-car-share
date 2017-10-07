@@ -92,9 +92,7 @@
                 {% else %}
                     <span id="login"><a href="#" data-toggle="modal" data-target="#myModal">LOGIN</a></span>
                 {% endif %}
-            </div>
-            <span class="glyphicon glyphicon-user"></span>
-            <div class="right-link">
+            </div><div class="right-link">
                 {% if user.is_authenticated %}
                     <a href="{{ url_profile }}">PROFILE</a>
                 {% else %}
