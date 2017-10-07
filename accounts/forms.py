@@ -1,14 +1,16 @@
-from datetimewidget.widgets import DateWidget
 from django.contrib.auth import forms as auth_forms
+from django.contrib.auth.password_validation import validate_password, password_validators_help_text_html
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils import timezone
 
+from datetime import date, timedelta
+
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, Field
+from crispy_forms.layout import Layout, Field
+from datetimewidget.widgets import DateWidget
 
 from .models import User, Address, CreditCard
-from datetime import date, timedelta
 from .util import is_credit_card_valid, is_digits
 
 
@@ -16,7 +18,7 @@ from .util import is_credit_card_valid, is_digits
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, help_text=password_validators_help_text_html)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
@@ -37,6 +39,8 @@ class UserCreationForm(forms.ModelForm):
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
+        # Validate password using default validators defined in settings
+        validate_password(password1)
         return password2
 
     def clean_date_of_birth(self):
