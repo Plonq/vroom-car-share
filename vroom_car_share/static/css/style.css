@@ -6,15 +6,15 @@
 
 /* ==== GLOBAL=== */
 * {
-    font-family: "Open Sans";
+    font-family: "Open Sans", sans-serif;
 }
 
-/*.text-center {*/
-    /*text-align: center;*/
-/*}*/
+.container {
+    max-width: 1000px;
+}
 
-.middle_content {
-    padding: 0px 15px 0px 15px;
+.main-content {
+    max-width: 750px;
 }
 
 .notflush {
@@ -117,49 +117,36 @@ ul.nav.navbar-nav {
 
 /* Floating Auth Menu */
 #floating_auth {
-    position: absolute;
-    top: 0px;
-    width: 200px;
+    /*position: relative;*/
+    margin-right: 0;
+    margin-left: auto;
+    width: 210px;
     background-color: #3399cc;
     height: 35px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    float: left;
-    margin-left: 437px;
+    /*float: right;*/
+    padding: 5px;
+    color: white;
+    font-weight: bold;
 }
 
 #floating_auth div {
-    float: left;
-    color: white;
-    font-weight: bold;
-    padding-top: 5px;
+    display: inline-block;
 }
 
-#floating_auth div a {
+#floating_auth .glyphicon {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#floating_auth a {
     color: white;
     font-size: 16px;
 }
 
-#floating_auth div a:hover {
+#floating_auth a:hover {
     text-decoration: none;
-}
-
-#login {
-    padding-right: 10px;
-    padding-left: 25px;
-}
-
-#logout {
-    padding-right:10px;
-    padding-left:21px;
-}
-
-#floating_auth div:nth-child(2) {
-    padding-top: 5px;
-}
-
-#floating_auth div:nth-child(3) {
-    padding-left: 10px;
 }
 
 /* Website Footer */
@@ -167,18 +154,18 @@ ul.nav.navbar-nav {
     margin-top: 25px;
 }
 
-.footer .header_footer {
+.footer {
     text-align: center;
 }
 
-.footer .header_footer a,
-.footer .header_footer p {
+.footer a,
+.footer p {
     color: white;
     font-size: 16px;
     font-weight: bold;
 }
 
-.footer .header_footer a:hover {
+.footer a:hover {
     color: #33ccff;
     text-decoration: none;
 }
@@ -240,17 +227,17 @@ body {
 }
 
 /* Apply to mobile */
-@media only screen and (min-width: 768px) {
-    .header_footer {
-        width: 705px;
-        margin: auto;
-    }
+/*@media only screen and (min-width: 768px) {*/
+    /*.header_footer {*/
+        /*width: 705px;*/
+        /*margin: auto;*/
+    /*}*/
 
-    .middle_content {
-        width: 705px;
-        margin: auto;
-    }
-}
+    /*.middle_content {*/
+        /*width: 705px;*/
+        /*margin: auto;*/
+    /*}*/
+/*}*/
 
 /* Media Queries
 --------------------------------------------------- */
