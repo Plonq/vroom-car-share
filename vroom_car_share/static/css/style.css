@@ -109,9 +109,6 @@ ul.nav.navbar-nav li a:hover {
 
 /* Floating Auth Menu */
 #floating_auth {
-    /*position: relative;*/
-    /*margin-right: 0;*/
-    /*margin-left: auto;*/
     width: 210px;
     background-color: #3399cc;
     height: 35px;
@@ -131,10 +128,6 @@ ul.nav.navbar-nav li a:hover {
 
 #floating_auth div:first-child {
     border-right: 1px solid white;
-}
-
-#floating_auth div:last-child {
-    /*border-left: 1px solid white;*/
 }
 
 #floating_auth .auth-divider {
@@ -225,19 +218,6 @@ body {
     height: 400px;
     background-color: #006699;
 }
-
-/* Apply to mobile */
-/*@media only screen and (min-width: 768px) {*/
-    /*.header_footer {*/
-        /*width: 705px;*/
-        /*margin: auto;*/
-    /*}*/
-
-    /*.middle_content {*/
-        /*width: 705px;*/
-        /*margin: auto;*/
-    /*}*/
-/*}*/
 
 /* Media Queries
 --------------------------------------------------- */
