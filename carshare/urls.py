@@ -12,4 +12,6 @@ urlpatterns = [
     # url(r'bookings/new/vehicle-(?P<vehicle_name>[a-zA-Z]+)/$', views.new_booking, name='new_booking'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/$', views.booking_create, name='booking_create'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
+    url(r'bookings/$', views.booking_index, name='booking_history'),
 ]
+

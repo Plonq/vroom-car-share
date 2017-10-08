@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block pagetitle %}All Bookings{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/index.css' %}">
+{% endblock %}
+
+{% block maincontent %}
+    <div class="row bottom-spacer">
+        <div class="col-xs-12">
+            <h2>My Bookings</h2>
+            <p>Click a booking to view details, extend or cancel.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Vehicle</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td><a href="{% url 'carshare:booking_detail' booking.id %}">{{ booking.id }}</a></td>
+                        <td>{{ booking.vehicle }}</td>
+                        <td>{{ booking.schedule_start }}</td>
+                        <td>{{ booking.schedule_end }}</td>
+                        <td>{{ booking.get_status }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

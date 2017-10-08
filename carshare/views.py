@@ -125,3 +125,22 @@ def booking_detail(request, booking_id):
         'booking': booking,
     }
     return render(request, "carshare/bookings/detail.html", context)
+
+@login_required
+def booking_index(request):
+    bookings = request.user.booking_set.all().order_by('-schedule_start')
+    context = {
+        'bookings': bookings,
+    }
+    return render(request, "carshare/bookings/index.html", context)
+
+@login_required
+def booking_upcoming(request):
+    current_time = datetime.today()
+    start = request.user.booking_set.all().filter(schedule_start__gte=current_time)
+
+    context = {
+        'booking': start,
+    }
+    return render(request, "carshare/bookings/booking_upcoming.html", context)
+
