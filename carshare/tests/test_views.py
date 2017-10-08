@@ -134,7 +134,7 @@ class CarshareBookingViewTests(TestCase):
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v2.id}), data=form)
         self.assertEqual(post_response.status_code, 200)
-        self.assertContains(post_response, 'Sorry, you cannot book multiple vehicles for the same time period')
+        self.assertContains(post_response, 'Sorry, you already have a booking within the selected time frame')
 
     def test_booking_detail_with_existing_id(self):
         """
