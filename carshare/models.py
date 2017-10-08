@@ -79,6 +79,7 @@ class Booking(models.Model):
     ended = models.DateTimeField(null=True, blank=True)
     cancelled = models.DateTimeField(null=True, blank=True)
 
+
     def is_active(self):
         return (
             # We add an hour to the current time, because if it's e.g. 9:15 and a car is booked from
@@ -128,3 +129,4 @@ class Invoice(models.Model):
             return 0
         else:
             return (timezone.now().date() - self.due).days
+

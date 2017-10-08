@@ -128,7 +128,7 @@ def booking_detail(request, booking_id):
 
 @login_required
 def view_booking_history(request):
-    booking = Booking.objects.all().order_by('schedule_start')
+    booking = request.user.booking_set.all().order_by('schedule_start')
 
     context = {
         'booking': booking,
@@ -139,19 +139,19 @@ def view_booking_history(request):
 @login_required
 def view_upcoming_bookings(request):
     current_time = datetime.today()
-    start = Booking.objects.all().filter(schedule_start__gte=current_time)
+    start = request.user.booking_set.all().filter(schedule_start__gte=current_time)
 
     context = {
         'booking': start,
     }
-    return render(request, "carshare/bookings/booking_history.html", context)
+    return render(request, "carshare/bookings/booking_upcoming.html", context)
 
 @login_required
-def view_current_bookings(request):
-    current_time=datetime.today()
-    booking = Booking.objects.all().filter(schedule_start__gte=current_time)
-
+def get_current_bookings(request):
+    booking = request.user.get_current_booking()
     context = {
         'booking': booking,
     }
-    return render(request, "carshare/bookings/booking_history.html", context)
+
+    return render(request, "carshare/bookings/booking_current.html", context)
+

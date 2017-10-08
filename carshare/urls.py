@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
     url(r'bookings/history/$', views.view_booking_history, name='booking_history'),
     url(r'bookings/upcoming/$', views.view_upcoming_bookings, name='bookings_upcoming'),
-    url(r'bookings/current/$', views.view_current_bookings, name='bookings_current')
+    url(r'bookings/current/$', views.get_current_bookings, name='bookings_current')
 
 ]
+
