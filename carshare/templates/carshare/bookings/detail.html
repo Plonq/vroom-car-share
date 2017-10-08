@@ -23,31 +23,31 @@
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">To</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.schedule_start }}</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.schedule_start }}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.schedule_end }}</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Make</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Make</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Model</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.vehicle.make }}</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.vehicle.make }}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.model }}</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking ID</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking ID</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Location</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.id }}</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.id }}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.pod.description }}</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Cost</div>
         </div>
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">pending</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">pending</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">${{ booking.calculate_cost|stringformat:".2f" }}</div>
         </div>
         <div class="row text-center">
@@ -58,7 +58,7 @@
     </div>
     <div class="actions">
         <div class="row text-center">
-            <div class="ol-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
                 <button class="btn btn-danger">Cancel Booking</button>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
