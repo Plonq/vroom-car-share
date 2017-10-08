@@ -64,18 +64,20 @@ def booking_create(request, vehicle_id):
             # Prevent booking overlapping with existing booking
             existing_bookings = Booking.objects.filter(vehicle=vehicle)
             for b in existing_bookings:
-                if (booking_start < b.schedule_end and booking_end >= b.schedule_end) or \
-                        booking_start <= b.schedule_start and booking_end > b.schedule_start:
+                if (b.schedule_start <= booking_start <= b.schedule_end or
+                    b.schedule_start <= booking_end <= b.schedule_end or
+                    booking_start <= b.schedule_start and booking_end >= b.schedule_end):
                     is_valid_booking = False
                     booking_form.add_error(None, "Sorry, the selected vehicle is unavailable within the chosen times")
                     break
             # Prevent multiple bookings for the same user during the same time period
             user_bookings = request.user.booking_set.all()
             for b in user_bookings:
-                if (booking_start < b.schedule_end and booking_end >= b.schedule_end) or \
-                        booking_start <= b.schedule_start and booking_end > b.schedule_start:
+                if (b.schedule_start <= booking_start <= b.schedule_end or
+                    b.schedule_start <= booking_end <= b.schedule_end or
+                    booking_start <= b.schedule_start and booking_end >= b.schedule_end):
                     is_valid_booking = False
-                    booking_form.add_error(None, "Sorry, you cannot book multiple vehicles for the same time period")
+                    booking_form.add_error(None, "Sorry, you already have a booking within the selected time frame")
                     break
 
             if is_valid_booking:
