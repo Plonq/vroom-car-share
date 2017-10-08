@@ -92,7 +92,7 @@
     <div class="container">
 
 
-        <!-- second attempt floating menu -->
+        <!-- Auth top menu -->
         <div class="text-center" id="floating_auth">
             <div class="left-link">
                 {% if user.is_authenticated %}
@@ -108,6 +108,13 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Current booking indicator/link -->
+        {% if user.is_authenticated %}
+        <div class="text-center" id="current-booking">
+            <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' 3 %}">CURRENT BOOKING</a>
+        </div>
+        {% endif %}
 
 
         <!-- Brand and toggle get grouped for better mobile display -->
