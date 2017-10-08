@@ -8,8 +8,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.html import strip_tags
 
-from datetime import datetime
-
 from .forms import ContactForm, BookingForm
 from .models import Vehicle, Booking
 
