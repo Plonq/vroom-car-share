@@ -106,6 +106,19 @@ class Booking(models.Model):
     def is_ended(self):
         return self.ended is not None
 
+    def get_status(self):
+        """
+        Returns a string indicating the status
+        """
+        if self.ended:
+            return "Ended"
+        elif self.cancelled:
+            return "Cancelled"
+        elif self.schedule_start > timezone.now():
+            return "Confirmed"
+        elif self.schedule_start < timezone.now() < self.schedule_end:
+            return "Active"
+
 
 class Invoice(models.Model):
     """
