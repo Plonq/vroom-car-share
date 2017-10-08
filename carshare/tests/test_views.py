@@ -156,5 +156,7 @@ class CarshareBookingViewTests(TestCase):
         booking = User.objects.get(email='user@test.com').booking_set.first()
         # Get detail page for the booking
         response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': booking.id}))
-        self.assertContains(response, "Booking {0}".format(booking.id))
-        self.assertContains(response, str(booking.vehicle))
+        self.assertContains(response, "Booking Detail")
+        self.assertContains(response, str(booking.vehicle.make))
+        self.assertContains(response, str(booking.vehicle.model))
+        self.assertContains(response, str(booking.vehicle.pod.description))

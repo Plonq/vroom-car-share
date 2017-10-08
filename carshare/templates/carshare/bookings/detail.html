@@ -1,15 +1,90 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Booking {{ booking.id }}{% endblock %}
+{% load static %}
+{% block pagetitle %}Booking Detail{% endblock %}
 
-{% block maincontent %}
-    <h3>Booking {{ booking.id }}</h3>
-    <br>
-    <h4>Start time: </h4>
-    {{ booking.schedule_start }}
-    <br/><br/>
-    <h4>End time: </h4>
-    {{ booking.schedule_end }}
-    <br/><br/>
-    <h4>Vehicle:</h4>
-    {{ booking.vehicle }}
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/booking_detail.css' %}">
+{% endblock %}
+
+{% block homepage %}
+    <div>
+        <div class="row">
+            <div class="text-center page-title">Booking Detail</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <div class="booking-details">
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">From</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">To</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.schedule_start }}</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.schedule_end }}</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Make</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Model</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.vehicle.make }}</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.model }}</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking ID</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Location</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.id }}</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.pod.description }}</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Cost</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">pending</div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">${{ booking.calculate_cost|stringformat:".2f" }}</div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xs-12">
+                <div class="actions-heading">Actions</div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
+                <a class="btn btn-danger" href="#">Cancel Booking</a>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <a class="btn btn-info" href="#">Extend Booking</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function initMap() {
+            var vehicle = {
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle
+            });
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
