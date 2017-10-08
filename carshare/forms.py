@@ -71,8 +71,14 @@ class BookingForm(forms.Form):
         cleaned_data = super(BookingForm, self).clean()
         if 'booking_start_date' in cleaned_data and 'booking_start_time' in cleaned_data \
             and 'booking_end_date' in cleaned_data and 'booking_end_time' in cleaned_data:
-            schedule_start = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']))
-            schedule_end = timezone.make_aware(dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']))
+            schedule_start = timezone.make_aware(
+                dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']),
+                timezone=timezone.get_current_timezone()
+            )
+            schedule_end = timezone.make_aware(
+                dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']),
+                timezone=timezone.get_current_timezone()
+            )
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
                 raise forms.ValidationError('End time must be after the start time')
