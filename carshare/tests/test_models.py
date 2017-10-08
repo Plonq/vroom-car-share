@@ -27,6 +27,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertTrue(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
         self.assertFalse(active_booking.is_ended())
+        self.assertEqual(active_booking.get_status(), "Active")
 
     def test_booking_within_an_hour_of_now(self):
         """
@@ -47,6 +48,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(future_booking.is_active())
         self.assertFalse(future_booking.is_cancelled())
         self.assertFalse(future_booking.is_ended())
+        self.assertEqual(future_booking.get_status(), "Confirmed")
 
     def test_ended_booking(self):
         """
@@ -56,6 +58,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(ended_booking.is_active())
         self.assertFalse(ended_booking.is_cancelled())
         self.assertTrue(ended_booking.is_ended())
+        self.assertEqual(ended_booking.get_status(), "Ended")
 
     def test_cancelled_booking(self):
         """
@@ -65,6 +68,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(cancelled_booking.is_active())
         self.assertTrue(cancelled_booking.is_cancelled())
         self.assertFalse(cancelled_booking.is_ended())
+        self.assertEqual(cancelled_booking.get_status(), "Cancelled")
 
     def test_booking_cost_two_days_ten_hours(self):
         """
