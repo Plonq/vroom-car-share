@@ -110,9 +110,9 @@
         </div>
 
         <!-- Current booking indicator/link -->
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.get_current_booking %}
         <div class="text-center" id="current-booking">
-            <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' 3 %}">CURRENT BOOKING</a>
+            <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' user.get_current_booking.id %}">CURRENT BOOKING</a>
         </div>
         {% endif %}
 

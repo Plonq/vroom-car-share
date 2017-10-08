@@ -3,8 +3,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.utils import timezone
-import datetime
-from django.db.models import Q
+
 from .managers import UserManager
 
 
@@ -63,13 +62,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_current_booking(self):
-        schedule_start = models.DateTimeField(verbose_name='Start time')
-        schedule_end = models.DateTimeField(verbose_name='End time')
-        time = timezone.now()
-        booking = self.booking_set.all()
-        filter_booking_start = booking.filter(schedule_start__lte= time)
-        filter_booking_end = filter_booking_start.filter(schedule_end__gte= time).first()
-        return filter_booking_end
+        now = timezone.now()
+        bookings = self.booking_set.filter(schedule_start__lte=now, schedule_end__gte=now)
+        return bookings.first()
 
 class Address(models.Model):
     """

@@ -12,9 +12,6 @@ urlpatterns = [
     # url(r'bookings/new/vehicle-(?P<vehicle_name>[a-zA-Z]+)/$', views.new_booking, name='new_booking'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/$', views.booking_create, name='booking_create'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
-    url(r'bookings/history/$', views.view_booking_history, name='booking_history'),
-    url(r'bookings/upcoming/$', views.view_upcoming_bookings, name='bookings_upcoming'),
-    url(r'bookings/current/$', views.get_current_bookings, name='bookings_current')
-
+    url(r'bookings/$', views.booking_index, name='booking_history'),
 ]
 

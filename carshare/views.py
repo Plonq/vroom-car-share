@@ -7,8 +7,8 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.html import strip_tags
-from datetime import datetime, timedelta
-from django.db.models import Q
+
+from datetime import datetime
 
 from .forms import ContactForm, BookingForm
 from .models import Vehicle, Booking
@@ -129,17 +129,15 @@ def booking_detail(request, booking_id):
     return render(request, "carshare/bookings/detail.html", context)
 
 @login_required
-def view_booking_history(request):
-    booking = request.user.booking_set.all().order_by('schedule_start')
-
+def booking_index(request):
+    bookings = request.user.booking_set.all().order_by('-schedule_start')
     context = {
-        'booking': booking,
+        'bookings': bookings,
     }
-
-    return render(request, "carshare/bookings/booking_history.html", context)
+    return render(request, "carshare/bookings/index.html", context)
 
 @login_required
-def view_upcoming_bookings(request):
+def booking_upcoming(request):
     current_time = datetime.today()
     start = request.user.booking_set.all().filter(schedule_start__gte=current_time)
 
@@ -147,13 +145,4 @@ def view_upcoming_bookings(request):
         'booking': start,
     }
     return render(request, "carshare/bookings/booking_upcoming.html", context)
-
-@login_required
-def get_current_bookings(request):
-    booking = request.user.get_current_booking()
-    context = {
-        'booking': booking,
-    }
-
-    return render(request, "carshare/bookings/booking_current.html", context)
 
