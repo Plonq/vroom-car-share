@@ -55,3 +55,10 @@ span.glyphicon.glyphicon-chevron-right {
         font-size: 18px;
     }
 }
+
+/* Reduce lead text size on small screens */
+@media only screen and (max-width: 767px) {
+    .homepage_header {
+        font-size: 20px;
+    }
+}
