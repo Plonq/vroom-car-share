@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Set user model to our custom model
 AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = '/find-a-car/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
