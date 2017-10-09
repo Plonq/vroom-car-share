@@ -171,12 +171,13 @@
 </nav>
 
 <!-- Current booking for small screens -->
-
-
 {% if user.is_authenticated and user.get_current_booking %}
-    <div class="current-booking-mobile text-center visible-xs">
-        <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' user.get_current_booking.id %}">VIEW CURRENT BOOKING</a>
-    </div>
+    {% url 'carshare:booking_detail' user.get_current_booking.id as booking_url %}
+    {% if request.path != booking_url %}
+        <div class="current-booking-mobile text-center visible-xs">
+            <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' user.get_current_booking.id %}">VIEW CURRENT BOOKING</a>
+        </div>
+    {% endif %}
 {% endif %}
 
 <!-- Global alert for messages (e.g. account created successfully -->
