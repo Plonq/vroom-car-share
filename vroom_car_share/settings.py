@@ -148,7 +148,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # SendGrid email
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = "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"
-DEFAULT_FROM_EMAIL = 'admin@vroomcs.org'
+DEFAULT_FROM_EMAIL = 'Vroom Car Share <admin@vroomcs.org>'
 
 # Customise messages framework
 MESSAGE_TAGS = {

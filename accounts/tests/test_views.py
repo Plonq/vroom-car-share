@@ -77,5 +77,5 @@ class AccountsRegisterViewTests(TestCase):
         self.assertEqual(mail.outbox[0].subject, 'Thank you for joining Vroom!')
         self.assertTrue('Hi {0}!'.format(user.first_name) in mail.outbox[0].body)
         self.assertTrue('Thanks for choosing Vroom as your preferred transport provider.' in mail.outbox[0].body)
-        self.assertEqual(mail.outbox[0].from_email, 'admin@vroomcs.org')
+        self.assertEqual(mail.outbox[0].from_email, 'Vroom Car Share <admin@vroomcs.org>')
         self.assertEqual(mail.outbox[0].to, [user.email])
