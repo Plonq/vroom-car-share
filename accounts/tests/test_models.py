@@ -13,13 +13,6 @@ class AccountsUserModelTests(TestCase):
     def test_short_name(self):
         self.assertEqual(self.user.get_short_name(), 'John')
 
-    def test_email_user(self):
-        self.user.email_user('Subject', 'Message', 'testrunner@test.com')
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, 'Subject')
-        self.assertEqual(mail.outbox[0].body, 'Message')
-        self.assertEqual(mail.outbox[0].from_email, 'testrunner@test.com')
-
 
 class AccountsAddressModelTests(TestCase):
     address = Address(address_line_1='Address Line 1', address_line_2='Address Line 2', city='City', state='VIC',
