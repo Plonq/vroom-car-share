@@ -3,10 +3,6 @@ from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils.html import strip_tags
 
 from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
 from .models import User, Address
@@ -138,12 +134,11 @@ def register_credit_card(request):
             credit_card.save()
 
             # Send welcome email
-            subject = 'Thank you for joining Vroom!'
-            from_email = settings.DEFAULT_FROM_EMAIL
-            to_list = [user_obj.email]
-            html_message = render_to_string('registration/email/account_confirmation.html', {'firstname': user_obj.first_name})
-            text_message = strip_tags(html_message)
-            send_mail(subject, text_message, from_email, to_list, html_message=html_message)
+            user_obj.email_user(
+                subject='Thank you for joining Vroom!',
+                template='registration/email/account_confirmation.html',
+                context={'firstname': user_obj.first_name},
+            )
 
             # Clear registration-related session vars
             del request.session['user_id']

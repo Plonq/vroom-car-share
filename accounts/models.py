@@ -3,6 +3,9 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.utils import timezone
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from .managers import UserManager
 
@@ -42,11 +45,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
+    def email_user(self, subject, template, context, **kwargs):
         """
         Sends an email to this User.
         """
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+        html_message = render_to_string(template, context)
+        text_message = strip_tags(html_message)
+        send_mail(
+            subject,
+            message=text_message,
+            html_message=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.email],
+            **kwargs
+        )
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

@@ -91,16 +91,14 @@ def booking_create(request, vehicle_id):
                 booking.save()
 
                 # Send confirmation email
-                subject = 'Booking confirmed!'
-                from_email = settings.DEFAULT_FROM_EMAIL
-                to_list = [request.user.email]
-                context = {
-                    'firstname': request.user.first_name,
-                    'booking': booking,
-                }
-                html_message = render_to_string('carshare/email/booking_confirmation.html', context)
-                text_message = strip_tags(html_message)
-                send_mail(subject, text_message, from_email, to_list, html_message=html_message)
+                request.user.email_user(
+                    subject='Booking confirmed!',
+                    template='carshare/email/booking_confirmation.html',
+                    context={
+                        'firstname': request.user.first_name,
+                        'booking': booking,
+                    },
+                )
 
                 messages.success(request, 'Booking created successfully')
                 return redirect('carshare:booking_detail', booking.pk)
