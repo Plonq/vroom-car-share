@@ -10,7 +10,7 @@
 }
 
 .container {
-    max-width: 715px;
+    max-width: 710px;
 }
 
 .notflush {
@@ -112,17 +112,27 @@ ul.nav.navbar-nav li a:hover {
 }
 
 /* Floating Auth Menu */
+#floating_menu_wrapper {
+    /* This ensures a narrow floating auth doesn't mess up floats */
+    min-width: 200px;
+    height: 35px;
+    float: right;
+}
 #floating_auth {
-    /*width: 210px;*/
     background-color: #3399cc;
     height: 35px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     float: right;
     padding: 4px 5px;
-    color: white;
     font-weight: bold;
     font-size: 15px;
+}
+
+#floating_auth .left-link a,
+#floating_auth .right-link a,
+#floating_auth .dropdown > a {
+    color: white;
 }
 
 #floating_auth div {
@@ -130,16 +140,12 @@ ul.nav.navbar-nav li a:hover {
     padding: 1px 10px;
 }
 
-#floating_auth div:first-child {
+#floating_auth .left-link {
     border-right: 1px solid white;
 }
 
 #floating_auth .auth-divider {
     height: 22px;
-}
-
-#floating_auth a {
-    color: white;
 }
 
 #floating_auth a:hover {
@@ -148,7 +154,6 @@ ul.nav.navbar-nav li a:hover {
 
 /* Floating current booking */
 #current-booking {
-    /*width: 210px;*/
     background-color: #289738;
     height: 35px;
     border-bottom-left-radius: 10px;
