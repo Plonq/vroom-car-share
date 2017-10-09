@@ -93,7 +93,7 @@
 
 
         <!-- Auth top menu -->
-        <div class="text-center" id="floating_auth">
+        <div class="text-center hidden-xs" id="floating_auth">
             <div class="left-link">
                 {% if user.is_authenticated %}
                     <span id="logout"><a href="{{ url_logout }}">LOGOUT</a></span>
@@ -111,7 +111,7 @@
 
         <!-- Current booking indicator/link -->
         {% if user.is_authenticated and user.get_current_booking %}
-        <div class="text-center" id="current-booking">
+        <div class="text-center hidden-xs" id="current-booking">
             <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' user.get_current_booking.id %}">CURRENT BOOKING</a>
         </div>
         {% endif %}
@@ -169,6 +169,15 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
 </nav>
+
+<!-- Current booking for small screens -->
+
+
+{% if user.is_authenticated and user.get_current_booking %}
+    <div class="current-booking-mobile text-center visible-xs">
+        <span class="glyphicon glyphicon-time"></span> <a href="{% url 'carshare:booking_detail' user.get_current_booking.id %}">VIEW CURRENT BOOKING</a>
+    </div>
+{% endif %}
 
 <!-- Global alert for messages (e.g. account created successfully -->
 {% if messages %}
