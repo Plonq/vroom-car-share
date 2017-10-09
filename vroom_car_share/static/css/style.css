@@ -248,7 +248,7 @@ body {
 
 /* Small Devices - This is where the mobile menu activates*/
 @media only screen and (max-width: 767px) {
-    #floating_auth {
+    #floating_auth, #current-booking {
         display: none;
     }
 
