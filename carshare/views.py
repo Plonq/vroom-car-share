@@ -133,14 +133,3 @@ def booking_index(request):
         'bookings': bookings,
     }
     return render(request, "carshare/bookings/index.html", context)
-
-@login_required
-def booking_upcoming(request):
-    current_time = datetime.today()
-    start = request.user.booking_set.all().filter(schedule_start__gte=current_time)
-
-    context = {
-        'booking': start,
-    }
-    return render(request, "carshare/bookings/booking_upcoming.html", context)
-
