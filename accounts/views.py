@@ -1,8 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
 from .models import User, Address
@@ -125,30 +130,32 @@ def register_credit_card(request):
         credit_card_form = CreditCardForm(request.POST)
         # Validate forms and save
         if credit_card_form.is_valid():
-            # Activate the user now they've completed reg
-            user_obj.is_active = True
-            user_obj.save()
             # Save CC info
             credit_card = credit_card_form.save(commit=False)
             credit_card.user = user_obj
             credit_card.save()
 
-            # Send welcome email
+            # Construct and send activation email
+            kwargs = {
+                "uidb64": urlsafe_base64_encode(force_bytes(user_obj.pk)).decode(),
+                "token": default_token_generator.make_token(user_obj)
+            }
+            activation_url = reverse("activate_account", kwargs=kwargs)
+            activate_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), activation_url)
             user_obj.email_user(
                 subject='Thank you for joining Vroom!',
                 template='registration/email/account_confirmation.html',
-                context={'firstname': user_obj.first_name},
+                context={
+                    'firstname': user_obj.first_name,
+                    'activate_url': activate_url
+                },
             )
 
             # Clear registration-related session vars
             del request.session['user_id']
             del request.session['address_id']
 
-            # Auto-login as new user and display success message
-            login(request, user_obj)
-            messages.success(request, 'Account successfully created')
-
-            return redirect('profile')
+            return render(request, 'accounts/activate_request.html')
 
     # User just came from previous step, display blank form
     else:
@@ -176,6 +183,20 @@ def register_cancel(request):
 
     messages.info(request, 'Registration cancelled')
     return redirect('carshare:index')
+
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except User.DoesNotExist:
+        user = None
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return render(request, 'accounts/activate_done.html')
+    else:
+        return HttpResponse("Activation link has expired")
 
 
 @login_required
