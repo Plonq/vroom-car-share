@@ -1,12 +1,12 @@
 {% extends 'email/base.html' %}
 {% block email_body %}
-	<h1 style="color: #006599; font-size:45px; font-weight:bold;">Hi {{ firstname }}!</h1>
+    <h1 style="color: #006599; font-size:45px; font-weight:bold; font-family: 'Open Sans';">Booking Confirmation</h1>
     <p style="font-size:16px;">Your booking has been confirmed. <br>
-        If you would like to extend or cancel this booking, please login to the website.</p>
+        If you would like to extend or cancel this booking, please <a href="https://vroom-car-share.herokuapp.com/" style="color: #006599; text-decoration: none;"><strong>login</strong></a> to the website.</p>
 
     <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Vehicle</h4>
     <p style="font-size:16px;">{{ booking.vehicle }}</p>
-    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Location description</h4>
+    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Location</h4>
     <p style="font-size:16px;">{{ booking.vehicle.pod.description }}</p>
     <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Booking start</h4>
     <p style="font-size:16px;">{{ booking.schedule_start }}</p>
