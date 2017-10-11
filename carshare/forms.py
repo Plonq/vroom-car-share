@@ -140,22 +140,33 @@ class ExtendBookingForm(forms.Form):
     new_end_date = forms.DateField()
     new_end_time = forms.ChoiceField(choices=BookingForm.TIMES)
 
+    def clean_new_end_time(self):
+        new_end_time = self.cleaned_data.get('new_end_time')
+        # Convert to time object
+        new_end_time = dt.datetime.strptime(new_end_time, '%H:%M').time()
+        return new_end_time
+
     def clean(self):
         cleaned_data = super(ExtendBookingForm, self).clean()
-        new_schedule_end = timezone.make_aware(dt.datetime.combine(
-            cleaned_data['new_end_date'],
-            cleaned_data['new_end_time']
-        ))
+        new_schedule_end = timezone.make_aware(
+            dt.datetime.combine(cleaned_data['new_end_date'], cleaned_data['new_end_time']),
+            timezone=timezone.get_current_timezone()
+        )
         if new_schedule_end:
             # Make sure new end date is not before previous end date
-            if new_schedule_end < self.min_datetime:
-                raise forms.ValidationError('New end date must not come before the existing end date')
+            if new_schedule_end <= self.min_datetime:
+                raise forms.ValidationError('New end time must be later than current end time')
         # Insert parsed date into cleaned_data so the view doesn't have to
         cleaned_data['new_schedule_end'] = new_schedule_end
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
+        self.min_datetime = kwargs.pop('min_datetime', None)
         super(ExtendBookingForm, self).__init__(*args, **kwargs)
+        # Set date minimum
+        if self.min_datetime:
+            self.dateTimeOptions['startDate'] = self.min_datetime.date().isoformat()
+            self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
         self.helper = FormHelper()
         self.helper.form_class = 'validated-form'
         self.helper.form_show_labels = False
@@ -176,7 +187,3 @@ class ExtendBookingForm(forms.Form):
                 )
             ),
         )
-        # Set date minimum TODO: Set time minimum???
-        self.min_datetime = kwargs.pop('min_datetime')
-        self.dateTimeOptions['startDate'] = self.min_datetime.date().isoformat()
-        self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)

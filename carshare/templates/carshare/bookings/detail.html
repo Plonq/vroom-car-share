@@ -6,18 +6,16 @@
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/detail.css' %}">
 {% endblock %}
 
-{% block homepage %}
-    <div>
+{% block full-width-content %}
+    <div class="container-fluid">
         <div class="row">
             <div class="text-center page-title">Booking Detail</div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <div id="map"></div>
-            </div>
+            <div class="col-xs-12" id="map"></div>
         </div>
     </div>
-    <div class="booking-details">
+    <div class="container-fluid booking-details">
         <div class="row text-center">
             <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">From</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">To</div>
@@ -50,19 +48,15 @@
             <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.get_status}}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">${{ booking.calculate_cost|stringformat:".2f" }}</div>
         </div>
-        <div class="row text-center">
-            <div class="col-xs-12">
-                <div class="actions-heading">Actions</div>
-            </div>
+        <div class="row">
         </div>
     </div>
-    <div class="actions">
+    <div class="container-fluid actions">
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">
-                <a class="btn btn-danger" href="#">Cancel Booking</a>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <a class="btn btn-info" href="#">Extend Booking</a>
+            <div class="col-xs-12">
+                <a class="btn btn-danger" href="#">Cancel</a>
+                <a class="btn btn-primary" href="#">End</a>
+                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
             </div>
         </div>
     </div>

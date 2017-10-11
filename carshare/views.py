@@ -3,10 +3,6 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils.html import strip_tags
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking
@@ -146,27 +142,29 @@ def booking_extend(request, booking_id):
         return redirect('carshare:index')
 
     if request.method == 'POST':
-        extend_booking_form = ExtendBookingForm(request.POST)
+        extend_booking_form = ExtendBookingForm(request.POST, min_datetime=booking.schedule_end)
         if extend_booking_form.is_valid():
             new_schedule_end = extend_booking_form.cleaned_data['new_schedule_end']
             # Custom validation
             is_valid_booking = True
             # Make sure new end date doesn't clash with existing booking
-            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle)
+            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle).exclude(user=request.user)
             for b in existing_bookings:
-                if booking.schedule_start <= b.schedule_start < new_schedule_end:
+                if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
+                    b.schedule_start <= new_schedule_end <= b.schedule_end or
+                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
                     is_valid_booking = False
-                    # TODO: Put dates of existing booking in error message
-                    extend_booking_form.add_error(None, "Sorry, the new end date overlaps with existing booking. "
+                    extend_booking_form.add_error(None, "The new end date overlaps with existing booking. "
                                                         "The latest date you can choose is {0}".format(b.schedule_start))
                     break
-            # Make sure new end date doesn't overlap with user's existing booking
-            user_bookings = request.user.booking_set.all()
+            user_bookings = request.user.booking_set.exclude(id__exact=booking.id)
             for b in user_bookings:
-                if booking.schedule_start <= b.schedule_start < new_schedule_end:
+                if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
+                    b.schedule_start <= new_schedule_end <= b.schedule_end or
+                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
                     is_valid_booking = False
                     extend_booking_form.add_error(
-                        None, "Sorry, the new booking end overlaps with one of your existing bookings"
+                        None, "The new booking end overlaps with one of your existing bookings"
                     )
                     break
 
@@ -175,21 +173,19 @@ def booking_extend(request, booking_id):
                 booking.save()
 
                 # Send confirmation email TODO: create new template
-                subject = 'Booking extended!'
-                from_email = settings.DEFAULT_FROM_EMAIL
-                to_list = [request.user.email]
-                context = {
-                    'firstname': request.user.first_name,
-                    'booking': booking,
-                }
-                html_message = render_to_string('carshare/email/booking_confirmation.html', context)
-                text_message = strip_tags(html_message)
-                send_mail(subject, text_message, from_email, to_list, html_message=html_message)
+                request.user.email_user(
+                    subject='Booking extended',
+                    template='carshare/email/booking_extend_confirmation.html',
+                    context={
+                        'firstname': request.user.first_name,
+                        'booking': booking,
+                    },
+                )
 
                 messages.success(
                     request, "Your current booking has been extended. You will receive email confirmation shortly."
                 )
-                return redirect('booking_detail', booking_id)
+                return redirect('carshare:booking_detail', booking_id)
     else:
         extend_booking_form = ExtendBookingForm(min_datetime=booking.schedule_end)
 

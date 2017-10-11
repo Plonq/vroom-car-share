@@ -33,6 +33,10 @@
     padding: 10px 0;
 }
 
+.actions a {
+    margin: 0 15px;
+}
+
 /* Override parent */
 .container {
     padding-bottom: 0;

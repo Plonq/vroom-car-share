@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Extend Booking {{ booking.id }}{% endblock %}
+{% block pagetitle %}Extend Booking{% endblock %}
 
 {% block maincontent %}
-    <h3>Extend Booking</h3>
+    <h2>Extend Booking</h2>
 
-
-
-    <div>
-        <a class="btn btn-primary">Extend Booking</a>
+    <div class="row">
+        <div class="col-sm-12">
+            <p><strong>Vehicle:</strong> {{ booking.vehicle }}</p>
+            <p><strong>Booking Start:</strong> {{ booking.schedule_start }}</p>
+            <p><strong>Booking End:</strong> {{ booking.schedule_end }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            {% load crispy_forms_tags %}
+            <form class="validated-form" method="post">
+                {% crispy extend_booking_form %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Extend Booking</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
