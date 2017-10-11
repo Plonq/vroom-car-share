@@ -314,6 +314,7 @@
             <!-- Booking form -->
             <form class="validated-form" method="post">
                 <div>
+                    {% csrf_token %}
                     <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
                     <button type="submit" class="btn btn-primary">Book</button>
                 </div>
