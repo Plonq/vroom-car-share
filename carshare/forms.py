@@ -168,7 +168,7 @@ class ExtendBookingForm(forms.Form):
             self.dateTimeOptions['startDate'] = self.current_booking_end.isoformat()
             self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
             # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
-            self.initial['new_end_date'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%Y-%m-%d')
+            self.initial['new_end_date'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%d/%m/%Y')
             self.initial['new_end_time'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%H:%M')
         self.helper = FormHelper()
         self.helper.form_class = 'validated-form'
@@ -179,7 +179,7 @@ class ExtendBookingForm(forms.Form):
                 'Booking Start',
                 Div(
                     Div(
-                        HTML("<p><strong>Date:</strong><br>{{ booking.schedule_start|date:'Y-m-d' }}</p>"),
+                        HTML("<p><strong>Date:</strong><br>{{ booking.schedule_start|date:'d/m/Y' }}</p>"),
                         css_class='col-sm-8',
                     ),
                     Div(

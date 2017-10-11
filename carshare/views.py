@@ -142,7 +142,7 @@ def booking_extend(request, booking_id):
         return redirect('carshare:index')
 
     if request.method == 'POST':
-        extend_booking_form = ExtendBookingForm(request.POST, min_datetime=booking.schedule_end)
+        extend_booking_form = ExtendBookingForm(request.POST, current_booking_end=booking.schedule_end)
         if extend_booking_form.is_valid():
             new_schedule_end = extend_booking_form.cleaned_data['new_schedule_end']
             # Custom validation
