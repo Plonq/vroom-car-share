@@ -187,7 +187,7 @@ def booking_extend(request, booking_id):
                 )
                 return redirect('carshare:booking_detail', booking_id)
     else:
-        extend_booking_form = ExtendBookingForm(min_datetime=booking.schedule_end)
+        extend_booking_form = ExtendBookingForm(current_booking_end=booking.schedule_end)
 
     context = {
         'booking': booking,

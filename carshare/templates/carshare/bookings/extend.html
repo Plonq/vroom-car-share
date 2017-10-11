@@ -1,25 +1,95 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block pagetitle %}Extend Booking{% endblock %}
 
-{% block maincontent %}
-    <h2>Extend Booking</h2>
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
+{% endblock %}
 
-    <div class="row">
-        <div class="col-sm-12">
-            <p><strong>Vehicle:</strong> {{ booking.vehicle }}</p>
-            <p><strong>Booking Start:</strong> {{ booking.schedule_start }}</p>
-            <p><strong>Booking End:</strong> {{ booking.schedule_end }}</p>
+{% block maincontent %}
+    <!-- Intro spiel -->
+    <div class="row bottom-spacer">
+        <div class="col-xs-12 text-center">
+            <h2>Extend Booking</h2>
+            <p>Your booking details have been pre-filled below. Please select the new finish time for your booking.</p>
         </div>
     </div>
+
     <div class="row">
+        <!-- Map and accompanying booking info -->
+        <div class="col-sm-6 bottom-spacer">
+            <div class="row">
+                <div class="col-xs-12" id="map"></div>
+            </div>
+            <div class="booking-info">
+                <div class="row text-center">
+                    <strong>Booking Information</strong>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.name }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Make</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.make }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-odd">
+                    <div class="col-xs-3">
+                        <strong>Model</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.model }}</span>
+                    </div>
+                </div>
+                <div class="row coloured-even">
+                    <div class="col-xs-3">
+                        <strong>Location</strong>
+                    </div>
+                    <div class="col-xs-9">
+                        <span>{{ booking.vehicle.pod.description }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Booking form -->
         <div class="col-sm-6">
             {% load crispy_forms_tags %}
             <form class="validated-form" method="post">
-                {% crispy extend_booking_form %}
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Extend Booking</button>
-                </div>
+            {% crispy extend_booking_form %}
+            <div class="buttons-right">
+                <a class="btn btn-default" href="{% url 'carshare:booking_detail' booking.id %}">Cancel</a>
+                <button type="submit" class="btn btn-primary">Extend</button>
+            </div>
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function initMap() {
+            var vehicle = {
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 16,
+                center: vehicle
+            });
+            var marker = new google.maps.Marker({
+                position: vehicle,
+                map: map,
+                icon: "{% static "carshare/images/Geo_icon.png" %}"
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
