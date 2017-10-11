@@ -2,8 +2,7 @@ from django import forms
 from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, Field, Fieldset, Button
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML
 from datetimewidget.widgets import DateWidget
 import datetime as dt
 
@@ -100,7 +99,8 @@ class BookingForm(forms.Form):
         self.helper.form_show_labels = False
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Fieldset('Booking Start',
+            Fieldset(
+                'Booking Start',
                 Div(
                     Div(
                         Field('booking_start_date', css_class='datepicker', placeholder='Date'),
@@ -113,7 +113,8 @@ class BookingForm(forms.Form):
                     css_class='row',
                 )
             ),
-            Fieldset('Booking End',
+            Fieldset(
+                'Booking End',
                 Div(
                     Div(
                         Field('booking_end_date', css_class='datepicker', placeholder='Date'),
@@ -126,4 +127,80 @@ class BookingForm(forms.Form):
                     css_class='row',
                 )
             )
+        )
+
+
+class ExtendBookingForm(forms.Form):
+    """
+    Form for extending a booking
+    """
+    dateTimeOptions = {
+        'format': 'dd/mm/yyyy',
+    }
+    new_end_date = forms.DateField()
+    new_end_time = forms.ChoiceField(choices=BookingForm.TIMES)
+
+    def clean_new_end_time(self):
+        new_end_time = self.cleaned_data.get('new_end_time')
+        # Convert to time object
+        new_end_time = dt.datetime.strptime(new_end_time, '%H:%M').time()
+        return new_end_time
+
+    def clean(self):
+        cleaned_data = super(ExtendBookingForm, self).clean()
+        new_schedule_end = timezone.make_aware(
+            dt.datetime.combine(cleaned_data['new_end_date'], cleaned_data['new_end_time']),
+            timezone=timezone.get_current_timezone()
+        )
+        if new_schedule_end:
+            # Make sure new end date is not before previous end date
+            if new_schedule_end <= self.current_booking_end:
+                raise forms.ValidationError('New end time must be later than current end time')
+        # Insert parsed date into cleaned_data so the view doesn't have to
+        cleaned_data['new_schedule_end'] = new_schedule_end
+        return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        self.current_booking_end = kwargs.pop('current_booking_end', None)
+        super(ExtendBookingForm, self).__init__(*args, **kwargs)
+        # Set date minimum
+        if self.current_booking_end:
+            self.dateTimeOptions['startDate'] = self.current_booking_end.isoformat()
+            self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
+            # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
+            self.initial['new_end_date'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%Y-%m-%d')
+            self.initial['new_end_time'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%H:%M')
+        self.helper = FormHelper()
+        self.helper.form_class = 'validated-form'
+        self.helper.form_show_labels = False
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Fieldset(
+                'Booking Start',
+                Div(
+                    Div(
+                        HTML("<p><strong>Date:</strong><br>{{ booking.schedule_start|date:'Y-m-d' }}</p>"),
+                        css_class='col-sm-8',
+                    ),
+                    Div(
+                        HTML("<p><strong>Time:</strong><br>{{ booking.schedule_start|date:'H:i' }}</p>"),
+                        css_class='col-sm-4',
+                    ),
+                    css_class='row',
+                )
+            ),
+            Fieldset(
+                'New Booking End',
+                Div(
+                    Div(
+                        Field('new_end_date', css_class='datepicker', placeholder='Date'),
+                        css_class='col-sm-8',
+                    ),
+                    Div(
+                        'new_end_time',
+                        css_class='col-sm-4',
+                    ),
+                    css_class='row',
+                )
+            ),
         )

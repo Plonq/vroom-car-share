@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}New Booking{% endblock %}
+{% block pagetitle %}Extend Booking{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
@@ -10,11 +10,8 @@
     <!-- Intro spiel -->
     <div class="row bottom-spacer">
         <div class="col-xs-12 text-center">
-            <h2>New Booking for {{ vehicle.name }}</h2>
-            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the information
-            below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
-            conditions.</p>
-            <p>You will receive an email confirmation upon approval of the booking.</p>
+            <h2>Extend Booking</h2>
+            <p>Your booking details have been pre-filled below. Please select the new finish time for your booking.</p>
         </div>
     </div>
 
@@ -33,7 +30,7 @@
                         <strong>Name</strong>
                     </div>
                     <div class="col-xs-9">
-                        <span>{{ vehicle.name }}</span>
+                        <span>{{ booking.vehicle.name }}</span>
                     </div>
                 </div>
                 <div class="row coloured-even">
@@ -41,7 +38,7 @@
                         <strong>Make</strong>
                     </div>
                     <div class="col-xs-9">
-                        <span>{{ vehicle.make }}</span>
+                        <span>{{ booking.vehicle.make }}</span>
                     </div>
                 </div>
                 <div class="row coloured-odd">
@@ -49,7 +46,7 @@
                         <strong>Model</strong>
                     </div>
                     <div class="col-xs-9">
-                        <span>{{ vehicle.model }}</span>
+                        <span>{{ booking.vehicle.model }}</span>
                     </div>
                 </div>
                 <div class="row coloured-even">
@@ -57,7 +54,7 @@
                         <strong>Location</strong>
                     </div>
                     <div class="col-xs-9">
-                        <span>{{ vehicle.pod.description }}</span>
+                        <span>{{ booking.vehicle.pod.description }}</span>
                     </div>
                 </div>
             </div>
@@ -66,10 +63,10 @@
         <div class="col-sm-6">
             {% load crispy_forms_tags %}
             <form class="validated-form" method="post">
-            {% crispy booking_form %}
+            {% crispy extend_booking_form %}
             <div class="buttons-right">
-                <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
-                <button type="submit" class="btn btn-primary">Book</button>
+                <a class="btn btn-default" href="{% url 'carshare:booking_detail' booking.id %}">Cancel</a>
+                <button type="submit" class="btn btn-primary">Extend</button>
             </div>
             </form>
         </div>
@@ -80,8 +77,8 @@
     <script>
         function initMap() {
             var vehicle = {
-                lat: {{ vehicle.pod.latitude }},
-                lng: {{ vehicle.pod.longitude }}
+                lat: {{ booking.vehicle.pod.latitude }},
+                lng: {{ booking.vehicle.pod.longitude }}
             };
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,

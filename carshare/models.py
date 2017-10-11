@@ -125,7 +125,7 @@ class Invoice(models.Model):
     """
     Invoice for a single booking
     """
-    booking = models.OneToOneField(Booking, related_name='booking')
+    booking = models.OneToOneField(Booking, related_name='invoice')
     date = models.DateField(default=timezone.now)
     due = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)

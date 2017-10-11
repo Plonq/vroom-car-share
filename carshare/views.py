@@ -3,12 +3,8 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils.html import strip_tags
 
-from .forms import ContactForm, BookingForm
+from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking
 
 
@@ -16,8 +12,6 @@ from .models import Vehicle, Booking
 def index(request):
     return render(request, 'carshare/index.html')
 
-def my_account(request):
-    return render(request, 'carshare/my_account.html')
 
 def contact_us(request):
     if request.method == 'POST':
@@ -44,12 +38,14 @@ def contact_us(request):
 
     return render(request, "carshare/contact_us.html", {'contact_form': contact_form})
 
+
 def find_a_car(request):
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
     }
     return render(request, "carshare/find_a_car.html", context)
+
 
 @login_required
 def booking_create(request, vehicle_id):
@@ -116,9 +112,10 @@ def booking_create(request, vehicle_id):
     }
     return render(request, "carshare/bookings/create.html", context)
 
+
 @login_required
 def booking_detail(request, booking_id):
-    booking = Booking.objects.get(pk=booking_id)
+    booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -127,6 +124,7 @@ def booking_detail(request, booking_id):
     }
     return render(request, "carshare/bookings/detail.html", context)
 
+
 @login_required
 def booking_index(request):
     bookings = request.user.booking_set.all().order_by('-schedule_start')
@@ -134,3 +132,65 @@ def booking_index(request):
         'bookings': bookings,
     }
     return render(request, "carshare/bookings/index.html", context)
+
+
+@login_required
+def booking_extend(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if request.user != booking.user:
+        messages.error(request, 'You do not have permission to view that booking')
+        return redirect('carshare:index')
+
+    if request.method == 'POST':
+        extend_booking_form = ExtendBookingForm(request.POST, min_datetime=booking.schedule_end)
+        if extend_booking_form.is_valid():
+            new_schedule_end = extend_booking_form.cleaned_data['new_schedule_end']
+            # Custom validation
+            is_valid_booking = True
+            # Make sure new end date doesn't clash with existing booking
+            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle).exclude(user=request.user)
+            for b in existing_bookings:
+                if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
+                    b.schedule_start <= new_schedule_end <= b.schedule_end or
+                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
+                    is_valid_booking = False
+                    extend_booking_form.add_error(None, "The new end date overlaps with existing booking. "
+                                                        "The latest date you can choose is {0}".format(b.schedule_start))
+                    break
+            user_bookings = request.user.booking_set.exclude(id__exact=booking.id)
+            for b in user_bookings:
+                if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
+                    b.schedule_start <= new_schedule_end <= b.schedule_end or
+                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
+                    is_valid_booking = False
+                    extend_booking_form.add_error(
+                        None, "The new booking end overlaps with one of your existing bookings"
+                    )
+                    break
+
+            if is_valid_booking:
+                booking.schedule_end = new_schedule_end
+                booking.save()
+
+                # Send confirmation email TODO: create new template
+                request.user.email_user(
+                    subject='Booking extended',
+                    template='carshare/email/booking_extend_confirmation.html',
+                    context={
+                        'firstname': request.user.first_name,
+                        'booking': booking,
+                    },
+                )
+
+                messages.success(
+                    request, "Your current booking has been extended. You will receive email confirmation shortly."
+                )
+                return redirect('carshare:booking_detail', booking_id)
+    else:
+        extend_booking_form = ExtendBookingForm(current_booking_end=booking.schedule_end)
+
+    context = {
+        'booking': booking,
+        'extend_booking_form': extend_booking_form,
+    }
+    return render(request, "carshare/bookings/extend.html", context)
