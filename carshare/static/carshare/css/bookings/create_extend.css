@@ -25,3 +25,43 @@
 .bottom-spacer {
     margin-bottom: 15px;
 }
+
+        #booking_container {
+            /*width:700px;*/
+            overflow-x: scroll;
+        }
+
+        #tst {
+            width:1620px;
+        }
+
+        #booking_container div {
+            float: left;
+            padding:15px;
+            user-select: none; /* Make it so you cannot select text */
+
+        }
+        .unavailable {
+            background-color: orange;
+        }
+
+        .available {
+            background-color: lightgrey;
+        }
+        .make_booking {
+            background-color: green;
+        }
+
+        #date_selector {
+            font-size:16px;
+            margin-top: 20px;
+            background-color: #c4ebfc;
+            padding-top:10px;
+            padding-bottom: 10px;
+            color:black;
+        }
+
+        #date_selector select {
+            /*width: 200px;*/
+            color:black;
+        }

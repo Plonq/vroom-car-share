@@ -3,7 +3,7 @@
 {% block pagetitle %}New Booking{% endblock %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/create_extend.css' %}">
 {% endblock %}
 
 {% block maincontent %}
@@ -11,16 +11,17 @@
     <div class="row bottom-spacer">
         <div class="col-xs-12 text-center">
             <h2>New Booking for {{ vehicle.name }}</h2>
-            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the information
-            below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
-            conditions.</p>
+            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the
+                information
+                below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
+                conditions.</p>
             <p>You will receive an email confirmation upon approval of the booking.</p>
         </div>
     </div>
 
     <div class="row">
         <!-- Map and accompanying booking info -->
-        <div class="col-sm-6 bottom-spacer">
+        <div class="col-sm-12 bottom-spacer">
             <div class="row">
                 <div class="col-xs-12" id="map"></div>
             </div>
@@ -62,18 +63,266 @@
                 </div>
             </div>
         </div>
-        <!-- Booking form -->
-        <div class="col-sm-6">
-            {% load crispy_forms_tags %}
-            <form class="validated-form" method="post">
-            {% crispy booking_form %}
-            <div class="buttons-right">
-                <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
-                <button type="submit" class="btn btn-primary">Book</button>
+
+    </div>
+
+    <div class="row">
+        <div class="text-center">
+            <h3>Book your time</h3>
+
+
+            <script>
+
+                window.madeSelection = false;
+
+                //Setup Sample Data
+                var timedata = {
+                    "01/01/2017": {
+                        "0": "unavailable",
+                        "1": "available",
+                        "2": "available",
+                        "3": "unavailable",
+                        "4": "unavailable",
+                        "5": "available",
+                        "6": "available",
+                        "7": "available",
+                        "8": "available",
+                        "9": "available",
+                        "10": "available",
+                        "11": "available",
+                        "12": "available",
+                        "13": "available",
+                        "14": "available",
+                        "15": "unavailable",
+                        "16": "unavailable",
+                        "17": "unavailable",
+                        "18": "unavailable",
+                        "19": "available",
+                        "20": "available",
+                        "21": "available",
+                        "22": "available",
+                        "23": "available",
+                    },
+                    "02/01/2017": {
+                        "0": "unavailable",
+                        "1": "available",
+                        "2": "available",
+                        "3": "unavailable",
+                        "4": "unavailable",
+                        "5": "available",
+                        "6": "unavailable",
+                        "7": "available",
+                        "8": "available",
+                        "9": "unavailable",
+                        "10": "available",
+                        "11": "available",
+                        "12": "available",
+                        "13": "available",
+                        "14": "available",
+                        "15": "unavailable",
+                        "16": "unavailable",
+                        "17": "unavailable",
+                        "18": "unavailable",
+                        "19": "available",
+                        "20": "available",
+                        "21": "available",
+                        "22": "available",
+                        "23": "available",
+                    },
+                };
+
+                // Marks times orange if they are unavailable
+                function check_times() {
+
+                    $.each(timedata, function (date, times) {
+                        //Look for the correct date data
+                        if ($("#booking_container").hasClass(date)) {
+                            //console.log("found " + date);
+                            //Go through each time and mark availability
+                            $.each(times, function (hour, availability) {
+                                $("#" + hour).removeClass();
+                                $("#" + hour).addClass(availability);
+                            });
+                        }
+                    });
+                };
+
+
+                function selectBooking(id) {
+
+
+
+                    // If the time is unavailable do nothing.
+                    if ($(id).hasClass("unavailable")) {
+                        return;
+                    }
+
+                    // If there is already a selection made then check it is next to it.
+                    if (window.madeSelection) {
+                        var select = selections();
+                        var neighbour = false;
+
+                        // Go through each selection
+                        $.each(select, function (value, key) {
+                            var time = (key.id);
+
+                            //Check if there is a selection is lower
+                            if (parseInt(id.id) - 1 == parseInt(time)) {
+                                neighbour = true;
+                            }
+
+                            //Check if there is a selection is greater
+                            if (parseInt(id.id) + 1 == parseInt(time)) {
+                                neighbour = true;
+                            }
+                        });
+
+                        console.log(select)
+
+                        // If there is only one left and you are removing the same ID. Then allow
+                        if (select.length == 1 && select[0].id == id.id) {
+                            toggle(id);
+                            selectionMade();
+                        }
+
+                        // Is there are no neighbours and you select it - do not allow
+                        if (!neighbour) {
+                            return;
+                        }
+
+
+                        // Check if there is a selection either side - do not allow
+                        var greater = (parseInt(id.id) + 1);
+                        var lower = (parseInt(id.id) - 1);
+                        if ($("#" + greater).hasClass("make_booking") && $("#" + lower).hasClass("make_booking")) {
+                            return;
+                        }
+
+                    }
+
+                    toggle(id);
+                    selectionMade();
+                }
+
+
+                //Toggles the colour on the timeline to green or grey
+                function toggle(id) {
+                    //Toggle the booking
+                    if ($(id).hasClass("make_booking")) {
+                        $(id).removeClass("make_booking")
+                    }
+                    else {
+                        $(id).addClass("make_booking");
+                    }
+                }
+
+
+                // Function checks all divs to see if a selection has been made.
+                function selectionMade() {
+
+                    var found = false;
+                    $("#tst").children("div").each(function (i) {
+
+                        if ($(this).hasClass("make_booking")) {
+                            found = true;
+                        }
+
+                        if (found) {
+                            window.madeSelection = true;
+                        }
+                        else {
+                            window.madeSelection = false;
+                        }
+                    });
+                }
+
+
+                // Returns a dictionary of divs which have been selected.
+                function selections() {
+
+                    var select = [];
+
+                    $("#tst").children("div").each(function (i) {
+
+                        if ($(this).hasClass("make_booking")) {
+                            select.push(this);
+                        }
+
+                    });
+                    return select;
+                }
+
+
+                function change_date() {
+                    // Get date selection
+                    var date = $("#show_date").val();
+
+                    $("#booking_container").removeClass();
+                    $("#booking_container").addClass(date);
+
+                    //Check the times again
+                    check_times();
+                    // Update selections that have been made
+                    selectionMade();
+                }
+
+
+            </script>
+
+            <div id="date_selector">
+            Select Date:
+            <select id="show_date" onchange="change_date()">
+                <option value="01/01/2017">01/01/2017</option>
+                <option value="02/01/2017">02/01/2017</option>
+            </select>
             </div>
+
+            <div id="booking_container" class="01/01/2017">
+                <div id="tst">
+                    <div id="0" onclick="selectBooking(this);">00:00</div>
+                    <div id="1" onclick="selectBooking(this);">01:00</div>
+                    <div id="2" onclick="selectBooking(this);">02:00</div>
+                    <div id="3" onclick="selectBooking(this);">03:00</div>
+                    <div id="4" onclick="selectBooking(this);">04:00</div>
+                    <div id="5" onclick="selectBooking(this);">05:00</div>
+                    <div id="6" onclick="selectBooking(this);">06:00</div>
+                    <div id="7" onclick="selectBooking(this);">07:00</div>
+                    <div id="8" onclick="selectBooking(this);">08:00</div>
+                    <div id="9" onclick="selectBooking(this);">09:00</div>
+                    <div id="10" onclick="selectBooking(this);">10:00</div>
+                    <div id="11" onclick="selectBooking(this);">11:00</div>
+                    <div id="12" onclick="selectBooking(this);">12:00</div>
+                    <div id="13" onclick="selectBooking(this);">13:00</div>
+                    <div id="14" onclick="selectBooking(this);">14:00</div>
+                    <div id="15" onclick="selectBooking(this);">15:00</div>
+                    <div id="16" onclick="selectBooking(this);">16:00</div>
+                    <div id="17" onclick="selectBooking(this);">17:00</div>
+                    <div id="18" onclick="selectBooking(this);">18:00</div>
+                    <div id="19" onclick="selectBooking(this);">19:00</div>
+                    <div id="20" onclick="selectBooking(this);">20:00</div>
+                    <div id="21" onclick="selectBooking(this);">21:00</div>
+                    <div id="22" onclick="selectBooking(this);">22:00</div>
+                    <div id="23" onclick="selectBooking(this);">23:00</div>
+                </div>
+            </div>
+
+
+            <script>check_times();</script>
+
+        <br />
+
+            <!-- Booking form -->
+            <form class="validated-form" method="post">
+                <div>
+                    <a class="btn btn-default" href="{% url 'carshare:find_a_car' %}">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Book</button>
+                </div>
             </form>
+
         </div>
     </div>
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -94,5 +343,6 @@
             });
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
