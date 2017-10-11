@@ -68,7 +68,7 @@ class AccountsRegisterViewTests(TestCase):
         self.assertRedirects(response, reverse('register_credit_card'))
         # Credit card form
         response = self.client.post(reverse('register_credit_card'), credit_card_data)
-        self.assertRedirects(response, reverse('profile'))
+        self.assertEqual(response.status_code, 200)
         self.assertFalse('user_id' in self.client.session)
         self.assertFalse('address_id' in self.client.session)
         # Email
@@ -77,5 +77,9 @@ class AccountsRegisterViewTests(TestCase):
         self.assertEqual(mail.outbox[0].subject, 'Thank you for joining Vroom!')
         self.assertTrue('Hi {0}!'.format(user.first_name) in mail.outbox[0].body)
         self.assertTrue('Thanks for choosing Vroom as your preferred transport provider.' in mail.outbox[0].body)
+        self.assertTrue('Activate Account' in mail.outbox[0].body)
         self.assertEqual(mail.outbox[0].from_email, 'Vroom Car Share <admin@vroomcs.org>')
         self.assertEqual(mail.outbox[0].to, [user.email])
+        # Account activation
+        self.assertFalse(user.is_active)
+        # Note - can't figure out a way to grab activation link from email. Maybe regex, but CBF right now
