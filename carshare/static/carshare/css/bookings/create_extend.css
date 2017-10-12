@@ -25,3 +25,55 @@
 .bottom-spacer {
     margin-bottom: 15px;
 }
+
+/* Timeline stuff */
+.timeline-wrapper div {
+    display: inline-block;
+    margin: 3px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.timeline-datepicker {
+    max-width: 250px;
+
+}
+
+.timeline a {
+    color: black;
+    user-select: none; /* stop the highlighting of text */
+}
+
+.timeline a:hover div {
+    background-color: #6fb1d5;
+}
+
+.timeline div {
+    cursor: pointer;
+    font-size: 12pt;
+}
+
+.timeline div.unavailable {
+    color: #7f7f7f;
+    background-color: #efefef;
+    cursor: not-allowed;
+    user-select: none; /* stop the highlighting of text */
+}
+
+.timeline div.available {
+    background-color: #c4ffc4;
+}
+
+#date_selector {
+    font-size:16px;
+    margin-top: 20px;
+    background-color: #c4ebfc;
+    padding-top:10px;
+    padding-bottom: 10px;
+    color:black;
+}
+
+#date_selector select {
+    /*width: 200px;*/
+    color:black;
+}
