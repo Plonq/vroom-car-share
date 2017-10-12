@@ -3,6 +3,9 @@ from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+import datetime as dt
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking
@@ -48,8 +51,34 @@ def find_a_car(request):
 
 
 @login_required
-def booking_create(request, vehicle_id):
+def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    # Default to today if no date specified
+    if year and month and day:
+        date = dt.date(int(year), int(month), int(day))
+    else:
+        date = timezone.localtime().date()
+    # Build dict of hours and whether that hour is available
+    hours = {}
+    for i in range(0, 24):
+        datetime = timezone.make_aware(dt.datetime.combine(date, dt.time(hour=i, minute=0)), timezone.get_current_timezone())
+        if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime():
+            hours[i] = 'available'
+        else:
+            hours[i] = 'unavailable'
+    context = {
+        'vehicle': vehicle,
+        'hours': hours,
+        'date': date,
+    }
+    return render(request, "carshare/bookings/create_timeline.html", context)
+
+
+@login_required
+def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
 
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
@@ -102,13 +131,14 @@ def booking_create(request, vehicle_id):
                 messages.success(request, 'Booking created successfully')
                 return redirect('carshare:booking_detail', booking.pk)
             # Else, continue and render the same page with form errors
-
     else:
-        booking_form = BookingForm()
+        booking_form = BookingForm(initial_start_datetime=datetime)
+        booking_form.is_bound = False  # Prevent validation triggering
 
     context = {
         'vehicle': vehicle,
         'booking_form': booking_form,
+        'date': datetime.date,
     }
     return render(request, "carshare/bookings/create.html", context)
 

@@ -93,9 +93,18 @@ class BookingForm(forms.Form):
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
+        initial_start_datetime = kwargs.pop('initial_start_datetime', None)
         super(BookingForm, self).__init__(*args, **kwargs)
+        if initial_start_datetime:
+            # Set initial start time
+            self.initial['booking_start_date'] = dt.datetime.strftime(initial_start_datetime, '%d/%m/%Y')
+            self.initial['booking_start_time'] = dt.datetime.strftime(initial_start_datetime, '%H:%M')
+            # Set initial end time to two hours after start time
+            initial_end_datetime = initial_start_datetime + dt.timedelta(hours=2)
+            self.initial['booking_end_date'] = dt.datetime.strftime(initial_end_datetime, '%d/%m/%Y')
+            self.initial['booking_end_time'] = dt.datetime.strftime(initial_end_datetime, '%H:%M')
+        # Crispy Forms
         self.helper = FormHelper()
-        self.helper.form_class = 'validated-form'
         self.helper.form_show_labels = False
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -170,8 +179,8 @@ class ExtendBookingForm(forms.Form):
             # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
             self.initial['new_end_date'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%d/%m/%Y')
             self.initial['new_end_time'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%H:%M')
+        # Crispy forms
         self.helper = FormHelper()
-        self.helper.form_class = 'validated-form'
         self.helper.form_show_labels = False
         self.helper.form_tag = False
         self.helper.layout = Layout(

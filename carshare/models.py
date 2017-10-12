@@ -63,6 +63,17 @@ class Vehicle(models.Model):
         else:
             return False
 
+    def is_available_at(self, datetime):
+        """
+        Checks if the vehicle is available at the time specified
+        :param datetime: when to check
+        :return: Boolean
+        """
+        for booking in self.booking_set.all():
+            if booking.schedule_start <= datetime < booking.schedule_end:
+                return False
+        return True
+
     def __str__(self):
         # E.g. 'Jackie - 2014 Toyota Corolla'
         return "{0} - {1} {2} {3}".format(self.name, self.year, self.make, self.model)
