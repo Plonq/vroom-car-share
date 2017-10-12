@@ -4,13 +4,13 @@
     <p style="font-size:16px;">Your booking has been confirmed. <br>
         If you would like to extend or cancel this booking, please <a href="https://vroom-car-share.herokuapp.com/" style="color: #006599; text-decoration: none;"><strong>login</strong></a> to the website.</p>
 
-    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Vehicle</h4>
-    <p style="font-size:16px;">{{ booking.vehicle }}</p>
-    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Location</h4>
-    <p style="font-size:16px;">{{ booking.vehicle.pod.description }}</p>
-    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Booking start</h4>
-    <p style="font-size:16px;">{{ booking.schedule_start }}</p>
-    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;">Booking end</h4>
-    <p style="font-size:16px;">{{ booking.schedule_end }}</p>
+<h4 style="color: #007cb6; font-size:20px; font-weight:bold;padding:0px;margin-bottom:3px;">Vehicle</h4>
+    <p style="font-size:16px;margin:0px;margin-bottom:15px;">{{ booking.vehicle }}</p>
+    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;padding:0px;margin:0px;">Location</h4>
+    <p style="font-size:16px;margin:0px;margin-bottom:15px;">{{ booking.vehicle.pod.description }}</p>
+    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;padding:0px;margin-bottom:3px;">Booking start</h4>
+    <p style="font-size:16px;margin:0px;margin-bottom:15px;">{{ booking.schedule_start }}</p>
+    <h4 style="color: #007cb6; font-size:20px; font-weight:bold;padding:0px;margin-bottom:3px;">Booking end</h4>
+    <p style="font-size:16px;margin:0px;margin-bottom:15px;">{{ booking.schedule_end }}</p>
 {% endblock email_body %}
 
