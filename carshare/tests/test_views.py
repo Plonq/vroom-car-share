@@ -126,7 +126,7 @@ class CarshareBookingViewTests(TestCase):
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         self.assertEqual(post_response.status_code, 200)
-        self.assertContains(post_response, 'Sorry, the selected vehicle is unavailable within the chosen times')
+        self.assertContains(post_response, 'The selected vehicle is unavailable within the chosen times')
 
     def test_booking_for_time_period_already_booked_by_user_for_different_vehicle(self):
         """
@@ -158,7 +158,7 @@ class CarshareBookingViewTests(TestCase):
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         self.assertEqual(post_response.status_code, 200)
-        self.assertContains(post_response, 'Sorry, you already have a booking within the selected time frame')
+        self.assertContains(post_response, 'You already have a booking within the selected time frame')
 
     def test_booking_detail_with_existing_id(self):
         """
