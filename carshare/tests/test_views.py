@@ -89,9 +89,17 @@ class CarshareBookingViewTests(TestCase):
             'booking_end_time': '01:00',
         }
         self.client.login(email='user@test.com', password='bigbadtestuser')
-        get_response = self.client.get(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}))
+        # Construct URL with fake data because it's only there to provide initial form values
+        kwargs = {
+            'vehicle_id': self.v1.id,
+            'year': '2000',
+            'month': '1',
+            'day': '1',
+            'hour': '0',
+        }
+        get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        post_response = self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}), data=form)
+        post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
         self.assertRedirects(post_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
 
@@ -106,9 +114,17 @@ class CarshareBookingViewTests(TestCase):
             'booking_end_time': '01:00',
         }
         self.client.login(email='user@test.com', password='bigbadtestuser')
-        get_response = self.client.get(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}))
+        # Construct URL with fake data because it's only there to provide initial form values
+        kwargs = {
+            'vehicle_id': self.v1.id,
+            'year': '2000',
+            'month': '1',
+            'day': '1',
+            'hour': '0',
+        }
+        get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        post_response = self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}), data=form)
+        post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         self.assertEqual(post_response.status_code, 200)
         self.assertContains(post_response, 'Sorry, the selected vehicle is unavailable within the chosen times')
 
@@ -123,16 +139,24 @@ class CarshareBookingViewTests(TestCase):
             'booking_end_time': '01:00',
         }
         self.client.login(email='user@test.com', password='bigbadtestuser')
+        # Construct URL with fake data because it's only there to provide initial form values
+        kwargs = {
+            'vehicle_id': self.v1.id,
+            'year': '2000',
+            'month': '1',
+            'day': '1',
+            'hour': '0',
+        }
         # First create the valid booking
-        get_response = self.client.get(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}))
+        get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        post_response = self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}), data=form)
+        post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
         self.assertRedirects(post_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
         # Then try to create another booking for the same time period but different vehicle
-        get_response = self.client.get(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v2.id}))
+        get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        post_response = self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v2.id}), data=form)
+        post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         self.assertEqual(post_response.status_code, 200)
         self.assertContains(post_response, 'Sorry, you already have a booking within the selected time frame')
 
@@ -148,11 +172,18 @@ class CarshareBookingViewTests(TestCase):
             'booking_end_date': '01/01/3000',
             'booking_end_time': '01:00',
         }
+        # Construct URL with fake data because it's only there to provide initial form values
+        kwargs = {
+            'vehicle_id': self.v1.id,
+            'year': '2000',
+            'month': '1',
+            'day': '1',
+            'hour': '0',
+        }
         self.client.login(email='user@test.com', password='bigbadtestuser')
-        get_response = self.client.get(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}))
+        get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        self.client.post(reverse('carshare:booking_create', kwargs={'vehicle_id': self.v1.id}),
-                                         data=form)
+        self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
         booking = User.objects.get(email='user@test.com').booking_set.first()
         # Get detail page for the booking
         response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': booking.id}))
