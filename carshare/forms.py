@@ -100,7 +100,7 @@ class BookingForm(forms.Form):
             self.initial['booking_start_date'] = dt.datetime.strftime(initial_start_datetime, '%d/%m/%Y')
             self.initial['booking_start_time'] = dt.datetime.strftime(initial_start_datetime, '%H:%M')
             # Set initial end time to two hours after start time
-            initial_end_datetime = initial_start_datetime + dt.timedelta(hours=2)
+            initial_end_datetime = initial_start_datetime + dt.timedelta(hours=1)
             self.initial['booking_end_date'] = dt.datetime.strftime(initial_end_datetime, '%d/%m/%Y')
             self.initial['booking_end_time'] = dt.datetime.strftime(initial_end_datetime, '%H:%M')
         # Crispy Forms
