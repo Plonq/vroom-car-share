@@ -36,10 +36,12 @@
 
 .timeline-datepicker {
     max-width: 250px;
+
 }
 
 .timeline a {
     color: black;
+    user-select: none; /* stop the highlighting of text */
 }
 
 .timeline a:hover div {
@@ -53,12 +55,13 @@
 
 .timeline div.unavailable {
     color: #7f7f7f;
-    background-color: lightgrey;
+    background-color: #efefef;
     cursor: not-allowed;
+    user-select: none; /* stop the highlighting of text */
 }
 
 .timeline div.available {
-    background-color: #54cb58;
+    background-color: #c4ffc4;
 }
 
 #date_selector {
