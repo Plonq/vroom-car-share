@@ -130,6 +130,8 @@ class Booking(models.Model):
             return "Confirmed"
         elif self.schedule_start < timezone.now() < self.schedule_end:
             return "Active"
+        elif self.schedule_end < timezone.now():
+            return "Expired"
 
 
 class Invoice(models.Model):
