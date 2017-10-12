@@ -150,8 +150,20 @@
 
                 function selectBooking(id) {
 
+                    // If the time is unavailable do nothing.
+                    if ($(id).hasClass("unavailable")) {
+                        return;
+                    }
+
+                    // Get the current date
+                    var currentdate = $("#booking_container").attr("class");
+                    var path = "?hour=" + id.id + "&date=" + currentdate;
+
+                    // Redirect with get variables in the path
+                    window.location = path;
 
 
+                    /*
                     // If the time is unavailable do nothing.
                     if ($(id).hasClass("unavailable")) {
                         return;
@@ -201,7 +213,7 @@
                     }
 
                     toggle(id);
-                    selectionMade();
+                    selectionMade();*/
                 }
 
 
@@ -270,11 +282,11 @@
             </script>
 
             <div id="date_selector">
-            Select Date:
-            <select id="show_date" onchange="change_date()">
-                <option value="01/01/2017">01/01/2017</option>
-                <option value="02/01/2017">02/01/2017</option>
-            </select>
+                Select Start Date:
+                <select id="show_date" onchange="change_date()">
+                    <option value="01/01/2017">01/01/2017</option>
+                    <option value="02/01/2017">02/01/2017</option>
+                </select>
             </div>
 
             <div id="booking_container" class="01/01/2017">
@@ -309,7 +321,7 @@
 
             <script>check_times();</script>
 
-        <br />
+            <br/>
 
             <!-- Booking form -->
             <form class="validated-form" method="post">
