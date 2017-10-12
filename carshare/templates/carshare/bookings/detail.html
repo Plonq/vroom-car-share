@@ -3,7 +3,7 @@
 {% block pagetitle %}Booking Detail{% endblock %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/detail.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
 {% endblock %}
 
 {% block full-width-content %}
@@ -33,7 +33,9 @@
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.model }}</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking ID</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking
+                ID
+            </div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Location</div>
         </div>
         <div class="row text-center">
@@ -41,11 +43,12 @@
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.pod.description }}</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status
+            </div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Cost</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.get_status}}</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.get_status }}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">${{ booking.calculate_cost|stringformat:".2f" }}</div>
         </div>
         <div class="row">
@@ -53,18 +56,76 @@
     </div>
     <div class="container-fluid actions">
         <div class="row text-center">
-            {% if booking.get_status != 'Expired' and booking.get_status != 'Ended' and booking.get_status != 'Cancelled' %}
-                <div class="col-xs-12">
-                    {% if booking.get_status == 'Active' %}
-                        <a class="btn btn-primary" href="{% url 'carshare:booking_end' booking.id %}">End</a>
-                        <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
-                    {% elif booking.get_status == 'Confirmed' %}
-                        <a class="btn btn-danger" href="{% url 'carshare:booking_cancel' booking.id %}">Cancel</a>
-                    {% endif %}
-                </div>
-            {% endif %}
+            <div class="col-xs-12">
+                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">End</a>
+                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+            </div>
         </div>
     </div>
+
+
+    <!-- Cancellation Modal -->
+    <div class="modal fade" id="confirmCancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Cancellation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to cancel this booking?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger">Confirm Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancellation Modal -->
+    <div class="modal fade" id="confirmEnd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm End Booking</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You have selected to end your current booking.</p>
+
+                    <p>Once your booking has ended you will be sent an invoice via email.</p>
+
+                    End Time - <strong><span id="time"></span></strong>
+
+                    <script>
+                        var display = setInterval(function () {
+                            Time()
+                        }, 0);
+
+                        function Time() {
+                            var date = new Date();
+                            var time = date.toLocaleTimeString();
+                            document.getElementById("time").innerHTML = time;
+                        }
+                    </script>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">End Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -85,5 +146,6 @@
             });
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
