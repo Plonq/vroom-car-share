@@ -16,20 +16,14 @@
             {% if today_bookings or current_booking %}
                 <table class="table table-responsive">
                     <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Vehicle</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Status</th>
-                    </tr>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
                     </thead>
                     <tbody>
                     {% if current_booking %}
-                        {% include 'carshare/bookings/booking_row_snippet.html' with booking=current_booking %}
+                        {% include 'carshare/bookings/table_row_snippet.html' with booking=current_booking %}
                     {% endif %}
                     {% for booking in today_bookings %}
-                        {% include 'carshare/bookings/booking_row_snippet.html' %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -45,17 +39,11 @@
             {% if upcoming_bookings %}
                 <table class="table table-responsive">
                     <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Vehicle</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Status</th>
-                    </tr>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
                     </thead>
                     <tbody>
                     {% for booking in upcoming_bookings %}
-                        {% include 'carshare/bookings/booking_row_snippet.html' %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -71,17 +59,11 @@
             {% if past_bookings %}
                 <table class="table table-responsive">
                     <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Vehicle</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Status</th>
-                    </tr>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
                     </thead>
                     <tbody>
                     {% for booking in past_bookings %}
-                        {% include 'carshare/bookings/booking_row_snippet.html' %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
                     {% endfor %}
                     </tbody>
                 </table>
