@@ -177,8 +177,14 @@ class ExtendBookingForm(forms.Form):
             self.dateTimeOptions['startDate'] = self.current_booking_end.isoformat()
             self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
             # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
-            self.initial['new_end_date'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%d/%m/%Y')
-            self.initial['new_end_time'] = dt.datetime.strftime(timezone.make_naive(self.current_booking_end), '%H:%M')
+            self.initial['new_end_date'] = dt.datetime.strftime(
+                timezone.make_naive(self.current_booking_end),
+                '%d/%m/%Y'
+            )
+            self.initial['new_end_time'] = dt.datetime.strftime(
+                timezone.make_naive(self.current_booking_end + dt.timedelta(hours=1)),
+                '%H:%M'
+            )
         # Crispy forms
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -188,12 +194,42 @@ class ExtendBookingForm(forms.Form):
                 'Booking Start',
                 Div(
                     Div(
-                        HTML("<p><strong>Date:</strong><br>{{ booking.schedule_start|date:'d/m/Y' }}</p>"),
-                        css_class='col-sm-8',
+                        HTML("<p><strong>Date:</strong></p>"),
+                        css_class='col-xs-2',
                     ),
                     Div(
-                        HTML("<p><strong>Time:</strong><br>{{ booking.schedule_start|date:'H:i' }}</p>"),
-                        css_class='col-sm-4',
+                        HTML("<p>{{ booking.schedule_start|date:'d/m/Y' }}</p>"),
+                        css_class='col-xs-5',
+                    ),
+                    Div(
+                        HTML("<p><strong>Time:</strong></p>"),
+                        css_class='col-xs-2',
+                    ),
+                    Div(
+                        HTML("<p>{{ booking.schedule_start|date:'H:i' }}</p>"),
+                        css_class='col-xs-3',
+                    ),
+                    css_class='row',
+                )
+            ),
+            Fieldset(
+                'Booking End',
+                Div(
+                    Div(
+                        HTML("<p><strong>Date:</strong></p>"),
+                        css_class='col-xs-2',
+                    ),
+                    Div(
+                        HTML("<p>{{ booking.schedule_end|date:'d/m/Y' }}</p>"),
+                        css_class='col-xs-5',
+                    ),
+                    Div(
+                        HTML("<p><strong>Time:</strong></p>"),
+                        css_class='col-xs-2',
+                    ),
+                    Div(
+                        HTML("<p>{{ booking.schedule_end|date:'H:i' }}</p>"),
+                        css_class='col-xs-3',
                     ),
                     css_class='row',
                 )

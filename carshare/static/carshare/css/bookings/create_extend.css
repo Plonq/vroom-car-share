@@ -26,7 +26,13 @@
     margin-bottom: 15px;
 }
 
-/* Timeline stuff */
+/* Extend only */
+
+form > fieldset p {
+    padding-left: 12px;
+}
+
+/* Create only */
 .timeline-wrapper div {
     display: inline-block;
     margin: 3px;
