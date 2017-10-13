@@ -113,7 +113,10 @@ class Booking(models.Model):
         booking_length_hours_total = booking_length.days * 24 + booking_length.seconds / 60 / 60
         booking_days = int(booking_length_hours_total / 24)
         booking_hours = int(booking_length_hours_total % 24)
-        return float((booking_days * Decimal(self.vehicle.type.daily_rate)) + (booking_hours * Decimal(self.vehicle.type.hourly_rate)))
+        return float(
+            (booking_days * Decimal(self.vehicle.type.daily_rate)) +
+            (booking_hours * Decimal(self.vehicle.type.hourly_rate))
+        )
 
     def is_ended(self):
         return self.ended is not None
@@ -130,6 +133,11 @@ class Booking(models.Model):
             return "Confirmed"
         elif self.schedule_start < timezone.now() < self.schedule_end:
             return "Active"
+        elif self.schedule_end < timezone.now():
+            return "Expired"
+
+    def __str__(self):
+        return str(self.id)
 
 
 class Invoice(models.Model):

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block pagetitle %}All Bookings{% endblock %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/my_bookings.css' %}">
+{% endblock %}
+
+{% block maincontent %}
+    <h2>My Bookings</h2>
+    <p>To view details or edit a booking, click the Booking ID.</p>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Today</h3>
+            {% if today_bookings or current_booking %}
+                <table class="table table-responsive">
+                    <thead>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
+                    </thead>
+                    <tbody>
+                    {% if current_booking %}
+                        {% include 'carshare/bookings/table_row_snippet.html' with booking=current_booking %}
+                    {% endif %}
+                    {% for booking in today_bookings %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>You have no bookings today.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Upcoming</h3>
+            {% if upcoming_bookings %}
+                <table class="table table-responsive">
+                    <thead>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
+                    </thead>
+                    <tbody>
+                    {% for booking in upcoming_bookings %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>You have no upcoming bookings.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Past</h3>
+            {% if past_bookings %}
+                <table class="table table-responsive">
+                    <thead>
+                    {% include 'carshare/bookings/table_header_snippet.html' %}
+                    </thead>
+                    <tbody>
+                    {% for booking in past_bookings %}
+                        {% include 'carshare/bookings/table_row_snippet.html' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>You have no past bookings.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

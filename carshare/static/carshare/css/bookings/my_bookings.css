@@ -1,0 +1,12 @@
+.table thead tr {
+    background-color: #006699;
+    color: white;
+}
+
+.table tbody tr {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #C4EBFC;
+}

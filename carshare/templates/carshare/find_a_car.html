@@ -211,12 +211,12 @@
                         $("#booking_button").text("Book Now");
                         $("#booking_button").removeClass("disabled");
                         $("#booking_button").click(function () {
-                            window.location.replace(pod.booking_url)
+                            window.location.href = pod.booking_url
                         });
                         $("#booking_button_mobile").text("Book Now");
                         $("#booking_button_mobile").removeClass("disabled");
                         $("#booking_button_mobile").click(function () {
-                            window.location.replace(pod.booking_url)
+                            window.location.href = pod.booking_url
                         });
                     }
                     else {

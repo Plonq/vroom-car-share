@@ -70,7 +70,7 @@
 
     <div class="row">
         <div class="text-center">
-            <h3>Choose the starting time</h3>
+            <h3>Choose the Starting Time</h3>
 
             <div class="center-block timeline-datepicker">
                 <form class="validated-form" method="get">
@@ -97,6 +97,12 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="text-center">
+            <a href="{% url 'carshare:find_a_car' %}" class="btn btn-default">Back to Map</a>
         </div>
     </div>
 

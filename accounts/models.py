@@ -74,9 +74,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_current_booking(self):
-        now = timezone.now()
-        bookings = self.booking_set.filter(schedule_start__lte=now, schedule_end__gte=now)
-        return bookings.first()
+        current_bookings = self.booking_set.all()
+        active_bookings = [b for b in current_bookings if b.is_active()]
+        # Should only ever be one active booking (enforced via validation when creating a booking),
+        # but it's technically possible so we always return the first one.
+        if active_bookings:
+            return active_bookings[0]
+        else:
+            return None
 
 class Address(models.Model):
     """
