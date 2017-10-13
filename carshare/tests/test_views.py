@@ -191,3 +191,96 @@ class CarshareBookingViewTests(TestCase):
         self.assertContains(response, str(booking.vehicle.make))
         self.assertContains(response, str(booking.vehicle.model))
         self.assertContains(response, str(booking.vehicle.pod.description))
+
+
+@override_settings(STATICFILES_STORAGE=STATICFILES_STORAGE_FOR_TESTS)
+class CarshareBookingListViewTests(TestCase):
+    def setUp(self):
+        vt = VehicleType.objects.create(description='Premium', hourly_rate=12.50, daily_rate=80.00)
+        p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
+        self.v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012,
+                                         registration='AAA222')
+        self.u1 = User.objects.create_user(email='user@test.com', password='bigbadtestuser', first_name='Test', last_name='User', date_of_birth=dt.date(1980, 1, 1))
+
+    def create_booking(self, start, end):
+        return Booking.objects.create(user=self.u1, vehicle=self.v1, schedule_start=start, schedule_end=end)
+
+    def test_no_bookings(self):
+        """
+        User with no bookings gets shown appropriate message
+        """
+        self.client.login(email='user@test.com', password='bigbadtestuser')
+        response = self.client.get(reverse('carshare:my_bookings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'You have no bookings today')
+        self.assertContains(response, 'You have no upcoming bookings')
+        self.assertContains(response, 'You have no past bookings')
+
+    def test_current_booking(self):
+        """
+        User with current booking is displayed on the My Bookings page
+        """
+        now = timezone.now()
+        now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
+        two_hours_ago = now - dt.timedelta(hours=2)
+        eleven_fifty_nine = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=23, minute=59))
+        b = self.create_booking(two_hours_ago, eleven_fifty_nine)
+
+        self.client.login(email='user@test.com', password='bigbadtestuser')
+        response = self.client.get(reverse('carshare:my_bookings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['current_booking'], b)
+
+    def test_today_bookings(self):
+        """
+        User with bookings today are displayed on the My Bookings page
+        """
+        now = timezone.now()
+        now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
+        eleven_fifty_nine = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=23, minute=59))
+        two_days_from_now = now + dt.timedelta(days=2)
+        b = self.create_booking(eleven_fifty_nine, two_days_from_now)
+
+        self.client.login(email='user@test.com', password='bigbadtestuser')
+        response = self.client.get(reverse('carshare:my_bookings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['today_bookings'],
+            ['<Booking: {0}>'.format(b.id)]
+        )
+
+    def test_upcoming_bookings(self):
+        """
+        User with upcoming bookings are displayed on the My Bookings page
+        """
+        now = timezone.now()
+        now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
+        two_days_from_now = now + dt.timedelta(days=2)
+        twelve_oh_one_tomorrow = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=0, minute=1)) + dt.timedelta(days=1)
+        b = self.create_booking(twelve_oh_one_tomorrow, two_days_from_now)
+
+        self.client.login(email='user@test.com', password='bigbadtestuser')
+        response = self.client.get(reverse('carshare:my_bookings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['upcoming_bookings'],
+            ['<Booking: {0}>'.format(b.id)]
+        )
+
+    def test_past_bookings(self):
+        """
+        User with past bookings are displayed on the My Bookings page
+        """
+        now = timezone.now()
+        now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
+        two_hours_ago = now - dt.timedelta(hours=2)
+        one_minute_ago = now - dt.timedelta(minutes=1)
+        b = self.create_booking(two_hours_ago, one_minute_ago)
+
+        self.client.login(email='user@test.com', password='bigbadtestuser')
+        response = self.client.get(reverse('carshare:my_bookings'))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['past_bookings'],
+            ['<Booking: {0}>'.format(b.id)]
+        )
