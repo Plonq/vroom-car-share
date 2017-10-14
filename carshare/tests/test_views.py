@@ -220,7 +220,7 @@ class CarshareBookingListViewTests(TestCase):
         """
         User with current booking is displayed on the My Bookings page
         """
-        now = timezone.now()
+        now = timezone.localtime()
         now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
         two_hours_ago = now - dt.timedelta(hours=2)
         eleven_fifty_nine = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=23, minute=59))
@@ -235,7 +235,7 @@ class CarshareBookingListViewTests(TestCase):
         """
         User with bookings today are displayed on the My Bookings page
         """
-        now = timezone.now()
+        now = timezone.localtime()
         now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
         eleven_fifty_nine = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=23, minute=59))
         two_days_from_now = now + dt.timedelta(days=2)
@@ -253,7 +253,7 @@ class CarshareBookingListViewTests(TestCase):
         """
         User with upcoming bookings are displayed on the My Bookings page
         """
-        now = timezone.now()
+        now = timezone.localtime()
         now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
         two_days_from_now = now + dt.timedelta(days=2)
         twelve_oh_one_tomorrow = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=0, minute=1)) + dt.timedelta(days=1)
@@ -271,7 +271,7 @@ class CarshareBookingListViewTests(TestCase):
         """
         User with past bookings are displayed on the My Bookings page
         """
-        now = timezone.now()
+        now = timezone.localtime()
         now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
         two_hours_ago = now - dt.timedelta(hours=2)
         one_minute_ago = now - dt.timedelta(minutes=1)
