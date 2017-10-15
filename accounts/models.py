@@ -83,6 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             return None
 
+
 class Address(models.Model):
     """
     Stores an address for a user
