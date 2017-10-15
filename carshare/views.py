@@ -239,13 +239,12 @@ def booking_cancel(request, booking_id):
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
-    time = booking.schedule_start - timezone.timedelta(hours=1)
-    #if booking.schedule_start <= time:
-    booking.is_active = False
     booking.cancelled = timezone.now()
     booking.save()
+    messages.success(request,'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
+                                                                                         booking.vehicle.make,
+                                                                                         booking.vehicle.model))
     return redirect('carshare:my_bookings')
-    #return render(request, "carshare/index.html")
 
 
 def booking_end(request, booking_id):
@@ -253,13 +252,13 @@ def booking_end(request, booking_id):
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
-    #Only allow to end booking if the booking is active.
-    if booking.schedule_start > timezone.now():
+    # Only allow to end booking if the booking is active.
+    if booking.get_status() == 'Active':
         booking.ended = timezone.now()
         booking.save()
         messages.success(request, 'Your booking has ended')
     else:
-        #Request them to Cancel booking rather than end.
-        messages.error(request, 'Booking cannot end. Please Cancel booking')
+        # Request them to Cancel booking rather than end.
+        messages.error(request, 'You cannot end this booking as it has not started yet. Please cancel instead.')
         return redirect('carshare:booking_detail', booking.id)
     return redirect('carshare:my_bookings')
