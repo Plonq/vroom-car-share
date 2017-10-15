@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .forms import UserCreationForm, AddressForm, CreditCardForm, UserChangeSelfForm
+from .forms import UserCreationSelfForm, AddressForm, CreditCardForm, UserChangeSelfForm
 from .models import User, Address
 
 
@@ -20,7 +20,7 @@ def register_user(request):
 
     # Form submitted, save and redirect to next step
     elif request.method == 'POST':
-        user_form = UserCreationForm(request.POST)
+        user_form = UserCreationSelfForm(request.POST)
         # If user was already created, update existing user
         if 'user_id' in request.session:
             try:
@@ -45,14 +45,14 @@ def register_user(request):
         if 'user_id' in request.session:
             try:
                 user_obj = User.objects.get(id=request.session['user_id'])
-                user_form = UserCreationForm(instance=user_obj)
+                user_form = UserCreationSelfForm(instance=user_obj)
             except ObjectDoesNotExist:
                 del request.session['user_info_id']
-                user_form = UserCreationForm()
+                user_form = UserCreationSelfForm()
 
         # Or user just started, display blank form
         else:
-            user_form = UserCreationForm()
+            user_form = UserCreationSelfForm()
 
     # Either brand new form, or form had errors
     context = {
