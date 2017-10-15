@@ -238,7 +238,7 @@ def update_credit_card(request):
             credit_card_form.save()
 
             messages.success(request, 'Credit card updated')
-            return redirect('edit_profile')
+            return redirect('profile')
     else:
         # We don't create form from instance because we don't want to display the card details
         credit_card_form = CreditCardForm()
