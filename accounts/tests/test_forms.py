@@ -25,7 +25,7 @@ class AccountsGeneralFormTests(TestCase):
         """
         Valid forms successfully validate
         """
-        user_form = UserCreationForm(data=form_data)
+        user_form = UserCreationSelfForm(data=form_data)
         address_form = AddressForm(data=form_data)
         credit_card_form = CreditCardForm(data=form_data)
         self.assertTrue(user_form.is_valid())
@@ -36,7 +36,7 @@ class AccountsGeneralFormTests(TestCase):
         """
         Valid forms successfully validate
         """
-        user_form = UserCreationForm(data={})
+        user_form = UserCreationSelfForm(data={})
         address_form = AddressForm(data={})
         credit_card_form = CreditCardForm(data={})
         self.assertFalse(user_form.is_valid())
@@ -51,7 +51,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = 'invalidemail@bad'
-        form = UserCreationForm(data=invalid_form_data)
+        form = UserCreationSelfForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_email_with_bad_chars(self):
@@ -60,7 +60,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = '$&%()#@test.com'
-        form = UserCreationForm(data=invalid_form_data)
+        form = UserCreationSelfForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_email_without_at_symbol(self):
@@ -69,7 +69,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = 'emailtest.com'
-        form = UserCreationForm(data=invalid_form_data)
+        form = UserCreationSelfForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_mismatching_passwords(self):
@@ -79,7 +79,7 @@ class AccountsUserCreationFormTests(TestCase):
         invalid_form_data = form_data.copy()
         invalid_form_data['password1'] = 'dfwew323r23g'
         invalid_form_data['password2'] = 'fgsdfhgraqt4e5'
-        form = UserCreationForm(data=invalid_form_data)
+        form = UserCreationSelfForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_date_of_birth_less_than_18_years_ago(self):
@@ -89,7 +89,7 @@ class AccountsUserCreationFormTests(TestCase):
         invalid_form_data = form_data.copy()
         seventeen_years_and_364_days_in_the_past = (date.today() - timedelta(days=365*18-1)).isoformat()
         invalid_form_data['date_of_birth'] = seventeen_years_and_364_days_in_the_past
-        form = UserCreationForm(data=invalid_form_data)
+        form = UserCreationSelfForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
 
