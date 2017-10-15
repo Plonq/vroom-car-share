@@ -71,6 +71,7 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
         'vehicle': vehicle,
         'hours': hours,
         'date': date,
+        'today': timezone.localtime().today().date(),
     }
     return render(request, "carshare/bookings/create_timeline.html", context)
 
