@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_current_booking(self):
         current_bookings = self.booking_set.all()
-        active_bookings = [b for b in current_bookings if b.is_active()]
+        active_bookings = [b for b in current_bookings if b.get_status() == 'Active']
         # Should only ever be one active booking (enforced via validation when creating a booking),
         # but it's technically possible so we always return the first one.
         if active_bookings:
