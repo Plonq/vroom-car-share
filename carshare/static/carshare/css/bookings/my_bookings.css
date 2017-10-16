@@ -10,3 +10,12 @@
 .table tbody tr:hover {
     background-color: #C4EBFC;
 }
+
+.table tbody tr.active {
+    color: #289738;
+    font-weight: bold;
+}
+
+.table tbody tr.cancelled {
+    color: #cb3734;
+}

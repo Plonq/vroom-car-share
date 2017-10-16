@@ -10,28 +10,21 @@
     <h2>My Bookings</h2>
     <p>To view details or edit a booking, click the Booking ID.</p>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h3>Today</h3>
-            {% if today_bookings or current_booking %}
+    {% if current_booking %}
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Current Booking</h3>
                 <table class="table table-responsive">
                     <thead>
                     {% include 'carshare/bookings/table_header_snippet.html' %}
                     </thead>
                     <tbody>
-                    {% if current_booking %}
-                        {% include 'carshare/bookings/table_row_snippet.html' with booking=current_booking %}
-                    {% endif %}
-                    {% for booking in today_bookings %}
-                        {% include 'carshare/bookings/table_row_snippet.html' %}
-                    {% endfor %}
+                    {% include 'carshare/bookings/table_row_snippet.html' with booking=current_booking %}
                     </tbody>
                 </table>
-            {% else %}
-                <p>You have no bookings today.</p>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="row">
         <div class="col-xs-12">
@@ -55,7 +48,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h3>Past</h3>
+            <h3>Past/Ended/Cancelled</h3>
             {% if past_bookings %}
                 <table class="table table-responsive">
                     <thead>
