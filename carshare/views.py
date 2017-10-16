@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.db.models import Q
 
 import datetime as dt
 
@@ -159,13 +160,12 @@ def booking_detail(request, booking_id):
 @login_required
 def my_bookings(request):
     now = timezone.localtime()
-    midnight = timezone.make_aware(dt.datetime(now.year, now.month, now.day), timezone=timezone.get_current_timezone()) + dt.timedelta(days=1)
-    today_bookings = request.user.booking_set.filter(schedule_start__gte=now, schedule_start__lte=midnight).order_by('schedule_start')
     current_booking = request.user.get_current_booking()
-    upcoming_bookings = request.user.booking_set.filter(schedule_start__gt=midnight).order_by('schedule_start')
-    past_bookings = request.user.booking_set.filter(schedule_end__lte=now).order_by('-schedule_start')
+    upcoming_bookings = request.user.booking_set.filter(
+        schedule_start__gt=now).filter(ended__isnull=True).filter(cancelled__isnull=True).order_by('schedule_start')
+    past_bookings = request.user.booking_set.filter(
+        Q(schedule_end__lte=now) | Q(ended__isnull=False) | Q(cancelled__isnull=False)).order_by('-schedule_start')
     context = {
-        'today_bookings': today_bookings,
         'current_booking': current_booking,
         'upcoming_bookings': upcoming_bookings,
         'past_bookings': past_bookings,

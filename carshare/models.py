@@ -128,15 +128,21 @@ class Booking(models.Model):
         Returns a string indicating the status
         """
         if self.ended:
-            return "Ended"
+            if self.schedule_end < timezone.now():
+                return "Completed"
+            else:
+                return "Ended"
         elif self.cancelled:
             return "Cancelled"
-        elif self.schedule_start > timezone.now():
-            return "Confirmed"
-        elif self.schedule_start < timezone.now() < self.schedule_end:
-            return "Active"
-        elif self.schedule_end < timezone.now():
-            return "Expired"
+        else:
+            if self.schedule_start > timezone.now():
+                return "Confirmed"
+            elif self.schedule_start < timezone.now() < self.schedule_end:
+                return "Active"
+            elif self.schedule_end < timezone.now():
+                return "Expired"
+            else:
+                return "Unknown"
 
     def __str__(self):
         return str(self.id)

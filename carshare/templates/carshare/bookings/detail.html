@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Confirm Cancel</button>
+                    <a href="{% url 'carshare:booking_cancel' booking.id %}" class="btn btn-danger">Confirm Cancel</a>
                 </div>
             </div>
         </div>
@@ -101,25 +101,11 @@
 
                     <p>Once your booking has ended you will be sent an invoice via email.</p>
 
-                    End Time - <strong><span id="time"></span></strong>
-
-                    <script>
-                        var display = setInterval(function () {
-                            Time()
-                        }, 0);
-
-                        function Time() {
-                            var date = new Date();
-                            var time = date.toLocaleTimeString();
-                            document.getElementById("time").innerHTML = time;
-                        }
-                    </script>
-
-
+                    <p>Booking End - <strong><span id="time"></span></strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">End Booking</button>
+                    <a href="{% url 'carshare:booking_end' booking.id %}" class="btn btn-primary">End Booking</a>
                 </div>
             </div>
         </div>
@@ -131,6 +117,18 @@
 {% endblock %}
 
 {% block scripts %}
+    <script>
+        var display = setInterval(function () {
+            Time()
+        }, 0);
+
+        function Time() {
+            var date = new Date();
+            var time = "{{ booking.schedule_end|date:'D m Y, H:i' }}";
+            document.getElementById("time").innerHTML = time;
+        }
+    </script>
+
     <script>
         function initMap() {
             var vehicle = {
