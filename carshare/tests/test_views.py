@@ -212,7 +212,6 @@ class CarshareBookingListViewTests(TestCase):
         self.client.login(email='user@test.com', password='bigbadtestuser')
         response = self.client.get(reverse('carshare:my_bookings'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'You have no bookings today')
         self.assertContains(response, 'You have no upcoming bookings')
         self.assertContains(response, 'You have no past bookings')
 
@@ -230,24 +229,6 @@ class CarshareBookingListViewTests(TestCase):
         response = self.client.get(reverse('carshare:my_bookings'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['current_booking'], b)
-
-    def test_today_bookings(self):
-        """
-        User with bookings today are displayed on the My Bookings page
-        """
-        now = timezone.localtime()
-        now = timezone.make_aware(dt.datetime(now.year, now.month, now.day, now.hour, minute=0))
-        eleven_fifty_nine = timezone.make_aware(dt.datetime(now.year, now.month, now.day, hour=23, minute=59))
-        two_days_from_now = now + dt.timedelta(days=2)
-        b = self.create_booking(eleven_fifty_nine, two_days_from_now)
-
-        self.client.login(email='user@test.com', password='bigbadtestuser')
-        response = self.client.get(reverse('carshare:my_bookings'))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(
-            response.context['today_bookings'],
-            ['<Booking: {0}>'.format(b.id)]
-        )
 
     def test_upcoming_bookings(self):
         """

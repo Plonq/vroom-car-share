@@ -10,10 +10,10 @@
     <h2>My Bookings</h2>
     <p>To view details or edit a booking, click the Booking ID.</p>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h3>Current Booking</h3>
-            {% if current_booking %}
+    {% if current_booking %}
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Current Booking</h3>
                 <table class="table table-responsive">
                     <thead>
                     {% include 'carshare/bookings/table_header_snippet.html' %}
@@ -22,11 +22,9 @@
                     {% include 'carshare/bookings/table_row_snippet.html' with booking=current_booking %}
                     </tbody>
                 </table>
-            {% else %}
-                <p>You have no active booking.</p>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="row">
         <div class="col-xs-12">

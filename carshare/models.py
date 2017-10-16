@@ -128,10 +128,7 @@ class Booking(models.Model):
         Returns a string indicating the status
         """
         if self.ended:
-            if self.schedule_end < timezone.now():
-                return "Completed"
-            else:
-                return "Ended"
+            return "Ended"
         elif self.cancelled:
             return "Cancelled"
         else:
