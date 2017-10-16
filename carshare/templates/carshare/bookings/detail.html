@@ -60,6 +60,7 @@
                         <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
                     {% elif booking.get_status == 'Confirmed' %}
                         <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                        <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
                     {% endif %}
                 </div>
             {% endif %}
