@@ -160,10 +160,10 @@ def booking_detail(request, booking_id):
 def my_bookings(request):
     now = timezone.localtime()
     midnight = timezone.make_aware(dt.datetime(now.year, now.month, now.day), timezone=timezone.get_current_timezone()) + dt.timedelta(days=1)
-    today_bookings = request.user.booking_set.filter(schedule_start__gte=now, schedule_start__lte=midnight).order_by('-schedule_start')
+    today_bookings = request.user.booking_set.filter(schedule_start__gte=now, schedule_start__lte=midnight).order_by('schedule_start')
     current_booking = request.user.get_current_booking()
-    upcoming_bookings = request.user.booking_set.filter(schedule_start__gt=midnight).order_by('-schedule_start')
-    past_bookings = request.user.booking_set.filter(schedule_end__lte=now).order_by('schedule_start')
+    upcoming_bookings = request.user.booking_set.filter(schedule_start__gt=midnight).order_by('schedule_start')
+    past_bookings = request.user.booking_set.filter(schedule_end__lte=now).order_by('-schedule_start')
     context = {
         'today_bookings': today_bookings,
         'current_booking': current_booking,
