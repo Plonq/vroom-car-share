@@ -33,9 +33,7 @@
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.model }}</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking
-                ID
-            </div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Booking ID</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Location</div>
         </div>
         <div class="row text-center">
@@ -43,12 +41,11 @@
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">{{ booking.vehicle.pod.description }}</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status
-            </div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">Status</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">Cost</div>
         </div>
         <div class="row text-center">
-            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.get_status }}</div>
+            <div class="col-xs-6 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3 col-lg-2 col-lg-offset-4">{{ booking.get_status}}</div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">${{ booking.calculate_cost|stringformat:".2f" }}</div>
         </div>
         <div class="row">
@@ -56,11 +53,16 @@
     </div>
     <div class="container-fluid actions">
         <div class="row text-center">
-            <div class="col-xs-12">
-                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
-                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">End</a>
-                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
-            </div>
+            {% if booking.get_status != 'Expired' and booking.get_status != 'Ended' and booking.get_status != 'Cancelled' %}
+                <div class="col-xs-12">
+                    {% if booking.get_status == 'Active' %}
+                        <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">End</a>
+                        <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                    {% elif booking.get_status == 'Confirmed' %}
+                        <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -146,6 +148,5 @@
             });
         }
     </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxp8sbrSQCvnGpZedH-H7uND4GnIkwyQo&callback=initMap"></script>
 {% endblock %}
