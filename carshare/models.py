@@ -70,7 +70,9 @@ class Vehicle(models.Model):
         :return: Boolean
         """
         for booking in self.booking_set.all():
-            if booking.schedule_start <= datetime < booking.schedule_end:
+            if (booking.schedule_start <= datetime < booking.schedule_end and
+                booking.get_status() != 'Cancelled' and
+                booking.get_status() != 'Ended'):
                 return False
         return True
 
