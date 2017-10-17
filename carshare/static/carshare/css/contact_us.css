@@ -21,6 +21,13 @@ textarea#id_message {
     color: #d1d1d1;
 }
 
+.mobileicon {
+    color: #d1d1d1;
+    font-size:35px;
+    padding-bottom:10px;
+    padding-top: 20px;
+}
+
 .contactinfo div:first-of-type{
     margin-top: 20px;
 }
