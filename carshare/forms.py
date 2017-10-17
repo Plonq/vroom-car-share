@@ -17,6 +17,7 @@ class ContactForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_class = 'validated-form'
         self.helper.form_tag = True
         self.helper.layout = Layout(
             PrependedText('contact_name', '<span class="glyphicon glyphicon-user"></span>'),
