@@ -1,8 +1,10 @@
+from crispy_forms import bootstrap
 from django import forms
 from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML
+from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML, Submit
+from crispy_forms.bootstrap import (PrependedText, PrependedAppendedText, FormActions)
 from datetimewidget.widgets import DateWidget
 import datetime as dt
 
@@ -15,7 +17,14 @@ class ContactForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
+        self.helper.form_tag = True
+        self.helper.layout = Layout(
+            PrependedText('contact_name', '<span class="glyphicon glyphicon-user"></span>'),
+            PrependedText('contact_email', '<span class="glyphicon glyphicon-envelope"></span>'),
+            Field('message'),
+            FormActions(Submit('Send', 'Send', css_class='btn btn-primary col-lg-12'))
+        )
+
 
 
 class BookingForm(forms.Form):

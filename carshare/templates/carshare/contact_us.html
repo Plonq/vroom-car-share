@@ -2,16 +2,37 @@
 {% load static %}
 {% block pagetitle %}Contact Us{% endblock %}
 {% block header %}
-    <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/contact_us.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/contact_us.css' %}">
 {% endblock header %}
 {% block maincontent %}
 
-    <h3>Contact Us</h3>
-    {% load crispy_forms_tags %}
-    <form class="validated-form" method="post">
-        {% crispy contact_form %}
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Send</button>
+    <h2>Send us a message</h2>
+    <p>We are happy to answer any questions you have!</p>
+    <div class="col-lg-12 contact-wrapper">
+        <div class="col-xs-12 col-sm-6 forms">
+           <h4 class="text-center"><strong>Message Us!</strong></h4>
+            {% load crispy_forms_tags %}
+            <form class="validated-form" method="post">
+                {% crispy contact_form %}
+                <!--<div class="form-actions">
+                    <button type="submit" class="btn btn-primary col-lg-12">Send</button>
+                </div>-->
+            </form>
         </div>
-    </form>
+        <div class="col-xs-12 col-sm-6 forms contactinfo">
+            <h4 class="text-center"><strong>Contact Information</strong></h4>
+            <div class="col-lg-offset-1 col-lg-10">
+                <span class="glyphicon glyphicon-home icon"></span>
+                <span class="address">123 Fake Street, Melbourne 3000, Australia</span>
+            </div>
+            <div class="col-lg-offset-1 col-lg-10">
+                <span class="glyphicon glyphicon-earphone icon"></span>
+                <span class="oneline"><a href="tel:18001234564">1-800-123-4564</a></span>
+            </div>
+            <div class="col-lg-offset-1 col-lg-10">
+                <span class="glyphicon glyphicon-envelope icon"></span>
+                <span class="oneline"><a href="mailto:enquiries@vroomcs.org">enquiries@vroomcs.org</a></span>
+            </div>
+        </div>
+    </div>
 {% endblock %}
