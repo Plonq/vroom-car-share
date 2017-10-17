@@ -209,12 +209,12 @@
                         $("#car_availability").text("Car Available");
                         $("#car_availability_mobile").text("Car Available");
                         $("#booking_button").text("Book Now");
-                        $("#booking_button").removeClass("disabled");
+                        //$("#booking_button").removeClass("disabled");
                         $("#booking_button").click(function () {
                             window.location.href = pod.booking_url
                         });
                         $("#booking_button_mobile").text("Book Now");
-                        $("#booking_button_mobile").removeClass("disabled");
+                        //$("#booking_button_mobile").removeClass("disabled");
                         $("#booking_button_mobile").click(function () {
                             window.location.href = pod.booking_url
                         });
@@ -222,10 +222,16 @@
                     else {
                         $("#car_availability").text("Car In Use");
                         $("#booking_button").text("Unavailable");
-                        $("#booking_button").addClass("disabled");
+                        //$("#booking_button").addClass("disabled");
                         $("#car_availability_mobile").text("Car In Use");
                         $("#booking_button_mobile").text("Unavailable");
-                        $("#booking_button_mobile").addClass("disabled");
+                        //$("#booking_button_mobile").addClass("disabled");
+                        $("#booking_button").click(function () {
+                            window.location.href = pod.booking_url
+                        });
+                        $("#booking_button_mobile").click(function () {
+                            window.location.href = pod.booking_url
+                        });
                     }
 
                     $("#Booking_Container").fadeIn("slow");
