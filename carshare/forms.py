@@ -22,7 +22,7 @@ class ContactForm(forms.Form):
             PrependedText('contact_name', '<span class="glyphicon glyphicon-user"></span>'),
             PrependedText('contact_email', '<span class="glyphicon glyphicon-envelope"></span>'),
             Field('message'),
-            FormActions(Submit('Send', 'Send', css_class='btn btn-primary col-lg-12'))
+            FormActions(Submit('Send', 'Send', css_class='btn btn-primary col-lg-12 col-sm-12 col-xs-12'))
         )
 
 
