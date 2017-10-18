@@ -156,7 +156,7 @@ CKEDITOR_CONFIGS = {
             ['Styles'],
             ['Format'],
             ['Bold', 'Italic', 'Underline'],
-            ['FontSize', 'TextColor'],
+            ['Font', 'FontSize', 'TextColor'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
             ['Link', 'Unlink'],
             ['RemoveFormat', 'Source']
