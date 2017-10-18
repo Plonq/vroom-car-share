@@ -125,10 +125,9 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
 
                 # Send confirmation email
                 request.user.email_user(
-                    subject='Booking confirmed!',
-                    template='carshare/email/booking_confirmation.html',
+                    template_name='Booking Confirmation',
                     context={
-                        'firstname': request.user.first_name,
+                        'user': request.user,
                         'booking': booking,
                     },
                 )
@@ -216,10 +215,8 @@ def booking_extend(request, booking_id):
 
                 # Send confirmation email TODO: create new template
                 request.user.email_user(
-                    subject='Booking extended',
-                    template='carshare/email/booking_extend_confirmation.html',
+                    template_name='Booking Extended',
                     context={
-                        'firstname': request.user.first_name,
                         'booking': booking,
                     },
                 )

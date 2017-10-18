@@ -135,18 +135,18 @@ def register_credit_card(request):
             credit_card.user = user_obj
             credit_card.save()
 
-            # Construct and send activation email
+            # Create activation URL
             kwargs = {
                 "uidb64": urlsafe_base64_encode(force_bytes(user_obj.pk)).decode(),
                 "token": default_token_generator.make_token(user_obj)
             }
             activation_url = reverse("activate_account", kwargs=kwargs)
             activate_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), activation_url)
+            #
             user_obj.email_user(
-                subject='Thank you for joining Vroom!',
-                template='registration/email/account_confirmation.html',
+                template_name='Registration',
                 context={
-                    'firstname': user_obj.first_name,
+                    'user': user_obj,
                     'activate_url': activate_url
                 },
             )
