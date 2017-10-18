@@ -22,10 +22,13 @@
 }*/
 
 .booking-details .row:nth-child(odd) {
-    background-color: #f2f2f2;
-    color: #6b6b6b;
+    /*background-color: #f2f2f2;*/
+    background-color: #006699;
+    font-size: 15px;
+    /*color: #6b6b6b;*/
+    color:white;
     font-weight: bold;
-    color:#006699;
+    /*color:#006699;*/
     border-bottom:1px solid lightgray;
 }
 
@@ -34,14 +37,15 @@
 
 .booking-details .row:nth-child(even) {
     background-color: #f2f2f2;
+    /*background-color: #006699;*/
     color: #6b6b6b;
      border-bottom:1px solid lightgray;
 }
 
-.booking-details .row:hover {
+/*.booking-details .row:hover {
     background-color:#C4EBFC;
 
-}
+}*/
 
 .actions-heading {
     font-size: 13pt;
