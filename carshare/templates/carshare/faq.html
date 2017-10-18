@@ -52,7 +52,7 @@
         </p>
     </div>
 
-        <button class="accordion">FAQ Question 4</button>
+    <button class="accordion">FAQ Question 4</button>
     <div class="panel">
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fringilla cursus magna ac imperdiet. In in urna
@@ -66,7 +66,7 @@
         </p>
     </div>
 
-        <button class="accordion">FAQ Question 5</button>
+    <button class="accordion">FAQ Question 5</button>
     <div class="panel">
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fringilla cursus magna ac imperdiet. In in urna
@@ -80,7 +80,7 @@
         </p>
     </div>
 
-        <button class="accordion">FAQ Question 6</button>
+    <button class="accordion">FAQ Question 6</button>
     <div class="panel">
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fringilla cursus magna ac imperdiet. In in urna
@@ -94,7 +94,7 @@
         </p>
     </div>
 
-        <button class="accordion">FAQ Question 7</button>
+    <button class="accordion">FAQ Question 7</button>
     <div class="panel">
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fringilla cursus magna ac imperdiet. In in urna
@@ -115,8 +115,6 @@
 
         for (i = 0; i < acc.length; i++) {
             acc[i].onclick = function () {
-
-                //this.classList.toggle("active");
                 var panel = this.nextElementSibling;
                 if (panel.style.maxHeight) {
                     $(".accordion").removeClass("active");
@@ -125,18 +123,10 @@
                     $(".panel").css("max-height", "");
                     $(".accordion").removeClass("active");
                     this.classList.toggle("active");
-
-
                     panel.style.maxHeight = panel.scrollHeight + "px";
                 }
-
-
             }
         }
     </script>
-
-{% endblock %}
-
-{% block scripts %}
 
 {% endblock %}
