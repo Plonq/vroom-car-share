@@ -6,12 +6,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
 {% endblock %}
 
-
-{% block maincontent %}
-    <div class="container-fluid">
+{% block full-width-content %}
         <div class="row">
             <div class="text-center page-title">Booking Detail</div>
         </div>
+{% endblock %}
+
+{% block maincontent %}
+    <div class="container-fluid">
+
         <div class="row">
             <div class="col-xs-12" id="map"></div>
         </div>
