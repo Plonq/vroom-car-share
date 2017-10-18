@@ -69,6 +69,7 @@
                         <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
                     {% elif booking.get_status == 'Confirmed' %}
                         <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                        <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
                     {% endif %}
                 </div>
             {% endif %}
@@ -109,8 +110,6 @@
                     <p>You have selected to end your current booking.</p>
 
                     <p>Once your booking has ended you will be sent an invoice via email.</p>
-
-                    <p>Booking End - <strong><span id="time"></span></strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -126,18 +125,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        var display = setInterval(function () {
-            Time()
-        }, 0);
-
-        function Time() {
-            var date = new Date();
-            var time = "{{ booking.schedule_end|date:'D m Y, H:i' }}";
-            document.getElementById("time").innerHTML = time;
-        }
-    </script>
-
     <script>
         function initMap() {
             var vehicle = {

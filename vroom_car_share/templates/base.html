@@ -10,6 +10,7 @@
 {% url 'logout' as url_logout %}
 {% url 'profile' as url_profile %}
 {% url 'register' as url_register %}
+{% url 'carshare:faq' as url_faq %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -155,7 +156,7 @@
                        aria-expanded="false">HELP<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">PRICING</a></li>
-                        <li><a href="#">FAQs</a></li>
+                        <li><a href="{{ url_faq }}">FAQs</a></li>
                         <li><a href="#">HOW IT WORKS</a></li>
                         <li {% if request.path == url_contact_us %} class="active" {% endif %}><a href="{{ url_contact_us }}">CONTACT US</a></li>
                     </ul>
@@ -234,7 +235,7 @@
         </div>
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4">
-                <a href="#">FAQ</a>
+                <a href="{{ url_faq }}">FAQ</a>
             </div>
             <div class="col-sm-4">
                 <a href="#">How It Works</a>
@@ -268,7 +269,7 @@
         </div>
         <div class="row visible-xs top-buffer">
             <div class="col-xs-6">
-                <a href="#">FAQ</a>
+                <a href="{{ url_faq }}">FAQ</a>
             </div>
             <div class="col-xs-6">
                 <a href="" data-toggle="modal" data-target="#myModal">Login</a>

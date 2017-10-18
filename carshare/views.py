@@ -16,6 +16,9 @@ from .models import Vehicle, Booking
 def index(request):
     return render(request, 'carshare/index.html')
 
+def faq(request):
+    return render(request, 'carshare/faq.html')
+
 
 def contact_us(request):
     if request.method == 'POST':
@@ -122,10 +125,9 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
 
                 # Send confirmation email
                 request.user.email_user(
-                    subject='Booking confirmed!',
-                    template='carshare/email/booking_confirmation.html',
+                    template_name='Booking Confirmation',
                     context={
-                        'firstname': request.user.first_name,
+                        'user': request.user,
                         'booking': booking,
                     },
                 )
@@ -213,10 +215,8 @@ def booking_extend(request, booking_id):
 
                 # Send confirmation email TODO: create new template
                 request.user.email_user(
-                    subject='Booking extended',
-                    template='carshare/email/booking_extend_confirmation.html',
+                    template_name='Booking Extended',
                     context={
-                        'firstname': request.user.first_name,
                         'booking': booking,
                     },
                 )
@@ -239,6 +239,12 @@ def booking_cancel(request, booking_id):
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
+    if booking.cancelled:
+        messages.error(request, 'This booking has already been cancelled')
+        return redirect('carshare:my_bookings')
+    if booking.ended:
+        messages.error(request, 'You cannot cancel a booking that has already ended')
+        return redirect('carshare:my_bookings')
     booking.cancelled = timezone.now()
     booking.save()
     messages.success(request,'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
@@ -253,12 +259,17 @@ def booking_end(request, booking_id):
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
     # Only allow to end booking if the booking is active.
-    if booking.get_status() == 'Active':
-        booking.ended = timezone.now()
-        booking.save()
-        messages.success(request, 'Your booking has ended')
-    else:
+    if booking.cancelled:
+        messages.error(request, 'You cannot end a booking that has already been cancelled')
+        return redirect('carshare:my_bookings')
+    if booking.ended:
+        messages.error(request, 'This booking has already been ended')
+        return redirect('carshare:my_bookings')
+    if booking.get_status() != 'Active':
         # Request them to Cancel booking rather than end.
         messages.error(request, 'You cannot end this booking as it has not started yet. Please cancel instead.')
         return redirect('carshare:booking_detail', booking.id)
+    booking.ended = timezone.now()
+    booking.save()
+    messages.success(request, 'Your booking has ended')
     return redirect('carshare:my_bookings')

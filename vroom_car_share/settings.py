@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'carshare',
     'accounts',
+    'emails',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'datetimewidget',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -138,6 +140,29 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
+
+# Media (required for djang-tinymce but not used)
+MEDIA_ROOT = 'vroom_car_share/media/'
+MEDIA_URL = 'https://vroom-car-share.herokuapp.com/media/'
+
+# CKEditor settings
+CKEDITOR_UPLOAD_PATH = 'upload/'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 300,
+        'width': '100%',
+        'toolbar': 'Email',
+        'toolbar_Email': [
+            ['Styles'],
+            ['Format'],
+            ['Bold', 'Italic', 'Underline'],
+            ['Font', 'FontSize', 'TextColor'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    },
+}
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

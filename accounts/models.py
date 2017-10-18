@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 from .managers import UserManager
+from emails.utils import send_templated_email
 
 
 # Custom User model to use email instead of username
@@ -45,18 +46,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def email_user(self, subject, template, context, **kwargs):
+    def email_user(self, template_name, context, **kwargs):
         """
-        Sends an email to this User.
+        Sends an email to this User given the template_name (not the template filename)
         """
-        html_message = render_to_string(template, context)
-        text_message = strip_tags(html_message)
-        send_mail(
-            subject,
-            message=text_message,
-            html_message=html_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+        send_templated_email(
+            template_name=template_name,
+            context=context,
             recipient_list=[self.email],
+            from_email=settings.DEFAULT_FROM_EMAIL,
             **kwargs
         )
 
