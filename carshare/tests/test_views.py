@@ -55,6 +55,8 @@ class CarshareContactUsViewTests(TestCase):
 
 @override_settings(STATICFILES_STORAGE=STATICFILES_STORAGE_FOR_TESTS)
 class CarshareBookingViewTests(TestCase):
+    fixtures = ['email_templates']
+
     def setUp(self):
         # Create user to log in as
         User.objects.create_user(email='user@test.com', password='bigbadtestuser', first_name='Test', last_name='User', date_of_birth=dt.date(1980, 1, 1))

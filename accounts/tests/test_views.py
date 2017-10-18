@@ -32,10 +32,13 @@ class AccountsPageTextViewTests(TestCase):
 
 @override_settings(STATICFILES_STORAGE=STATICFILES_STORAGE_FOR_TESTS)
 class AccountsRegisterViewTests(TestCase):
+    fixtures = ['email_templates']
+
     def test_valid_registration(self):
         """
         Registration with valid details is successful and sends email to user
         """
+
         user_data = {
             'email': 'test123@test.com',
             'first_name': 'Test',
