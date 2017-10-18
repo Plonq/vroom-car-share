@@ -16,6 +16,9 @@ from .models import Vehicle, Booking
 def index(request):
     return render(request, 'carshare/index.html')
 
+def faq(request):
+    return render(request, 'carshare/faq.html')
+
 
 def contact_us(request):
     if request.method == 'POST':
