@@ -213,7 +213,7 @@ def booking_extend(request, booking_id):
                 booking.schedule_end = new_schedule_end
                 booking.save()
 
-                # Send confirmation email TODO: create new template
+                # Send confirmation email
                 request.user.email_user(
                     template_name='Booking Extended',
                     context={
@@ -247,6 +247,13 @@ def booking_cancel(request, booking_id):
         return redirect('carshare:my_bookings')
     booking.cancelled = timezone.now()
     booking.save()
+    # Send email
+    request.user.email_user(
+        template_name='Booking Cancelled',
+        context={
+            'booking': booking,
+        },
+    )
     messages.success(request,'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
                                                                                          booking.vehicle.make,
                                                                                          booking.vehicle.model))
