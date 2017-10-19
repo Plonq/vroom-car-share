@@ -143,7 +143,7 @@ def register_credit_card(request):
             activation_url = reverse("activate_account", kwargs=kwargs)
             activate_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), activation_url)
             #
-            user_obj.email_user(
+            user_obj.send_email(
                 template_name='Registration',
                 context={
                     'user': user_obj,

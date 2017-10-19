@@ -124,7 +124,7 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                 booking.save()
 
                 # Send confirmation email
-                request.user.email_user(
+                request.user.send_email(
                     template_name='Booking Confirmation',
                     context={
                         'user': request.user,
@@ -214,7 +214,7 @@ def booking_extend(request, booking_id):
                 booking.save()
 
                 # Send confirmation email
-                request.user.email_user(
+                request.user.send_email(
                     template_name='Booking Extended',
                     context={
                         'booking': booking,
@@ -248,7 +248,7 @@ def booking_cancel(request, booking_id):
     booking.cancelled = timezone.now()
     booking.save()
     # Send email
-    request.user.email_user(
+    request.user.send_email(
         template_name='Booking Cancelled',
         context={
             'booking': booking,

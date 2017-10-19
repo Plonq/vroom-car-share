@@ -46,7 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def email_user(self, template_name, context, **kwargs):
+    def send_email(self, template_name, context, **kwargs):
         """
         Sends an email to this User given the template_name (not the template filename)
         """
