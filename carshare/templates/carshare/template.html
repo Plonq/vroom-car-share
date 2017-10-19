@@ -1,0 +1,61 @@
+<div style="width:100%;">
+    <div  style="display:inline-block; width:20%;"><a href="https://vroom-car-share.herokuapp.com/">
+        <img src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png"
+             alt="Vroom Car Share" style="margin-top:15px; width: 250px; height: 100px;" /></a>
+    </div>
+    <div  style="display:inline-block;">
+        Vroom Car Share PTY LTD <br/>
+        Contact@vroomcs.org<br/>
+        1-800-123-4564<br/>
+    </div>
+    <div  style="display:inline-block; float:right;">
+        123 Fake Street<br/>
+        Melbourne,3000 <br/>
+        Australia <br/>
+    </div>
+</div>
+
+<div style="width:100%">
+    <div style="display:inline-block;">
+    Invoice Number: 000001 <br/>
+    Invoice Date: {{ invoice_date }} <br/>
+    Due Date: {{ due_date }} <br/>
+    Balance: {{ balance }} <br/>
+    </div>
+    <div style="display:inline-block">
+        {{ booking.user.first_name }} {{ booking.user.last_name }} <br/>
+        {{ user.address.address_line_1 }} <br/>
+        {{ user.address.city }} {{ user.address.postcode }} <br/>
+        {{ user.email }}
+    </div>
+</div>
+
+
+<div style="width:100%; float:left;">
+        <hr style="width: 100%; border-style:inset; border-width: 1px;">
+        <br/>
+        <br/>
+        <table style="width:100%;">
+            <tr>
+                <th>Booking ID</th>
+                <th>Description</th>
+
+                <th>Trip Start</th>
+                <th>Trip End</th>
+                <th>Total Cost</th>
+            </tr>
+                    <tr>
+                        <th>{{ booking.id }}</th>
+                        <th> {{ booking.vehicle }}</th>
+                        <th> {{ booking.schedule_start }}</th>
+                        <th> {{ booking.schedule_end }}</th>
+                        <th> {{ booking.calculate_cost|stringformat:".2f" }}</th>
+                    </tr>
+        </table>
+</div>
+<div style="width:100%; position:absolute; top:40%; left:40%; z-index:15;">
+    Thank you for choosing Vroom Car Share <br/>
+    Please make your payment within 7 days <br/>
+    Direct enquiries to enquiries@vroomcs.org<br/>
+</div>
+

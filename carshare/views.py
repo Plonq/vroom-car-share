@@ -4,7 +4,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from datetime import timedelta
 from django.db.models import Q
+from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
+from django.views.generic.base import View
 
 import datetime as dt
 
@@ -273,3 +276,16 @@ def booking_end(request, booking_id):
     booking.save()
     messages.success(request, 'Your booking has ended')
     return redirect('carshare:my_bookings')
+
+def invoiceview(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    invoice_date = timezone.localdate()
+    template= 'carshare/template.html'
+    context={'title': 'Invoice', 'booking': booking, 'invoice_date': invoice_date}
+
+    response = PDFTemplateResponse(request=request,
+                                       template=template,
+                                       filename="invoice.pdf",
+                                       context=context,
+                                       show_content_in_browser=True)
+    return response

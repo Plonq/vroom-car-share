@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             context=context,
             recipient_list=[self.email],
             from_email=settings.DEFAULT_FROM_EMAIL,
-            **kwargs
+            **kwargs,
         )
 
     def has_perm(self, perm, obj=None):
