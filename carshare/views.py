@@ -4,15 +4,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from datetime import timedelta
 from django.db.models import Q
-from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
-from django.views.generic.base import View
+from wkhtmltopdf.views import PDFTemplateResponse
 
 import datetime as dt
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
-from .models import Vehicle, Booking
+from .models import Vehicle, Booking, Invoice
 
 
 # Create your views here.
@@ -281,18 +279,21 @@ def booking_end(request, booking_id):
         return redirect('carshare:booking_detail', booking.id)
     booking.ended = timezone.now()
     booking.save()
-    messages.success(request, 'Your booking has ended')
+    # Create invoice and email it to user
+    invoice = Invoice(booking=booking, amount=booking.calculate_cost())
+    invoice.save()
+    context = {'invoice': invoice}
+    invoice_filename = 'invoice_{0}.pdf'.format(invoice.id)
+    response = PDFTemplateResponse(
+        request=request,
+        template='carshare/pdf/invoice.html',
+        context=context,
+    )
+    request.user.send_email(
+        template_name='Booking Invoice',
+        context=context,
+        attachment_filename=invoice_filename,
+        attachment_data=response.rendered_content,
+    )
+    messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
     return redirect('carshare:my_bookings')
-
-def invoiceview(request, booking_id):
-    booking = get_object_or_404(Booking, pk=booking_id)
-    invoice_date = timezone.localdate()
-    template= 'carshare/template.html'
-    context={'title': 'Invoice', 'booking': booking, 'invoice_date': invoice_date}
-
-    response = PDFTemplateResponse(request=request,
-                                       template=template,
-                                       filename="invoice.pdf",
-                                       context=context,
-                                       show_content_in_browser=True)
-    return response

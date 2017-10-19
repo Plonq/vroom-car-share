@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Vehicle, Pod, VehicleType, Booking
+from .models import Vehicle, Pod, VehicleType, Booking, Invoice
 
 
 def make_active(modeladmin, request, queryset):
@@ -32,7 +32,14 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = ['user', 'vehicle', 'schedule_start', 'schedule_end']
     ordering = ['schedule_start']
 
+
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ['id', 'booking', 'amount']
+    ordering = ['id']
+
+
 admin.site.register(VehicleType, VehicleTypeAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(Pod, PodAdmin)
 admin.site.register(Booking, BookingAdmin)
+admin.site.register(Invoice, InvoiceAdmin)

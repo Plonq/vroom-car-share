@@ -152,3 +152,6 @@ class Invoice(models.Model):
     booking = models.OneToOneField(Booking, related_name='invoice')
     date = models.DateField(default=timezone.now)
     amount = models.DecimalField(max_digits=7, decimal_places=2)
+
+    def __str__(self):
+        return '{0} - Booking {1}'.format(self.id, self.booking.id)
