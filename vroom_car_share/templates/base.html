@@ -347,6 +347,17 @@
     });
 </script>
 
+<script>
+    // Disable button and show loading icon for actions that shouldn't be done more than once
+    $(document).ready(function() {
+        $('.load-after-click').append(' <span class="loading-icon glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display: none"></span>')
+    });
+    $('.load-after-click').click(function() {
+        $(this).addClass('disabled');
+        $('.loading-icon').show();
+    });
+</script>
+
 {% block scripts %}{% endblock %}
 </body>
 </html>

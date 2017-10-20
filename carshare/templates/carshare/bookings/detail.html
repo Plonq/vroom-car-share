@@ -91,7 +91,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a href="{% url 'carshare:booking_cancel' booking.id %}" class="btn btn-danger">Confirm Cancel</a>
+                    <a href="{% url 'carshare:booking_cancel' booking.id %}" class="btn btn-danger load-after-click">Confirm Cancel</a>
                 </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a href="{% url 'carshare:booking_end' booking.id %}" class="btn btn-primary">End Booking</a>
+                    <a href="{% url 'carshare:booking_end' booking.id %}" class="btn btn-primary load-after-click">End Booking</a>
                 </div>
             </div>
         </div>
