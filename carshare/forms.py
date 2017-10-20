@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML, Submit
 from crispy_forms.bootstrap import (PrependedText, PrependedAppendedText, FormActions)
 from datetimewidget.widgets import DateWidget
+
 import datetime as dt
 
 
@@ -91,8 +92,9 @@ class BookingForm(forms.Form):
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
                 raise forms.ValidationError('End time must be after the start time')
-            # Make sure schedule_start is in the future
-            if schedule_start <= timezone.now():
+            # Make sure schedule_start is in the future or max one hour in past (if 11:15 should allow user
+            # to book for 11:00-12:00)
+            if schedule_start <= timezone.now() - dt.timedelta(hours=1):
                 raise forms.ValidationError('Start time must be in the future')
             # Make sure end is after start (not the same as)
             if schedule_start == schedule_end:

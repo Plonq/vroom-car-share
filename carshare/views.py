@@ -68,7 +68,7 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
     hours = {}
     for i in range(0, 24):
         datetime = timezone.make_aware(dt.datetime.combine(date, dt.time(hour=i, minute=0)), timezone.get_current_timezone())
-        if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime():
+        if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime() - dt.timedelta(hours=1):
             hours[i] = 'available'
         else:
             hours[i] = 'unavailable'
