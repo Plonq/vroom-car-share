@@ -11,7 +11,9 @@ a {
     color: black;
 }
 
-h1 {
+.header p {
+    font-weight: lighter;
+    font-size: 24pt;
     color: #3399cc;
     Text-Transform: uppercase;
 }
