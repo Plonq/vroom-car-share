@@ -164,6 +164,9 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+# Admins get error notifications
+ADMINS = [('Huon', 'huon@plonq.org')]
+
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
