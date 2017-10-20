@@ -297,3 +297,25 @@ def booking_end(request, booking_id):
     )
     messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
     return redirect('carshare:my_bookings')
+
+
+#
+# AJAX views
+#
+def booking_calculate_cost(request, vehicle_id):
+    """
+    Calculates booking cost given start and end times (from POST)
+    :return: Float
+    """
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        if booking_form.is_valid():
+            data = booking_form.cleaned_data
+            booking_start = data['schedule_start']
+            booking_end = data['schedule_end']
+            booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
+            # DO NOT SAVE BOOKING!
+            return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
+        else:
+            return HttpResponse('-')
