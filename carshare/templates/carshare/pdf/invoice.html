@@ -1,61 +1,93 @@
-<div style="width:100%;">
-    <div  style="display:inline-block; width:20%;"><a href="https://vroom-car-share.herokuapp.com/">
-        <img src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png"
-             alt="Vroom Car Share" style="margin-top:15px; width: 250px; height: 100px;" /></a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "carshare/css/pdf/invoice.css" %}">
+
+
+</head>
+
+<body>
+
+<div class="container">
+<div class="row">
+    <div id="logo" class="col-lg-4">
+        <a href="https://vroom-car-share.herokuapp.com/"><img src="https://vroom-car-share.herokuapp.com/static/images/vroom_logo.eae008acac4f.png" alt="Vroom Car Share" /></a>
     </div>
-    <div  style="display:inline-block;">
-        Vroom Car Share PTY LTD <br/>
-        Contact@vroomcs.org<br/>
-        1-800-123-4564<br/>
+
+
+    <div class="col-lg-5 companycontact">
+        <p class="companyname">Vroom Car Share PTY LTD</p>
+        <p><a href="mailto:Contact@vroomcs.org">Contact@vroomcs.org</a></p>
+        <p><a href="tel:18001234564">1-800-123-4564</a></p>
     </div>
-    <div  style="display:inline-block; float:right;">
-        123 Fake Street<br/>
-        Melbourne,3000 <br/>
-        Australia <br/>
+
+    <div class="col-lg-3 companyaddress">
+        <p>123 Fake Street</p>
+        <p>Melbourne, 3000</p>
+        <p>Australia</p>
     </div>
 </div>
 
-<div style="width:100%">
-    <div style="display:inline-block;">
-    Invoice Number: 000001 <br/>
-    Invoice Date: {{ invoice_date }} <br/>
-    Due Date: {{ due_date }} <br/>
-    Balance: {{ balance }} <br/>
+<h1>Payment Summary</h1>
+<hr />
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="col-lg-5">
+            <p>Invoice Number</p>
+            <p>Invoice Date</p>
+            <p>Total Cost</p>
+        </div>
+
+        <div class="col-lg-7">
+            <p><strong>{{ invoice.pk|stringformat:"05d" }}</strong></p>
+            <p>{{ invoice.date }}</p>
+            <p>${{ invoice.amount }}</p>
+
+        </div>
     </div>
-    <div style="display:inline-block">
-        {{ booking.user.first_name }} {{ booking.user.last_name }} <br/>
-        {{ user.address.address_line_1 }} <br/>
-        {{ user.address.city }} {{ user.address.postcode }} <br/>
-        {{ user.email }}
+
+    <div class="col-lg-8">
+        <p><strong>{{ invoice.booking.user.first_name }} {{ invoice.booking.user.last_name }}</strong></p>
+        <p>{{ invoice.booking.user.address.address_line_1 }}</p>
+        <p>{{ invoice.booking.user.address.city }}, {{ invoice.booking.user.address.postcode }}</p>
+        <p>{{ invoice.booking.user.address.country }}</p>
+        <p>{{ invoice.booking.user.email }}</p>
     </div>
 </div>
 
 
-<div style="width:100%; float:left;">
-        <hr style="width: 100%; border-style:inset; border-width: 1px;">
-        <br/>
-        <br/>
-        <table style="width:100%;">
-            <tr>
-                <th>Booking ID</th>
-                <th>Description</th>
-
-                <th>Trip Start</th>
-                <th>Trip End</th>
-                <th>Total Cost</th>
-            </tr>
-                    <tr>
-                        <th>{{ booking.id }}</th>
-                        <th> {{ booking.vehicle }}</th>
-                        <th> {{ booking.schedule_start }}</th>
-                        <th> {{ booking.schedule_end }}</th>
-                        <th> {{ booking.calculate_cost|stringformat:".2f" }}</th>
-                    </tr>
-        </table>
-</div>
-<div style="width:100%; position:absolute; top:40%; left:40%; z-index:15;">
-    Thank you for choosing Vroom Car Share <br/>
-    Please make your payment within 7 days <br/>
-    Direct enquiries to enquiries@vroomcs.org<br/>
+<div class="row header">
+    <div class="col-lg-2">Booking ID</div>
+    <div class="col-lg-4">Description</div>
+    <div class="col-lg-2">Trip Start</div>
+    <div class="col-lg-2">Trip End</div>
+    <div class="col-lg-2 cost">Total Cost</div>
 </div>
 
+<div class="row data">
+    <div class="col-lg-2"><strong>{{ invoice.booking.id }}</strong></div>
+    <div class="col-lg-4">{{ invoice.booking.vehicle.pod.description }}</div>
+    <div class="col-lg-2">{{ invoice.booking.schedule_start }}</div>
+    <div class="col-lg-2">{{ invoice.booking.schedule_end }}</div>
+    <div class="col-lg-2 cost">${{ invoice.booking.calculate_cost|stringformat:".2f" }}</div>
+</div>
+
+
+<div class="row">
+<div>
+    <p>Thank you for choosing Vroom Car Share</p>
+    <p>Your credit card has been automatically processed</p>
+    <p>Direct enquiries to <a href="mailto:enquiries@vroomcs.org">enquiries@vroomcs.org</a></p>
+</div>
+</div>
+</div>
+
+</body>
+</html>
