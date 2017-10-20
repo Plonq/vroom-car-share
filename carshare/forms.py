@@ -187,12 +187,13 @@ class ExtendBookingForm(forms.Form):
             self.dateTimeOptions['startDate'] = self.current_booking_end.isoformat()
             self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
             # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
+            initial_booking_end = self.current_booking_end + dt.timedelta(hours=1)
             self.initial['new_end_date'] = dt.datetime.strftime(
-                timezone.make_naive(self.current_booking_end),
+                timezone.make_naive(initial_booking_end),
                 '%d/%m/%Y'
             )
             self.initial['new_end_time'] = dt.datetime.strftime(
-                timezone.make_naive(self.current_booking_end + dt.timedelta(hours=1)),
+                timezone.make_naive(initial_booking_end),
                 '%H:%M'
             )
         # Crispy forms
