@@ -1,11 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.core.mail import send_mail
-from django.utils import timezone
 from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 
 from .managers import UserManager
 from emails.utils import send_templated_email
@@ -46,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def email_user(self, template_name, context, **kwargs):
+    def send_email(self, template_name, context, attachment_filename=None, attachment_data=None):
         """
         Sends an email to this User given the template_name (not the template filename)
         """
@@ -55,7 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             context=context,
             recipient_list=[self.email],
             from_email=settings.DEFAULT_FROM_EMAIL,
-            **kwargs
+            attachment_filename=attachment_filename,
+            attachment_data=attachment_data,
         )
 
     def has_perm(self, perm, obj=None):

@@ -151,19 +151,7 @@ class Invoice(models.Model):
     """
     booking = models.OneToOneField(Booking, related_name='invoice')
     date = models.DateField(default=timezone.now)
-    due = models.DateField()
     amount = models.DecimalField(max_digits=7, decimal_places=2)
-    paid = models.BooleanField(default=False)
 
-    def is_overdue(self):
-        return self.due < timezone.now().date()
-
-    def overdue_days(self):
-        """
-        Number of days overdue, or 0 if not overdue
-        """
-        if not self.is_overdue():
-            return 0
-        else:
-            return (timezone.now().date() - self.due).days
-
+    def __str__(self):
+        return '{0} - Booking {1}'.format(self.id, self.booking.id)

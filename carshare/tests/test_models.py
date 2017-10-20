@@ -104,24 +104,6 @@ class CarshareBookingModelTests(TestCase):
         self.assertEqual(b.calculate_cost(), 62.5)
 
 
-class CarshareInvoiceModelTests(TestCase):
-    def test_non_overdue_invoice(self):
-        """
-        Non-overdue invoice returns expected results
-        """
-        invoice = Invoice(due=two_days_from_now.date(), amount='56.25')
-        self.assertFalse(invoice.is_overdue())
-        self.assertEqual(invoice.overdue_days(), 0)
-
-    def test_overdue_invoice(self):
-        """
-        Overdue invoice returns expected results
-        """
-        invoice = Invoice(due=yesterday.date(), amount='56.25')
-        self.assertTrue(invoice.is_overdue())
-        self.assertEqual(invoice.overdue_days(), 1)
-
-
 class CarshareVehicleModelTests(TestCase):
     def setUp(self):
         vt = VehicleType.objects.create(description='Premium', hourly_rate='12.50', daily_rate='80.00')

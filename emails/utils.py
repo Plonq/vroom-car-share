@@ -1,12 +1,12 @@
 from django.template import Engine, Context
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 from .models import EmailTemplate
 
 
-def send_templated_email(template_name, context, recipient_list, from_email, **kwargs):
+def send_templated_email(template_name, context, recipient_list, from_email, attachment_filename=None, attachment_data=None):
     # Get template from database, render it using the provided context
     template_engine = Engine()
     email_template = EmailTemplate.objects.get(name=template_name)
@@ -22,11 +22,19 @@ def send_templated_email(template_name, context, recipient_list, from_email, **k
 
     # Send the email
     text_message = strip_tags(email_body_full)
-    send_mail(
-        recipient_list = recipient_list,
-        from_email = from_email,
+    email = EmailMultiAlternatives(
+        to=recipient_list,
+        from_email=from_email,
         subject=email_subject,
-        message = text_message,
-        html_message = email_body_full,
-        **kwargs
+        body=text_message,
     )
+    email.attach_alternative(email_body_full, "text/html")
+    # Attachment?
+    if attachment_filename:
+        if attachment_data:
+            email.attach(attachment_filename, attachment_data)
+        else:
+            email.attach_file(attachment_filename)
+    elif attachment_data:
+        email.attach('attachment', attachment_data)
+    email.send()
