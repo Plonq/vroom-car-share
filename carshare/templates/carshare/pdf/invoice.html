@@ -41,11 +41,11 @@
             </div>
             <div class="row">
                 <div class="col-xs-6">Invoice Date:</div>
-                <div class="col-xs-6">{{ invoice.date }}</div>
+                <div class="col-xs-6">{{ invoice.date|date:'d/m/Y' }}</div>
             </div>
             <div class="row">
                 <div class="col-xs-6">Total Cost:</div>
-                <div class="col-xs-6">${{ invoice.amount }}</div>
+                <div class="col-xs-6">${{ invoice.amount|stringformat:".2f" }}</div>
             </div>
         </div>
 
