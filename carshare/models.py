@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 
 from decimal import Decimal
+from math import ceil
+
 from accounts.models import User
 
 
@@ -110,7 +112,7 @@ class Booking(models.Model):
         booking_length = self.schedule_end - self.schedule_start
         booking_length_hours_total = booking_length.days * 24 + booking_length.seconds / 60 / 60
         booking_days = int(booking_length_hours_total / 24)
-        booking_hours = int(booking_length_hours_total % 24)
+        booking_hours = ceil(booking_length_hours_total % 24)
         return float(
             (booking_days * Decimal(self.vehicle.type.daily_rate)) +
             (booking_hours * Decimal(self.vehicle.type.hourly_rate))
