@@ -25,6 +25,7 @@ select.form-control {
 }
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-    background-color: #3399cc;
+    color: #3399cc;
+    background-color: inherit;
     font-weight: bold;
 }
