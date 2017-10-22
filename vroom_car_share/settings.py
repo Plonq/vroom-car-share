@@ -141,7 +141,7 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
 
-# Media (required for djang-tinymce but not used)
+# Media
 MEDIA_ROOT = 'vroom_car_share/media/'
 MEDIA_URL = 'https://vroom-car-share.herokuapp.com/media/'
 

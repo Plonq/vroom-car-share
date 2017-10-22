@@ -68,7 +68,7 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
     hours = {}
     for i in range(0, 24):
         datetime = timezone.make_aware(dt.datetime.combine(date, dt.time(hour=i, minute=0)), timezone.get_current_timezone())
-        if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime():
+        if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime() - dt.timedelta(hours=1):
             hours[i] = 'available'
         else:
             hours[i] = 'unavailable'
@@ -96,7 +96,7 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
             # Custom validation
             is_valid_booking = True
             # Prevent booking overlapping with existing booking
-            existing_bookings = Booking.objects.filter(vehicle=vehicle)
+            existing_bookings = Booking.objects.filter(vehicle=vehicle, cancelled__isnull=True)
             for b in existing_bookings:
                 if (b.schedule_start <= booking_start < b.schedule_end or
                     b.schedule_start < booking_end <= b.schedule_end or
@@ -105,7 +105,7 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     booking_form.add_error(None, "The selected vehicle is unavailable within the chosen times")
                     break
             # Prevent multiple bookings for the same user during the same time period
-            user_bookings = request.user.booking_set.all()
+            user_bookings = request.user.booking_set.filter(cancelled__isnull=True)
             for b in user_bookings:
                 if (b.schedule_start <= booking_start < b.schedule_end or
                     b.schedule_start < booking_end <= b.schedule_end or
@@ -190,7 +190,7 @@ def booking_extend(request, booking_id):
             # Custom validation
             is_valid_booking = True
             # Make sure new end date doesn't clash with existing booking
-            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle).exclude(user=request.user)
+            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle, cancelled__isnull=True).exclude(user=request.user)
             for b in existing_bookings:
                 if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
                     b.schedule_start <= new_schedule_end <= b.schedule_end or
@@ -199,7 +199,7 @@ def booking_extend(request, booking_id):
                     extend_booking_form.add_error(None, "The new end date overlaps with existing booking. "
                                                         "The latest date you can choose is {0}".format(b.schedule_start))
                     break
-            user_bookings = request.user.booking_set.exclude(id__exact=booking.id)
+            user_bookings = request.user.booking_set.filter(cancelled__isnull=True).exclude(id__exact=booking.id)
             for b in user_bookings:
                 if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
                     b.schedule_start <= new_schedule_end <= b.schedule_end or
@@ -297,3 +297,25 @@ def booking_end(request, booking_id):
     )
     messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
     return redirect('carshare:my_bookings')
+
+
+#
+# AJAX views
+#
+def booking_calculate_cost(request, vehicle_id):
+    """
+    Calculates booking cost given start and end times (from POST)
+    :return: Float
+    """
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        if booking_form.is_valid():
+            data = booking_form.cleaned_data
+            booking_start = data['schedule_start']
+            booking_end = data['schedule_end']
+            booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
+            # DO NOT SAVE BOOKING!
+            return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
+        else:
+            return HttpResponse('-')

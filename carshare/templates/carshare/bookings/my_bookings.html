@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}All Bookings{% endblock %}
+{% block pagetitle %}My Bookings{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/my_bookings.css' %}">
@@ -48,7 +48,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h3>Past/Ended/Cancelled</h3>
+            <h3>History</h3>
             {% if past_bookings %}
                 <table class="table table-responsive">
                     <thead>

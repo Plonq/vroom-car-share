@@ -6,6 +6,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML, Submit
 from crispy_forms.bootstrap import (PrependedText, PrependedAppendedText, FormActions)
 from datetimewidget.widgets import DateWidget
+
 import datetime as dt
 
 
@@ -91,8 +92,9 @@ class BookingForm(forms.Form):
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
                 raise forms.ValidationError('End time must be after the start time')
-            # Make sure schedule_start is in the future
-            if schedule_start <= timezone.now():
+            # Make sure schedule_start is in the future or max one hour in past (if 11:15 should allow user
+            # to book for 11:00-12:00)
+            if schedule_start <= timezone.now() - dt.timedelta(hours=1):
                 raise forms.ValidationError('Start time must be in the future')
             # Make sure end is after start (not the same as)
             if schedule_start == schedule_end:
@@ -187,12 +189,13 @@ class ExtendBookingForm(forms.Form):
             self.dateTimeOptions['startDate'] = self.current_booking_end.isoformat()
             self.fields['new_end_date'].widget = DateWidget(options=self.dateTimeOptions, bootstrap_version=3)
             # Set initial values, first converting to naive datetimes so that they are not adjusted to UTC
+            initial_booking_end = self.current_booking_end + dt.timedelta(hours=1)
             self.initial['new_end_date'] = dt.datetime.strftime(
-                timezone.make_naive(self.current_booking_end),
+                timezone.make_naive(initial_booking_end),
                 '%d/%m/%Y'
             )
             self.initial['new_end_time'] = dt.datetime.strftime(
-                timezone.make_naive(self.current_booking_end + dt.timedelta(hours=1)),
+                timezone.make_naive(initial_booking_end),
                 '%H:%M'
             )
         # Crispy forms

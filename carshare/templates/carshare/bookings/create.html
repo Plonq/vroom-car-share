@@ -65,18 +65,44 @@
         <!-- Booking form -->
         <div class="col-sm-6">
             {% load crispy_forms_tags %}
-            <form class="validated-form" method="post">
-            {% crispy booking_form %}
-            <div class="buttons-right">
-                <a class="btn btn-default" href="{% url 'carshare:booking_create_date' vehicle.id date.year date.month date.day %}">Back</a>
-                <button type="submit" class="btn btn-primary">Book</button>
-            </div>
+            <form id="booking-form" class="validated-form" method="post">
+                {% crispy booking_form %}
+                <div class="booking-cost-block">
+                    <p><strong>Cost: </strong><span id="booking-cost-text"></span></p>
+                </div>
+                <div class="buttons-right">
+                    <a class="btn btn-default" href="{% url 'carshare:booking_create_date' vehicle.id date.year date.month date.day %}">Back</a>
+                    <button type="submit" class="btn btn-primary load-after-click">Creating Booking</button>
+                </div>
             </form>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
+    <script>
+        // AJAX for calculating booking cost when start/end is changed
+        var inputs = $('#booking-form input, #booking-form select');
+        inputs.change(function() {
+            // Serialize form
+            data = $('#booking-form').serialize();
+
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'carshare:ajax_booking_calculate_cost' vehicle.id %}",
+                data: data,
+                success: function (response) {
+                    $('#booking-cost-text').html(response)
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        });
+        // Also calculate on page load
+        $(document).ready(inputs.change());
+    </script>
     <script>
         function initMap() {
             var vehicle = {

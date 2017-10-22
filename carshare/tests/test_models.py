@@ -36,7 +36,7 @@ class CarshareBookingModelTests(TestCase):
         now = timezone.make_naive(timezone.now())
         nearest_hour_from_now = timezone.make_aware(now + (datetime.min - now) % timedelta(hours=1))
         active_booking = Booking(schedule_start=nearest_hour_from_now, schedule_end=tomorrow)
-        self.assertTrue(active_booking.is_active())
+        self.assertFalse(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
         self.assertFalse(active_booking.is_ended())
 

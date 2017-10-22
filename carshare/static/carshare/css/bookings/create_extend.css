@@ -83,3 +83,7 @@ form > fieldset p {
     /*width: 200px;*/
     color:black;
 }
+
+.booking-cost-block {
+    text-align: right;
+}

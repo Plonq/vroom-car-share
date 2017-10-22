@@ -23,3 +23,8 @@ select.form-control {
     background-color: #ebe1ff;
     border-color: #d8c8ff;
 }
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: #3399cc;
+    font-weight: bold;
+}
