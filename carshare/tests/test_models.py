@@ -26,7 +26,7 @@ class CarshareBookingModelTests(TestCase):
         active_booking = Booking(schedule_start=yesterday, schedule_end=tomorrow)
         self.assertTrue(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
-        self.assertFalse(active_booking.is_ended())
+        self.assertFalse(active_booking.is_complete())
         self.assertEqual(active_booking.get_status(), "Active")
 
     def test_booking_within_an_hour_of_now(self):
@@ -38,7 +38,7 @@ class CarshareBookingModelTests(TestCase):
         active_booking = Booking(schedule_start=nearest_hour_from_now, schedule_end=tomorrow)
         self.assertFalse(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
-        self.assertFalse(active_booking.is_ended())
+        self.assertFalse(active_booking.is_complete())
 
     def test_future_booking(self):
         """
@@ -47,7 +47,7 @@ class CarshareBookingModelTests(TestCase):
         future_booking = Booking(schedule_start=tomorrow, schedule_end=two_days_from_now)
         self.assertFalse(future_booking.is_active())
         self.assertFalse(future_booking.is_cancelled())
-        self.assertFalse(future_booking.is_ended())
+        self.assertFalse(future_booking.is_complete())
         self.assertEqual(future_booking.get_status(), "Confirmed")
 
     def test_ended_booking(self):
@@ -57,7 +57,7 @@ class CarshareBookingModelTests(TestCase):
         ended_booking = Booking(schedule_start=two_days_ago, schedule_end=yesterday, ended=datetime.now())
         self.assertFalse(ended_booking.is_active())
         self.assertFalse(ended_booking.is_cancelled())
-        self.assertTrue(ended_booking.is_ended())
+        self.assertTrue(ended_booking.is_complete())
         self.assertEqual(ended_booking.get_status(), "Ended")
 
     def test_cancelled_booking(self):
@@ -67,7 +67,7 @@ class CarshareBookingModelTests(TestCase):
         cancelled_booking = Booking(schedule_start=yesterday, schedule_end=tomorrow, cancelled=datetime.now())
         self.assertFalse(cancelled_booking.is_active())
         self.assertTrue(cancelled_booking.is_cancelled())
-        self.assertFalse(cancelled_booking.is_ended())
+        self.assertFalse(cancelled_booking.is_complete())
         self.assertEqual(cancelled_booking.get_status(), "Cancelled")
 
     def test_booking_cost_two_days_ten_hours(self):
