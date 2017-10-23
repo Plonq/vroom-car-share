@@ -123,7 +123,7 @@ class Booking(models.Model):
         return self.schedule_end < timezone.now()
 
     def is_paid(self):
-        return self.invoice is not None
+        return hasattr(self, 'invoice')
 
     def get_status(self):
         """
@@ -135,7 +135,7 @@ class Booking(models.Model):
             return "Active"
         elif self.is_complete():
             s = "Complete"
-            if self.is_paid:
+            if self.is_paid():
                 return "{0} - Paid".format(s)
             else:
                 return "{0} - Unpaid".format(s)
