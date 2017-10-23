@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Login{% endblock %}
+{% block pagetitle %}{% block pageheader %}Login{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <h3>Login</h3>
-
-    {% load crispy_forms_tags %}
-    <form class="validated-form" method="post" action="{% url 'login' %}">
-        {% crispy form %}
-        <p>No account? <a href="{{ url_register }}">Register</a></p>
-        <button type="submit" class="btn btn-primary">Login</button>
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
+    <div class="top-spacer">
+        {% load crispy_forms_tags %}
+        <form class="validated-form" method="post" action="{% url 'login' %}">
+            {% crispy form %}
+            <p>No account? <a href="{{ url_register }}">Register</a></p>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
 
 {% endblock %}

@@ -16,8 +16,8 @@ class CarshareBookingModelTests(TestCase):
     def setUp(self):
         vt = VehicleType.objects.create(description='Premium', hourly_rate=12.50, daily_rate=80.00)
         p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
-        v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012, registration='AAA222')
-        u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
+        self.v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012, registration='AAA222')
+        self.u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
 
     def test_active_booking(self):
         """
@@ -26,7 +26,7 @@ class CarshareBookingModelTests(TestCase):
         active_booking = Booking(schedule_start=yesterday, schedule_end=tomorrow)
         self.assertTrue(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
-        self.assertFalse(active_booking.is_ended())
+        self.assertFalse(active_booking.is_complete())
         self.assertEqual(active_booking.get_status(), "Active")
 
     def test_booking_within_an_hour_of_now(self):
@@ -38,7 +38,7 @@ class CarshareBookingModelTests(TestCase):
         active_booking = Booking(schedule_start=nearest_hour_from_now, schedule_end=tomorrow)
         self.assertFalse(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
-        self.assertFalse(active_booking.is_ended())
+        self.assertFalse(active_booking.is_complete())
 
     def test_future_booking(self):
         """
@@ -47,18 +47,29 @@ class CarshareBookingModelTests(TestCase):
         future_booking = Booking(schedule_start=tomorrow, schedule_end=two_days_from_now)
         self.assertFalse(future_booking.is_active())
         self.assertFalse(future_booking.is_cancelled())
-        self.assertFalse(future_booking.is_ended())
+        self.assertFalse(future_booking.is_complete())
         self.assertEqual(future_booking.get_status(), "Confirmed")
 
-    def test_ended_booking(self):
+    def test_complete_unpaid_booking(self):
         """
         Ended booking returns expected results
         """
-        ended_booking = Booking(schedule_start=two_days_ago, schedule_end=yesterday, ended=datetime.now())
+        ended_booking = Booking(schedule_start=two_days_ago, schedule_end=yesterday)
         self.assertFalse(ended_booking.is_active())
         self.assertFalse(ended_booking.is_cancelled())
-        self.assertTrue(ended_booking.is_ended())
-        self.assertEqual(ended_booking.get_status(), "Ended")
+        self.assertTrue(ended_booking.is_complete())
+        self.assertEqual(ended_booking.get_status(), "Complete - Unpaid")
+
+    def test_complete_paid_booking(self):
+        """
+        Ended booking returns expected results
+        """
+        ended_booking = Booking(schedule_start=two_days_ago, schedule_end=yesterday, vehicle=self.v1, user=self.u)
+        ended_booking.invoice = Invoice(booking=ended_booking, amount=ended_booking.calculate_cost(), date=timezone.now())
+        self.assertFalse(ended_booking.is_active())
+        self.assertFalse(ended_booking.is_cancelled())
+        self.assertTrue(ended_booking.is_complete())
+        self.assertEqual(ended_booking.get_status(), "Complete - Paid")
 
     def test_cancelled_booking(self):
         """
@@ -67,7 +78,7 @@ class CarshareBookingModelTests(TestCase):
         cancelled_booking = Booking(schedule_start=yesterday, schedule_end=tomorrow, cancelled=datetime.now())
         self.assertFalse(cancelled_booking.is_active())
         self.assertTrue(cancelled_booking.is_cancelled())
-        self.assertFalse(cancelled_booking.is_ended())
+        self.assertFalse(cancelled_booking.is_complete())
         self.assertEqual(cancelled_booking.get_status(), "Cancelled")
 
     def test_booking_cost_two_days_ten_hours(self):
@@ -117,7 +128,7 @@ class CarshareVehicleModelTests(TestCase):
         Booking.objects.create(user=u, vehicle=v1, schedule_start=yesterday, schedule_end=tomorrow)
 
         # Bookings for Vehicle2 but Vehicle2 should still be available to book
-        Booking.objects.create(user=u, vehicle=v2, schedule_start=two_days_ago, schedule_end=yesterday, ended=timezone.now())
+        Booking.objects.create(user=u, vehicle=v2, schedule_start=two_days_ago, schedule_end=yesterday)
         Booking.objects.create(user=u, vehicle=v2, schedule_start=yesterday, schedule_end=tomorrow, cancelled=timezone.now())
         Booking.objects.create(user=u, vehicle=v2, schedule_start=tomorrow, schedule_end=two_days_from_now)
 

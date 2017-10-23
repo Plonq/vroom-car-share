@@ -1,21 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}Extend Booking{% endblock %}
+{% block pagetitle %}{% block pageheader %}Extend Booking{% endblock %}{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
 {% endblock %}
 
 {% block maincontent %}
-    <!-- Intro spiel -->
-    <div class="row bottom-spacer">
-        <div class="col-xs-12 text-center">
-            <h2>Extend Booking</h2>
-            <p>Your booking details have been pre-filled below. Please select the new finish time for your booking.</p>
-        </div>
-    </div>
-
-    <div class="row">
+    <div class="row top-spacer">
         <!-- Map and accompanying booking info -->
         <div class="col-sm-6 bottom-spacer">
             <div class="row">
@@ -61,6 +53,7 @@
         </div>
         <!-- Booking form -->
         <div class="col-sm-6">
+            <p>Please select a new end time for your booking.</p>
             {% load crispy_forms_tags %}
             <form class="validated-form" method="post">
             {% crispy extend_booking_form %}

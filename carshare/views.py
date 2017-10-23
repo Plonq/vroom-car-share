@@ -17,6 +17,7 @@ from .models import Vehicle, Booking, Invoice
 def index(request):
     return render(request, 'carshare/index.html')
 
+
 def faq(request):
     return render(request, 'carshare/faq.html')
 
@@ -99,8 +100,8 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
             existing_bookings = Booking.objects.filter(vehicle=vehicle, cancelled__isnull=True)
             for b in existing_bookings:
                 if (b.schedule_start <= booking_start < b.schedule_end or
-                    b.schedule_start < booking_end <= b.schedule_end or
-                    booking_start <= b.schedule_start and booking_end >= b.schedule_end):
+                        b.schedule_start < booking_end <= b.schedule_end or
+                        booking_start <= b.schedule_start and booking_end >= b.schedule_end):
                     is_valid_booking = False
                     booking_form.add_error(None, "The selected vehicle is unavailable within the chosen times")
                     break
@@ -108,8 +109,8 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
             user_bookings = request.user.booking_set.filter(cancelled__isnull=True)
             for b in user_bookings:
                 if (b.schedule_start <= booking_start < b.schedule_end or
-                    b.schedule_start < booking_end <= b.schedule_end or
-                    booking_start <= b.schedule_start and booking_end >= b.schedule_end):
+                        b.schedule_start < booking_end <= b.schedule_end or
+                        booking_start <= b.schedule_start and booking_end >= b.schedule_end):
                     is_valid_booking = False
                     booking_form.add_error(None, "You already have a booking within the selected time frame")
                     break
@@ -165,9 +166,9 @@ def my_bookings(request):
     now = timezone.localtime()
     current_booking = request.user.get_current_booking()
     upcoming_bookings = request.user.booking_set.filter(
-        schedule_start__gt=now).filter(ended__isnull=True).filter(cancelled__isnull=True).order_by('schedule_start')
+        schedule_start__gt=now).filter(cancelled__isnull=True).order_by('schedule_start')
     past_bookings = request.user.booking_set.filter(
-        Q(schedule_end__lte=now) | Q(ended__isnull=False) | Q(cancelled__isnull=False)).order_by('-schedule_start')
+        Q(schedule_end__lte=now) | Q(cancelled__isnull=False)).order_by('-schedule_start')
     context = {
         'current_booking': current_booking,
         'upcoming_bookings': upcoming_bookings,
@@ -190,11 +191,13 @@ def booking_extend(request, booking_id):
             # Custom validation
             is_valid_booking = True
             # Make sure new end date doesn't clash with existing booking
-            existing_bookings = Booking.objects.filter(vehicle=booking.vehicle, cancelled__isnull=True).exclude(user=request.user)
+            existing_bookings = Booking.objects.filter(
+                vehicle=booking.vehicle, cancelled__isnull=True
+            ).exclude(user=request.user)
             for b in existing_bookings:
                 if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
-                    b.schedule_start <= new_schedule_end <= b.schedule_end or
-                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
+                        b.schedule_start <= new_schedule_end <= b.schedule_end or
+                        booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
                     is_valid_booking = False
                     extend_booking_form.add_error(None, "The new end date overlaps with existing booking. "
                                                         "The latest date you can choose is {0}".format(b.schedule_start))
@@ -202,8 +205,8 @@ def booking_extend(request, booking_id):
             user_bookings = request.user.booking_set.filter(cancelled__isnull=True).exclude(id__exact=booking.id)
             for b in user_bookings:
                 if (b.schedule_start <= booking.schedule_start <= b.schedule_end or
-                    b.schedule_start <= new_schedule_end <= b.schedule_end or
-                    booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
+                        b.schedule_start <= new_schedule_end <= b.schedule_end or
+                        booking.schedule_start <= b.schedule_start and new_schedule_end >= b.schedule_end):
                     is_valid_booking = False
                     extend_booking_form.add_error(
                         None, "The new booking end overlaps with one of your existing bookings"
@@ -235,6 +238,7 @@ def booking_extend(request, booking_id):
     }
     return render(request, "carshare/bookings/extend.html", context)
 
+
 def booking_cancel(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
@@ -243,8 +247,8 @@ def booking_cancel(request, booking_id):
     if booking.cancelled:
         messages.error(request, 'This booking has already been cancelled')
         return redirect('carshare:my_bookings')
-    if booking.ended:
-        messages.error(request, 'You cannot cancel a booking that has already ended')
+    if booking.is_complete():
+        messages.error(request, 'You cannot cancel a booking that has already been completed')
         return redirect('carshare:my_bookings')
     booking.cancelled = timezone.now()
     booking.save()
@@ -255,30 +259,21 @@ def booking_cancel(request, booking_id):
             'booking': booking,
         },
     )
-    messages.success(request,'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
-                                                                                         booking.vehicle.make,
-                                                                                         booking.vehicle.model))
+    messages.success(request, 'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
+                                                                                          booking.vehicle.make,
+                                                                                          booking.vehicle.model))
     return redirect('carshare:my_bookings')
 
 
-def booking_end(request, booking_id):
+def booking_pay(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
     # Only allow to end booking if the booking is active.
     if booking.cancelled:
-        messages.error(request, 'You cannot end a booking that has already been cancelled')
+        messages.error(request, 'You cannot pay a booking that has been cancelled')
         return redirect('carshare:my_bookings')
-    if booking.ended:
-        messages.error(request, 'This booking has already been ended')
-        return redirect('carshare:my_bookings')
-    if booking.get_status() != 'Active':
-        # Request them to Cancel booking rather than end.
-        messages.error(request, 'You cannot end this booking as it has not started yet. Please cancel instead.')
-        return redirect('carshare:booking_detail', booking.id)
-    booking.ended = timezone.now()
-    booking.save()
     # Create invoice and email it to user
     invoice = Invoice(booking=booking, amount=booking.calculate_cost())
     invoice.save()
@@ -315,7 +310,7 @@ def booking_calculate_cost(request, vehicle_id):
             booking_start = data['schedule_start']
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
-            # DO NOT SAVE BOOKING!
+            # DO NOT SAVE BOOKING! It's only used for its method
             return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
         else:
-            return HttpResponse('-')
+            return HttpResponse('check form validity')

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Thank you{% endblock %}
+{% block pagetitle %}{% block pageheader %}Thank You{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <h3>Thank you</h3>
-
-    <p>Thank you for contacting us, we will get back to as soon as possible.</p>
+    <div class="text-center top-spacer">
+        <p>Thank you for contacting us, we will get back to as soon as possible.</p>
+    </div>
 
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Disable Account{% endblock %}
+{% block pagetitle %}{% block pageheader %}Disable Account{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <div class="text-center">
-        <h3>Are you Sure?</h3>
+    <div class="text-center top-spacer">
+        <h4>Are you Sure?</h4>
         <h5> To re-activate account, please contact us via the contact us page</h5>
         <form method="post">
             {% csrf_token %}

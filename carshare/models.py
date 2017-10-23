@@ -16,7 +16,11 @@ class VehicleType(models.Model):
     daily_rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return "{0} - Hourly: ${1:.2f} Daily: ${2:.2f}".format(self.description, float(self.hourly_rate), float(self.daily_rate))
+        return "{0} - Hourly: ${1:.2f} Daily: ${2:.2f}".format(
+            self.description,
+            float(self.hourly_rate),
+            float(self.daily_rate)
+        )
 
 
 class Pod(models.Model):
@@ -31,10 +35,10 @@ class Pod(models.Model):
         return "{0},{1}".format(self.latitude, self.longitude)
 
     def __str__(self):
-        str = "{0}".format(self.description)
+        string = "{0}".format(self.description)
         if hasattr(self, 'vehicle'):
-            str += " ({0})".format(self.vehicle.name)
-        return str
+            string += " ({0})".format(self.vehicle.name)
+        return string
 
 
 class Vehicle(models.Model):
@@ -72,8 +76,8 @@ class Vehicle(models.Model):
         """
         for booking in self.booking_set.all():
             if (booking.schedule_start <= datetime < booking.schedule_end and
-                booking.get_status() != 'Cancelled' and
-                booking.get_status() != 'Ended'):
+                    booking.get_status() != 'Cancelled' and
+                    booking.get_status() != 'Ended'):
                 return False
         return True
 
@@ -90,19 +94,7 @@ class Booking(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     schedule_start = models.DateTimeField(verbose_name='Start time')
     schedule_end = models.DateTimeField(verbose_name='End time')
-    ended = models.DateTimeField(null=True, blank=True)
     cancelled = models.DateTimeField(null=True, blank=True)
-
-
-    def is_active(self):
-        return (
-            self.schedule_start < (timezone.now()) < self.schedule_end and
-            self.ended is None and
-            self.cancelled is None
-        )
-
-    def is_cancelled(self):
-        return self.cancelled is not None
 
     def calculate_cost(self):
         """
@@ -118,29 +110,45 @@ class Booking(models.Model):
             (booking_hours * Decimal(self.vehicle.type.hourly_rate))
         )
 
-    def is_ended(self):
-        return self.ended is not None
+    def is_active(self):
+        return (
+            self.schedule_start < (timezone.now()) < self.schedule_end and
+            not self.is_cancelled()
+        )
+
+    def is_cancelled(self):
+        return self.cancelled is not None
+
+    def is_complete(self):
+        return self.schedule_end < timezone.now()
+
+    def is_confirmed(self):
+        return self.schedule_start > timezone.now()
+
+    def is_paid(self):
+        return hasattr(self, 'invoice')
 
     def get_status(self):
         """
         Returns a string indicating the status
         """
-        if self.ended:
-            return "Ended"
-        elif self.cancelled:
+        if self.cancelled:
             return "Cancelled"
-        else:
-            if self.schedule_start > timezone.now():
-                return "Confirmed"
-            elif self.schedule_start < timezone.now() < self.schedule_end:
-                return "Active"
-            elif self.schedule_end < timezone.now():
-                return "Expired"
+        elif self.is_active():
+            return "Active"
+        elif self.is_complete():
+            s = "Complete"
+            if self.is_paid():
+                return "{0} - Paid".format(s)
             else:
-                return "Unknown"
+                return "{0} - Unpaid".format(s)
+        elif self.is_confirmed():
+            return "Confirmed"
+        else:
+            return "Unknown - contact staff"
 
     def __str__(self):
-        return str(self.id)
+        return "{0} - {1}".format(self.id, self.get_status())
 
 
 class Invoice(models.Model):

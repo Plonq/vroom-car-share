@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}FAQ{% endblock %}
+{% block pagetitle %}{% block pageheader %}Frequently Asked Questions{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/faq.css' %}">
 {% endblock header %}
 {% block maincontent %}
 
-    <h1>Frequently Asked Questions</h1>
-    <p>Here are the most frequently asked questions about the services we provide. If your question isn't listed please
+    <p class="top-spacer">Here are the most frequently asked questions about the services we provide. If your question isn't listed please
         <a href="{% url 'carshare:contact_us' %}">contact us</a>.</p>
 
     <button class="accordion">FAQ Question 1</button>

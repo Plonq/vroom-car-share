@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Profile{% endblock %}
+{% block pagetitle %}{% block pageheader %}Update Credit Card{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <h2>Update Credit Card</h2>
-    <h4>Enter new credit card details</h4>
-    <br>
-    {% load crispy_forms_tags %}
-    <form class="validated-form" action="" method="post">
-        {% crispy credit_form %}
-        <button type="submit" class="btn btn-primary load-after-click">Update</button>
-        <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
-    </form>
+    <div class="top-spacer">
+        <h4>Enter new credit card details</h4>
+        <br>
+        {% load crispy_forms_tags %}
+        <form class="validated-form" action="" method="post">
+            {% crispy credit_form %}
+            <button type="submit" class="btn btn-primary load-after-click">Update</button>
+            <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
+        </form>
+    </div>
 {% endblock %}

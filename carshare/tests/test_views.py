@@ -247,7 +247,7 @@ class CarshareBookingListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['upcoming_bookings'],
-            ['<Booking: {0}>'.format(b.id)]
+            ['<Booking: {0} - {1}>'.format(b.id, b.get_status())]
         )
 
     def test_past_bookings(self):
@@ -265,5 +265,5 @@ class CarshareBookingListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(
             response.context['past_bookings'],
-            ['<Booking: {0}>'.format(b.id)]
+            ['<Booking: {0} - {1}>'.format(b.id, b.get_status())]
         )

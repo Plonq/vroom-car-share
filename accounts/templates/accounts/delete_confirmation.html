@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Delete Account{% endblock %}
+{% block pagetitle %}{% block pageheader %}Delete Account{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <div class="text-center">
-        <h3>Are you Sure?</h3>
+    <div class="text-center top-spacer">
+        <h4>Are you Sure?</h4>
         <form method="post">
             {% csrf_token %}
             <input type="hidden" name="confirm" value="1">

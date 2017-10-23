@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}New Booking{% endblock %}
+{% block pagetitle %}{% block pageheader %}New Booking for {{ vehicle.name }}{% endblock %}{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/create_extend.css' %}">
@@ -9,19 +9,8 @@
 {% endblock %}
 
 {% block maincontent %}
-    <!-- Intro spiel -->
-    <div class="row bottom-spacer">
-        <div class="col-xs-12 text-center">
-            <h2>New Booking for {{ vehicle.name }}</h2>
-            <p>You have selected {{ vehicle.name }} the {{ vehicle.make }} {{ vehicle.model }}. Please read the
-                information
-                below before confirming the booking. By booking a car through Vroom Car Share you accept the terms and
-                conditions.</p>
-            <p>You will receive an email confirmation upon approval of the booking.</p>
-        </div>
-    </div>
 
-    <div class="row">
+    <div class="row top-spacer">
         <!-- Map and accompanying booking info -->
         <div class="col-sm-12 bottom-spacer">
             <div class="row">
