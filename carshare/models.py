@@ -16,7 +16,11 @@ class VehicleType(models.Model):
     daily_rate = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return "{0} - Hourly: ${1:.2f} Daily: ${2:.2f}".format(self.description, float(self.hourly_rate), float(self.daily_rate))
+        return "{0} - Hourly: ${1:.2f} Daily: ${2:.2f}".format(
+            self.description,
+            float(self.hourly_rate),
+            float(self.daily_rate)
+        )
 
 
 class Pod(models.Model):
@@ -31,10 +35,10 @@ class Pod(models.Model):
         return "{0},{1}".format(self.latitude, self.longitude)
 
     def __str__(self):
-        str = "{0}".format(self.description)
+        string = "{0}".format(self.description)
         if hasattr(self, 'vehicle'):
-            str += " ({0})".format(self.vehicle.name)
-        return str
+            string += " ({0})".format(self.vehicle.name)
+        return string
 
 
 class Vehicle(models.Model):
@@ -72,8 +76,8 @@ class Vehicle(models.Model):
         """
         for booking in self.booking_set.all():
             if (booking.schedule_start <= datetime < booking.schedule_end and
-                booking.get_status() != 'Cancelled' and
-                booking.get_status() != 'Ended'):
+                    booking.get_status() != 'Cancelled' and
+                    booking.get_status() != 'Ended'):
                 return False
         return True
 
@@ -92,7 +96,6 @@ class Booking(models.Model):
     schedule_end = models.DateTimeField(verbose_name='End time')
     ended = models.DateTimeField(null=True, blank=True)
     cancelled = models.DateTimeField(null=True, blank=True)
-
 
     def is_active(self):
         return (
