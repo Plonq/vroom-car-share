@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}Contact Us{% endblock %}
+{% block pagetitle %}{% block pageheader %}Contact Us{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/contact_us.css' %}">
 {% endblock header %}
 {% block maincontent %}
+
+
 
     <h2>Send us a message</h2>
     <p>We are happy to answer any questions you have!</p>

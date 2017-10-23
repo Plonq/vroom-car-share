@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}My Bookings{% endblock %}
+{% block pagetitle %}{% block pageheader %}My Bookings{% endblock %}{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/my_bookings.css' %}">
 {% endblock %}
 
 {% block maincontent %}
-    <h2>My Bookings</h2>
-    <p>To view details or edit a booking, click the Booking ID.</p>
-
     {% if current_booking %}
         <div class="row">
             <div class="col-xs-12">

@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
-{% block pagetitle %}Account Activated{% endblock %}
+{% block pagetitle %}{% block pageheader %}Account Activated{% endblock %}{% endblock %}
 {% block maincontent %}
 
-    <div class="text-center">
-        <h3>Account Activated</h3>
+    <div class="text-center top-spacer">
         <p>Your account has been activated. You can now <a href="{% url 'login' %}">login</a>.</p>
     </div>
 

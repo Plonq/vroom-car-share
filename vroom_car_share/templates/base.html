@@ -200,6 +200,10 @@
     </div>
 {% endif %}
 
+    <div class="container-fluid text-center page-title">
+        <h1>{% block pageheader %}{% endblock %}</h1>
+    </div>
+
     {% block full-width-content %}{% endblock %}
 
     {% if not request.get_full_path == url_home %}

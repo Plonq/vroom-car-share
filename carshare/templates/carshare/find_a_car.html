@@ -1,16 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block pagetitle %}Vroom Car Share - Find a Car{% endblock pagetitle %}
+{% block pagetitle %}{% block pageheader %}Find a Car{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/find_a_car.css' %}">
 {% endblock %}
 {% block full-width-content %}
-
-    <div class="text-center findcartop hidden-xs">
-        <h1>Find a Vroom Car</h1>
-    </div>
-
-    <!-- mobile map search -->
 
     <!-- map search box -->
     <div id="mobile_search" class="text-center hidden-sm hidden-md hidden-lg">

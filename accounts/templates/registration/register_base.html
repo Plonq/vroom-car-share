@@ -5,15 +5,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/register_base.css' %}">
 {% endblock %}
 
-{% block pagetitle %}Register{% endblock %}
+{% block pagetitle %}{% block pageheader %}Register{% endblock %}{% endblock %}
 
 {% block maincontent %}
 
     <!-- MultiStep Form -->
     <div>
-        <div class="row register_form">
+        <div class="row register_form top-spacer">
 
-            <h1>Register</h1>
             {% block helptext %}{% endblock %}
 
             <div class="col-md-12">
