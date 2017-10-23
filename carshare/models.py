@@ -122,6 +122,9 @@ class Booking(models.Model):
     def is_complete(self):
         return self.schedule_end < timezone.now()
 
+    def is_confirmed(self):
+        return self.schedule_start > timezone.now()
+
     def is_paid(self):
         return hasattr(self, 'invoice')
 
@@ -139,7 +142,7 @@ class Booking(models.Model):
                 return "{0} - Paid".format(s)
             else:
                 return "{0} - Unpaid".format(s)
-        elif self.schedule_start > timezone.now():
+        elif self.is_confirmed():
             return "Confirmed"
         else:
             return "Unknown - contact staff"

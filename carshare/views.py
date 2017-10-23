@@ -265,24 +265,15 @@ def booking_cancel(request, booking_id):
     return redirect('carshare:my_bookings')
 
 
-def booking_end(request, booking_id):
+def booking_pay(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
     # Only allow to end booking if the booking is active.
     if booking.cancelled:
-        messages.error(request, 'You cannot end a booking that has already been cancelled')
+        messages.error(request, 'You cannot pay a booking that has been cancelled')
         return redirect('carshare:my_bookings')
-    if booking.ended:
-        messages.error(request, 'This booking has already been ended')
-        return redirect('carshare:my_bookings')
-    if booking.get_status() != 'Active':
-        # Request them to Cancel booking rather than end.
-        messages.error(request, 'You cannot end this booking as it has not started yet. Please cancel instead.')
-        return redirect('carshare:booking_detail', booking.id)
-    booking.ended = timezone.now()
-    booking.save()
     # Create invoice and email it to user
     invoice = Invoice(booking=booking, amount=booking.calculate_cost())
     invoice.save()
@@ -319,7 +310,7 @@ def booking_calculate_cost(request, vehicle_id):
             booking_start = data['schedule_start']
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
-            # DO NOT SAVE BOOKING!
+            # DO NOT SAVE BOOKING! It's only used for its method
             return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
         else:
-            return HttpResponse('-')
+            return HttpResponse('check form validity')
