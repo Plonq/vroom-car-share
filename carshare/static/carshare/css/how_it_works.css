@@ -1,0 +1,18 @@
+.intro {
+    margin-bottom: 30px;
+}
+
+.endingcomment {
+    margin-top: 40px;
+}
+
+.steps {
+    background-color: lightgray;
+    margin-bottom: 3px;
+    transition-duration:0.8s;
+}
+
+.steps:hover {
+    background-color: grey;
+    transition-duration:0.8s;
+}
