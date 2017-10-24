@@ -157,7 +157,7 @@
                        aria-expanded="false">HELP<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">PRICING</a></li>
-                        <li><a href="{{ url_faq }}">FAQs</a></li>
+                        <li {% if request.path == url_faq %} class="active" {% endif %}><a href="{{ url_faq }}">FAQs</a></li>
                         <li {% if request.path == url_how_it_works %} class="active" {% endif %}><a href="{{ url_how_it_works }}">HOW IT WORKS</a></li>
                         <li {% if request.path == url_contact_us %} class="active" {% endif %}><a href="{{ url_contact_us }}">CONTACT US</a></li>
                     </ul>
