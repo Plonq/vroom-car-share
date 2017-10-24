@@ -141,7 +141,11 @@ class Booking(models.Model):
         if self.cancelled:
             return "Cancelled"
         elif self.is_active():
-            return "Active"
+            s = "Active"
+            if self.is_paid():
+                return "{0} - Paid".format(s)
+            else:
+                return "{0} - Unpaid".format(s)
         elif self.is_complete():
             s = "Complete"
             if self.is_paid():
