@@ -62,6 +62,8 @@
                         {% if booking.is_active or booking.is_confirmed %}
                             <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
                         {% endif %}
+                    {% else %}
+                        <a class="btn btn-info" href="{% url 'carshare:booking_invoice' booking.id %}">View Invoice</a>
                     {% endif %}
                     {% if booking.is_confirmed %}
                         <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
