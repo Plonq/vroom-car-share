@@ -1,5 +1,6 @@
 .intro {
     margin-bottom: 30px;
+    margin-top: 20px;
 }
 
 .endingcomment {
@@ -7,12 +8,30 @@
 }
 
 .steps {
-    background-color: lightgray;
+    background-color: #eaf8ff;
     margin-bottom: 3px;
     transition-duration:0.8s;
 }
 
 .steps:hover {
-    background-color: grey;
+    background-color: #C4EBFC;
     transition-duration:0.8s;
+}
+
+.downarrow {
+    width:40px;
+    margin: 10px;
+}
+
+.stepimage {
+    padding:10px;
+    width:140px;
+}
+
+@media only screen and (max-width: 767px) {
+
+    .row {
+        text-align: center;
+    }
+
 }
