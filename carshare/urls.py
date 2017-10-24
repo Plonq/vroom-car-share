@@ -6,6 +6,7 @@ app_name = 'carshare'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'contact-us/$', views.contact_us, name='contact_us'),
+    url(r'how-it-works/$', views.how_it_works, name='how_it_works'),
     url(r'faq/$', views.faq, name='faq'),
     url(r'find-a-car/$', views.find_a_car, name='find_a_car'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/$', views.booking_timeline, name='booking_create'),
