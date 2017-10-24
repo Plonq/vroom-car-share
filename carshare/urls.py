@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'bookings/$', views.my_bookings, name='my_bookings'),
     url(r'bookings/(?P<booking_id>[0-9]+)/cancel/$', views.booking_cancel, name='booking_cancel'),
     url(r'bookings/(?P<booking_id>[0-9]+)/end/$', views.booking_pay, name='booking_pay'),
+    url(r'bookings/(?P<booking_id>[0-9]+)/invoice/$', views.booking_invoice, name='booking_invoice'),
     # AJAX
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/calculate-cost/', views.booking_calculate_cost, name='ajax_booking_calculate_cost'),
 ]

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
-from wkhtmltopdf.views import PDFTemplateResponse
+from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 
 import datetime as dt
 
@@ -294,6 +294,19 @@ def booking_pay(request, booking_id):
     )
     messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
     return redirect('carshare:my_bookings')
+
+
+def booking_invoice(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if request.user != booking.user:
+        messages.error(request, 'You do not have permission to view that invoice')
+        return redirect('carshare:index')
+    # Render PDF invoice
+    return PDFTemplateResponse(
+        request=request,
+        template='carshare/pdf/invoice.html',
+        context={'invoice': booking.invoice},
+    )
 
 
 #
