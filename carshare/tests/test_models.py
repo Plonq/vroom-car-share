@@ -19,7 +19,18 @@ class CarshareBookingModelTests(TestCase):
         self.v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012, registration='AAA222')
         self.u = User.objects.create(email='test@test.com', first_name='John', last_name='Doe', date_of_birth='2017-01-01')
 
-    def test_active_booking(self):
+    def test_active_paid_booking(self):
+        """
+        Active booking returns expected results
+        """
+        active_booking = Booking(schedule_start=yesterday, schedule_end=tomorrow, vehicle=self.v1, user=self.u)
+        active_booking.invoice = Invoice(booking=active_booking, amount=active_booking.calculate_cost(), date=timezone.now())
+        self.assertTrue(active_booking.is_active())
+        self.assertFalse(active_booking.is_cancelled())
+        self.assertFalse(active_booking.is_complete())
+        self.assertEqual(active_booking.get_status(), "Active - Paid")
+
+    def test_active_unpaid_booking(self):
         """
         Active booking returns expected results
         """
@@ -27,7 +38,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertTrue(active_booking.is_active())
         self.assertFalse(active_booking.is_cancelled())
         self.assertFalse(active_booking.is_complete())
-        self.assertEqual(active_booking.get_status(), "Active")
+        self.assertEqual(active_booking.get_status(), "Active - Unpaid")
 
     def test_booking_within_an_hour_of_now(self):
         """
