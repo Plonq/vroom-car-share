@@ -59,9 +59,9 @@
                 <div class="col-xs-12">
                     {% if not booking.is_paid %}
                         <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">Pay</a>
-                    {% endif %}
-                    {% if booking.is_active or booking.is_confirmed %}
-                        <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                        {% if booking.is_active or booking.is_confirmed %}
+                            <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                        {% endif %}
                     {% endif %}
                     {% if booking.is_confirmed %}
                         <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
