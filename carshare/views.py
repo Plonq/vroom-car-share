@@ -327,7 +327,6 @@ def booking_calculate_cost(request, vehicle_id):
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
             # DO NOT SAVE BOOKING! It's only used for its method
-            # return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
             days, hours = booking.calculate_daily_hourly_billable_counts()
             cost = {
                 'total': '${0:.2f}'.format(booking.calculate_cost()),
