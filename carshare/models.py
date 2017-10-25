@@ -104,17 +104,20 @@ class Booking(models.Model):
 
     def calculate_cost(self):
         """
-        Calculates total cost of booking, taking into account hourly rate and daily rate of the vehicle
+        Calculates total cost of booking, taking into account hourly rate and daily rate of the vehicle.
+        As soon as hourly cost reaches the daily rate, the daily rate is used instead.
+        E.g. if hourly rate is $10 and daily rate $100, a booking lasting from 10 hours up to 24 hours will cost $100.
         :return: float
         """
         booking_length = self.schedule_end - self.schedule_start
         booking_length_hours_total = booking_length.days * 24 + booking_length.seconds / 60 / 60
         booking_days = int(booking_length_hours_total / 24)
         booking_hours = ceil(booking_length_hours_total % 24)
-        return float(
-            (booking_days * Decimal(self.vehicle.type.daily_rate)) +
-            (booking_hours * Decimal(self.vehicle.type.hourly_rate))
-        )
+        day_cost = booking_days * Decimal(self.vehicle.type.daily_rate)
+        hour_cost = booking_hours * Decimal(self.vehicle.type.hourly_rate)
+        if hour_cost > self.vehicle.type.daily_rate:
+            hour_cost = self.vehicle.type.daily_rate
+        return float(day_cost + hour_cost)
 
     def is_active(self):
         return (
