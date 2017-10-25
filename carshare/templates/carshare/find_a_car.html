@@ -26,9 +26,10 @@
             <div id="booking"></div><!-- the car name, make and model is listed here -->
             <h4>Location:</h4>
             <div id="pod_description"></div><!-- pod description listed here -->
+            <h4>Pricing:</h4>
+            <div><strong>Daily: </strong><span id="daily_rate"></span> <strong>Hourly: </strong><span id="hourly_rate"></span></div>
 
             <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
-
         </div>
 
         <!-- map search box -->
@@ -145,7 +146,9 @@
                         make: "{{ car.make }}",
                         model: "{{ car.model }}",
                         pod_description: "{{ car.pod.description }}",
-                        booking_url: "{% url 'carshare:booking_create' car.id %}"
+                        booking_url: "{% url 'carshare:booking_create' car.id %}",
+                        daily_rate: "${{ car.type.daily_rate }}",
+                        hourly_rate: "${{ car.type.hourly_rate }}"
                     }
                 )
             {% endfor %}
@@ -163,6 +166,8 @@
                     pod_description: location.pod_description,
                     availability: location.available,
                     booking_url: location.booking_url,
+                        daily_rate: location.daily_rate,
+                        hourly_rate: location.hourly_rate
                 });
             });
 
@@ -195,6 +200,9 @@
                     pod.setAnimation(google.maps.Animation.BOUNCE);
                     $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
                     $("#pod_description").text(pod.pod_description);
+                    $("#daily_rate").text(pod.daily_rate);
+                    $("#hourly_rate").text(pod.hourly_rate);
+                    console.log(pod.hourly_rate);
                     //mobile
                     $("#booking_mobile").text(pod.carname + " the " + pod.make + " " + pod.model);
                     $("#pod_description_mobile").text(pod.pod_description);
@@ -215,10 +223,10 @@
                     }
                     else {
                         $("#car_availability").text("Car In Use");
-                        $("#booking_button").text("Unavailable");
+                        $("#booking_button").text("Book Future");
                         //$("#booking_button").addClass("disabled");
                         $("#car_availability_mobile").text("Car In Use");
-                        $("#booking_button_mobile").text("Unavailable");
+                        $("#booking_button_mobile").text("Book Future");
                         //$("#booking_button_mobile").addClass("disabled");
                         $("#booking_button").click(function () {
                             window.location.href = pod.booking_url

@@ -19,8 +19,16 @@
 
 #booking {
     position: relative;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#booking::before {
+    content: '-- ';
+}
+
+#booking::after {
+    content: ' --';
 }
 
 div#pod_description {
@@ -33,7 +41,8 @@ button#booking_button {
     bottom: 15px;
     position: absolute;
     left: 50%;
-    margin-left: -43px;
+    width: 100px;
+    margin-left: -50px;
 }
 
 #close_map_popup {

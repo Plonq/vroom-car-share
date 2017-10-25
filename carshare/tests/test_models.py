@@ -92,6 +92,17 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(cancelled_booking.is_complete())
         self.assertEqual(cancelled_booking.get_status(), "Cancelled")
 
+    def test_booking_cost_two_days_one_hour(self):
+        """
+        Booking cost calculated correctly for a mix of daily and hourly rate
+        """
+        u = User.objects.get(email='test@test.com')
+        v = Vehicle.objects.get(name='Vehicle1')
+        fixed_start = timezone.make_aware(datetime.strptime('2017-09-01 12:00:00', '%Y-%m-%d %H:%M:%S'))
+        fixed_end = timezone.make_aware(datetime.strptime('2017-09-03 13:00:00', '%Y-%m-%d %H:%M:%S'))
+        b = Booking.objects.create(user=u, vehicle=v, schedule_start=fixed_start, schedule_end=fixed_end)
+        self.assertEqual(b.calculate_cost(), 172.5)
+
     def test_booking_cost_two_days_ten_hours(self):
         """
         Booking cost calculated correctly for a mix of daily and hourly rate
@@ -101,7 +112,7 @@ class CarshareBookingModelTests(TestCase):
         fixed_start = timezone.make_aware(datetime.strptime('2017-09-01 12:00:00', '%Y-%m-%d %H:%M:%S'))
         fixed_end = timezone.make_aware(datetime.strptime('2017-09-03 22:00:00', '%Y-%m-%d %H:%M:%S'))
         b = Booking.objects.create(user=u, vehicle=v, schedule_start=fixed_start, schedule_end=fixed_end)
-        self.assertEqual(b.calculate_cost(), 285.0)
+        self.assertEqual(b.calculate_cost(), 240.0)
 
     def test_booking_cost_two_days_zero_hours(self):
         """

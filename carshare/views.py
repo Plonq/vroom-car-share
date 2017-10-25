@@ -8,6 +8,7 @@ from django.db.models import Q
 from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 
 import datetime as dt
+import json
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking, Invoice
@@ -326,6 +327,12 @@ def booking_calculate_cost(request, vehicle_id):
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
             # DO NOT SAVE BOOKING! It's only used for its method
-            return HttpResponse('${0:.2f}'.format(booking.calculate_cost()))
+            days, hours = booking.calculate_daily_hourly_billable_counts()
+            cost = {
+                'total': '${0:.2f}'.format(booking.calculate_cost()),
+                'days': days,
+                'hours': hours,
+            }
+            return HttpResponse(json.dumps(cost))
         else:
-            return HttpResponse('check form validity')
+            return HttpResponse(json.dumps({'error': 'check form validity'}))
