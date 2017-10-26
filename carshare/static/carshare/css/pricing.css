@@ -1,26 +1,17 @@
 .cartype {
-    background-color: #eaf8ff;
-    font-size: 20px;
+    background-color: #3399cc;
+    font-size: 30px;
     font-weight:bold;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    color:white;
     padding:3px;
 }
 
 .carinfo {
     background-color: #eaf8ff;
-    border-radius: 15px;
+
     height:170px;
     padding-top: 20px;
     margin-bottom: 20px;
-}
-
-.first {
-    border-top-left-radius: 0px;
-}
-
-.last {
-    border-top-right-radius: 0px;
 }
 
 .car {
@@ -36,4 +27,27 @@
 
 .blurb p:first-of-type {
     margin-top: 25px;
+}
+
+@media only screen and (max-width: 767px) {
+
+    .row {
+        text-align: center;
+    }
+
+    .car {
+        position: relative;
+        padding-bottom:10px;
+margin:0;
+    }
+
+    .carinfo {
+        height:auto;
+
+    }
+
+    .example_mobile {
+        margin-top: 20px;
+    }
+
 }

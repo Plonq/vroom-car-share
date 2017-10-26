@@ -21,105 +21,131 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-3 cartype text-center">Enonomy</div>
-        <div class="col-sm-12 carinfo first">
+        <div class="col-sm-12 cartype text-center">Economy</div>
+        <div class="col-sm-12 carinfo">
             <div class="row">
-                <div class="col-sm-4"><h4><strong>Rates</strong></h4></div>
-                <div class="col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
-                <div class="col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Rates</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
+                <div class="hidden-xs col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
             </div>
             <div class="row">
-                <div class="col-sm-4">Hourly - 9.50</div>
-                <div class="col-sm-4">4 Seats</div>
-                <div class="col-sm-4"><img src="{% static 'carshare/images/economy_mazda2.png' %}" class="car"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4">Daily - $50.00</div>
-                <div class="col-sm-4">3 Doors</div>
+                <div class="col-xs-6 col-sm-4">Hourly - 9.50</div>
+                <div class="col-xs-6 col-sm-4">4 Seats</div>
+                <div class="hidden-xs col-sm-4"><img src="{% static 'carshare/images/economy_mazda2.png' %}"
+                                                     class="car"></div>
             </div>
 
             <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">Capacity for 2 Medium Bags</div>
+                <div class="col-xs-6 col-sm-4">Daily - $50.00</div>
+                <div class="col-xs-6 col-sm-4">3 Doors</div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-offset-6 col-xs-6 col-sm-offset-4 col-sm-4">Capacity for 2 Medium Bags</div>
+            </div>
+
+            <div class="row hidden-sm hidden-md hidden-lg">
+                <div class="col-xs-12 example_mobile"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-12"><img src="{% static 'carshare/images/economy_mazda2.png' %}" class="car"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 cartype text-center">Standard</div>
+        <div class="col-sm-12 carinfo">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4"><h4><strong>Rates</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
+                <div class="hidden-xs col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-4">Hourly - $11.50</div>
+                <div class="col-xs-6 col-sm-4">4 Seats</div>
+                <div class="hidden-xs col-sm-4"><img src="{% static 'carshare/images/standard_yaris.png' %}"
+                                                     class="car"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-4">Daily - $65.00</div>
+                <div class="col-xs-6 col-sm-4">5 Doors</div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-6 col-sm-offset-4 col-sm-4">Capacity for 1 Large & 2 Small Bags</div>
+            </div>
+
+            <div class="row hidden-sm hidden-md hidden-lg">
+                <div class="col-xs-12 example_mobile"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-12"><img src="{% static 'carshare/images/standard_yaris.png' %}" class="car"></div>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-offset-3 col-sm-3 cartype text-center">Standard</div>
+        <div class="col-sm-12 cartype text-center">Premium</div>
         <div class="col-sm-12 carinfo">
             <div class="row">
-                <div class="col-sm-4"><h4><strong>Rates</strong></h4></div>
-                <div class="col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
-                <div class="col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Rates</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
+                <div class="hidden-xs col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
             </div>
             <div class="row">
-                <div class="col-sm-4">Hourly - $11.50</div>
-                <div class="col-sm-4">4 Seats</div>
-                <div class="col-sm-4"><img src="{% static 'carshare/images/standard_yaris.png' %}" class="car"></div>
+                <div class="col-xs-6 col-sm-4">Hourly - $13.00</div>
+                <div class="col-xs-6 col-sm-4">5 Seats</div>
+                <div class="hidden-xs col-sm-4"><img src="{% static 'carshare/images/premium_camry.png' %}" class="car">
+                </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-4">Daily - $65.00</div>
-                <div class="col-sm-4">5 Doors</div>
+                <div class="col-xs-6 col-sm-4">Daily - $80.00</div>
+                <div class="col-xs-6 col-sm-4">5 Doors</div>
             </div>
 
             <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">Capacity for 1 Large & 2 Small Bags</div>
+                <div class="col-xs-6 col-xs-offset-6 col-sm-offset-4 col-sm-4">Capacity for 2 Large & 2 Small Bags</div>
             </div>
+
+            <div class="row hidden-sm hidden-md hidden-lg">
+                <div class="col-xs-12 example_mobile"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-12"><img src="{% static 'carshare/images/premium_camry.png' %}" class="car"></div>
+            </div>
+
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-offset-6 col-sm-3 cartype text-center">Premium</div>
+        <div class="col-sm-12 cartype text-center">Utility</div>
         <div class="col-sm-12 carinfo">
             <div class="row">
-                <div class="col-sm-4"><h4><strong>Rates</strong></h4></div>
-                <div class="col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
-                <div class="col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Rates</strong></h4></div>
+                <div class="col-xs-6 col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
+                <div class="hidden-xs col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
             </div>
             <div class="row">
-                <div class="col-sm-4">Hourly - $13.00</div>
-                <div class="col-sm-4">5 Seats</div>
-                <div class="col-sm-4"><img src="{% static 'carshare/images/premium_camry.png' %}" class="car"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4">Daily - $80.00</div>
-                <div class="col-sm-4">5 Doors</div>
+                <div class="col-xs-6 col-sm-4">Hourly - $13.00</div>
+                <div class="col-xs-6 col-sm-4">2 Seats</div>
+                <div class="hidden-xs col-sm-4"><img src="{% static 'carshare/images/van.png' %}" class="car"></div>
             </div>
 
             <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">Capacity for 2 Large & 2 Small Bags</div>
+                <div class="col-xs-6 col-sm-4">Daily - $80.00</div>
+                <div class="col-xs-6 col-sm-4">4 Doors</div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-6 col-sm-offset-4 col-sm-4">Capacity 9.8 cubic metres</div>
+            </div>
+
+            <div class="row hidden-sm hidden-md hidden-lg">
+                <div class="col-xs-12 example_mobile"><h4><strong>Example Vehicle</strong></h4></div>
+                <div class="col-xs-12"><img src="{% static 'carshare/images/van.png' %}" class="car"></div>
             </div>
         </div>
     </div>
 
-        <div class="row">
-        <div class="col-sm-offset-9 col-sm-3 cartype text-center">Utility</div>
-        <div class="col-sm-12 carinfo last">
-            <div class="row">
-                <div class="col-sm-4"><h4><strong>Rates</strong></h4></div>
-                <div class="col-sm-4"><h4><strong>Vehicle Specifications</strong></h4></div>
-                <div class="col-sm-4 text-center"><h4><strong>Example Vehicle</strong></h4></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">Hourly - $13.00</div>
-                <div class="col-sm-4">2 Seats</div>
-                <div class="col-sm-4"><img src="{% static 'carshare/images/van.png' %}" class="car"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4">Daily - $80.00</div>
-                <div class="col-sm-4">4 Doors</div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-offset-4 col-sm-4">Capacity 9.8 cubic metres</div>
-            </div>
-        </div>
-    </div>
-
-    <h2 class="text-center">If you have further questions about Vroom pricing, please don’t hesitate to <a href="{% url 'carshare:contact_us' %}">Contact Us</a>.</h2>
+    <h2 class="text-center">If you have further questions about Vroom pricing, please don’t hesitate to <a
+            href="{% url 'carshare:contact_us' %}">Contact Us</a>.</h2>
 
 {% endblock %}
