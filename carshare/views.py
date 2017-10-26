@@ -5,24 +5,44 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
-from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
+from wkhtmltopdf.views import PDFTemplateResponse
 
 import datetime as dt
 import json
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
-from .models import Vehicle, Booking, Invoice
+from .models import Vehicle, Booking, Invoice, Pod
+from accounts.models import User
 
 
 # Create your views here.
 def index(request):
     return render(request, 'carshare/index.html')
 
+
 def how_it_works(request):
     return render(request, 'carshare/how_it_works.html')
 
+
 def faq(request):
     return render(request, 'carshare/faq.html')
+
+
+def about_us(request):
+    # Owner cost: $75 per trip, calculated using values from GoGet (10,000 kms per annum, car is used 20
+    # hours per week, petrol $1.44 per litre). Assuming 20 hours is two trips on average.
+    owner_cost = 75 * Booking.objects.count()
+    vroom_cost = 0.0
+    for b in Booking.objects.filter(schedule_end__lt=timezone.now()):
+        vroom_cost += b.calculate_cost()
+    estimated_savings = owner_cost - vroom_cost
+    context = {
+        'num_vehicles': Vehicle.objects.count(),
+        'num_locations': Pod.objects.count(),
+        'num_shares': Booking.objects.count(),
+        'estimated_savings': int(estimated_savings),
+    }
+    return render(request, 'carshare/about_us.html', context)
 
 
 def contact_us(request):
