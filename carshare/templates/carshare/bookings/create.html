@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_narrow.html' %}
 {% load static %}
 {% block pagetitle %}{% block pageheader %}New Booking for {{ vehicle.name }}{% endblock %}{% endblock %}
 
@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css"  href="{% static 'carshare/css/bookings/create_extend.css' %}">
 {% endblock %}
 
-{% block maincontent %}
+{% block page-content %}
     <!-- Intro spiel -->
     <div class="row bottom-spacer top-spacer">
         <div class="col-xs-12 text-center">

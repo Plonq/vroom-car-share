@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base_narrow.html' %}
 {% load static %}
-{% block pagetitle %}{% block pageheader %}How it works{% endblock %} {% endblock %}
+{% block pagetitle %}{% block pageheader %}How it works{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/how_it_works.css' %}">
 {% endblock header %}
-{% block maincontent %}
+{% block page-content %}
 
     <div class="row">
         <div class="col-sm-12 intro">

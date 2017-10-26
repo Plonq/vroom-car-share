@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_narrow.html' %}
 {% load static %}
 {% block pagetitle %}{% block pageheader %}Booking Detail{% endblock %}{% endblock %}
 
@@ -6,8 +6,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
 {% endblock %}
 
-{% block full-width-content %}
-    <div class="container top-spacer">
+{% block page-content %}
+    <div class="top-spacer">
         <div>
             <div class="row">
                 <div class="col-xs-12" id="map"></div>

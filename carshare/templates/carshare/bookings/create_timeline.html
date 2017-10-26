@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_narrow.html' %}
 {% load static %}
 {% block pagetitle %}{% block pageheader %}New Booking for {{ vehicle.name }}{% endblock %}{% endblock %}
 
@@ -8,7 +8,7 @@
     <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
 {% endblock %}
 
-{% block maincontent %}
+{% block page-content %}
 
     <div class="row top-spacer">
         <!-- Map and accompanying booking info -->
