@@ -1,0 +1,39 @@
+.cartype {
+    background-color: #eaf8ff;
+    font-size: 20px;
+    font-weight:bold;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding:3px;
+}
+
+.carinfo {
+    background-color: #eaf8ff;
+    border-radius: 15px;
+    height:170px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+.first {
+    border-top-left-radius: 0px;
+}
+
+.last {
+    border-top-right-radius: 0px;
+}
+
+.car {
+    width: 170px;
+    position: absolute;
+    margin-left:20px;
+
+}
+
+.blurb {
+    margin-bottom: 30px;
+}
+
+.blurb p:first-of-type {
+    margin-top: 25px;
+}
