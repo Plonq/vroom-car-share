@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'base_full_width.html' %}
 {% load static %}
-{% block pagetitle %}{% block pageheader %}About Us{% endblock %} {% endblock %}
+{% block pagetitle %}{% block pageheader %}About Us{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/about_us.css' %}">
 {% endblock header %}
 
-{% block full-width-content %}
+{% block page-content %}
 
-    <div class="container-fluid text-center notflush">
+    <div class="text-center">
         <div class="narrow-content">
             <div class="row top-spacer">
                 <div class="col-xs-12">

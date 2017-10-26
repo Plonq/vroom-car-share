@@ -1,3 +1,7 @@
+.container-fluid {
+    padding-bottom: 50px;
+}
+
 .narrow-content {
     margin: 0 auto;
     max-width: 900px;
