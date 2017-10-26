@@ -94,9 +94,9 @@
                 data: data,
                 success: function (response) {
                     cost = JSON.parse(response);
-                    var str = cost.days ? cost.days + " days @ ${{ vehicle.type.daily_rate }}" : "";
+                    var str = cost.days ? cost.days + " day" + (cost.days > 1 ? "s" : "") + " @ ${{ vehicle.type.daily_rate }}" : "";
                     cost.days && cost.hours ? str += " + " : "";
-                    cost.hours ? str += cost.hours + " hours @ ${{ vehicle.type.hourly_rate }}" : "";
+                    cost.hours ? str += cost.hours + " hour" + (cost.hours > 1 ? "s" : "") + " @ ${{ vehicle.type.hourly_rate }}" : "";
                     str += " = <strong>" + cost.total + "</strong>";
                     $('#booking-cost-text').html(str)
                 },
