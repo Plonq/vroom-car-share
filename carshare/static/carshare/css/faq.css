@@ -25,6 +25,10 @@ div.panel {
     transition: max-height 0.2s ease-out;
 }
 
+div.panel > p {
+    padding: 10px;
+}
+
 button.accordion:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
