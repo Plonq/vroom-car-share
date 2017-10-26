@@ -13,8 +13,8 @@
     max-width: 710px;
 }
 
-.container,
-.container-fluid {
+body > .container,
+body > .container-fluid {
     padding-bottom: 50px;
 }
 
