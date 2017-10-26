@@ -1,5 +1,6 @@
 {% extends 'base_full_width.html' %}
 {% load static %}
+{% load humanize %}
 {% block pagetitle %}{% block pageheader %}About Us{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/about_us.css' %}">
@@ -24,21 +25,21 @@
             </div>
             <div class="row top-spacer">
                 <div class="col-xs-4 stat">
-                    <div class="stat-value">37</div>
-                    <div class="stat-label">Vehicles</div>
-                </div>
-                <div class="col-xs-4 stat">
-                    <div class="stat-value">29</div>
+                    <div class="stat-value">{{ num_locations }}</div>
                     <div class="stat-label">Locations</div>
                 </div>
                 <div class="col-xs-4 stat">
-                    <div class="stat-value">295</div>
-                    <div class="stat-label">Shares</div>
+                    <div class="stat-value">{{ num_vehicles }}</div>
+                    <div class="stat-label">Vehicles</div>
+                </div>
+                <div class="col-xs-4 stat">
+                    <div class="stat-value">{{ num_shares }}</div>
+                    <div class="stat-label">Trips</div>
                 </div>
             </div>
             <div class="row top-spacer">
                 <div class="col-xs-12 stat">
-                    <div class="stat-value stat-savings">$15,507</div>
+                    <div class="stat-value stat-savings">${{ estimated_savings|intcomma }}</div>
                     <div class="stat-label">Estimated Savings</div>
                 </div>
             </div>
