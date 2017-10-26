@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base_narrow.html' %}
 {% load static %}
 {% block pagetitle %}{% block pageheader %}Frequently Asked Questions{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/faq.css' %}">
 {% endblock header %}
-{% block maincontent %}
+{% block page-content %}
 
     <p class="top-spacer">Here are the most frequently asked questions about the services we provide. If your question isn't listed please
         <a href="{% url 'carshare:contact_us' %}">contact us</a>.</p>

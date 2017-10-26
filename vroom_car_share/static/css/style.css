@@ -18,11 +18,11 @@
 }
 
 /* Page title banner */
-.page-title {
+.page-heading {
     background-color: #006699;
 }
 
-.page-title > h1 {
+.page-heading > h1 {
     margin: 0;
     padding: 10px 0;
     color: white;

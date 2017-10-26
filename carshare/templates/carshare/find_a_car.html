@@ -1,62 +1,66 @@
-{% extends 'base.html' %}
+{% extends 'base_full_width.html' %}
 {% load static %}
 {% block pagetitle %}{% block pageheader %}Find a Car{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/find_a_car.css' %}">
 {% endblock %}
-{% block full-width-content %}
+{% block page-content %}
 
-    <!-- map search box -->
-    <div id="mobile_search" class="text-center hidden-sm hidden-md hidden-lg">
-        <h3>Search for an address</h3>
-        <br/>
-        <input id="pac-input-mobile" class="controls form-control" type="text" placeholder="Enter Address">
-        <br/>
-        <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
-    </div>
-
-
-
-    <div id="map_contain">
-
-        <!-- Floating box for car bookings -->
-        <div id="Booking_Container" class="text-center hidden-xs">
-            <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
-            <h3 id="car_availability"></h3>
-            <div id="booking"></div><!-- the car name, make and model is listed here -->
-            <h4>Location:</h4>
-            <div id="pod_description"></div><!-- pod description listed here -->
-            <h4>Pricing:</h4>
-            <div><strong>Daily: </strong><span id="daily_rate"></span> <strong>Hourly: </strong><span id="hourly_rate"></span></div>
-
-            <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
-        </div>
+    <div class="row">
 
         <!-- map search box -->
-        <div id="mapsearch" class="text-center hidden-xs">
-            <h3>Find a Vroom car</h3>
+        <div id="mobile_search" class="text-center hidden-sm hidden-md hidden-lg">
+            <h3>Search for an address</h3>
             <br/>
-            <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Address">
+            <input id="pac-input-mobile" class="controls form-control" type="text" placeholder="Enter Address">
             <br/>
             <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
         </div>
-        <div id="map"></div>
+
+
+
+        <div id="map_contain">
+
+            <!-- Floating box for car bookings -->
+            <div id="Booking_Container" class="text-center hidden-xs">
+                <div><span class="glyphicon glyphicon-remove" id="close_map_popup" onclick="hide_popup()"></span></div>
+                <h3 id="car_availability"></h3>
+                <div id="booking"></div><!-- the car name, make and model is listed here -->
+                <h4>Location:</h4>
+                <div id="pod_description"></div><!-- pod description listed here -->
+                <h4>Pricing:</h4>
+                <div><strong>Daily: </strong><span id="daily_rate"></span> <strong>Hourly: </strong><span id="hourly_rate"></span></div>
+
+                <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
+            </div>
+
+            <!-- map search box -->
+            <div id="mapsearch" class="text-center hidden-xs">
+                <h3>Find a Vroom car</h3>
+                <br/>
+                <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Address">
+                <br/>
+                <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Mobile box for car bookings -->
+        <div id="Booking_Container_mobile" class="text-center hidden-sm hidden-md hidden-lg">
+            <h3 id="car_availability_mobile"></h3>
+            <div id="booking_mobile"></div>
+            <h4 id="location_mobile">Location:</h4>
+            <div id="pod_description_mobile"></div>
+
+            <button type="button" class="btn btn-warning" id="booking_button_mobile" value="Book Now">Book Now</button>
+            <button type="button" class="btn btn-danger start-again-button" onclick="hide_popup_mobile()" value="Reset">
+                Start Again
+            </button>
+
+        </div>
+        <!-- End mobile bookings -->
+
     </div>
-
-    <!-- Mobile box for car bookings -->
-    <div id="Booking_Container_mobile" class="text-center hidden-sm hidden-md hidden-lg">
-        <h3 id="car_availability_mobile"></h3>
-        <div id="booking_mobile"></div>
-        <h4 id="location_mobile">Location:</h4>
-        <div id="pod_description_mobile"></div>
-
-        <button type="button" class="btn btn-warning" id="booking_button_mobile" value="Book Now">Book Now</button>
-        <button type="button" class="btn btn-danger start-again-button" onclick="hide_popup_mobile()" value="Reset">
-            Start Again
-        </button>
-
-    </div>
-    <!-- End mobile bookings -->
 
     <script>
         $("#Booking_Container").hide();
@@ -432,7 +436,7 @@
             async defer></script>
 
 
-{% endblock full-width-content %}
+{% endblock page-content %}
 
 {% block scripts %}
     <script src="{% static "carshare/js/jquery.scrollintoview.js" %}"></script>
