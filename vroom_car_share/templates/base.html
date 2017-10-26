@@ -12,6 +12,7 @@
 {% url 'register' as url_register %}
 {% url 'carshare:faq' as url_faq %}
 {% url 'carshare:how_it_works' as url_how_it_works %}
+{% url 'carshare:pricing' as url_pricing %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -156,7 +157,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">HELP<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">PRICING</a></li>
+                        <li {% if request.path == url_pricing %} class="active" {% endif %}><a href="{{ url_pricing }}">PRICING</a></li>
                         <li {% if request.path == url_faq %} class="active" {% endif %}><a href="{{ url_faq }}">FAQs</a></li>
                         <li {% if request.path == url_how_it_works %} class="active" {% endif %}><a href="{{ url_how_it_works }}">HOW IT WORKS</a></li>
                         <li {% if request.path == url_contact_us %} class="active" {% endif %}><a href="{{ url_contact_us }}">CONTACT US</a></li>
@@ -251,7 +252,7 @@
         </div>
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4 col-sm-offset-4">
-                <a href="#">Pricing</a>
+                <a href="{{ url_pricing }}">Pricing</a>
             </div>
         </div>
 

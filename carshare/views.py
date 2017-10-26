@@ -18,6 +18,9 @@ from .models import Vehicle, Booking, Invoice
 def index(request):
     return render(request, 'carshare/index.html')
 
+def pricing(request):
+    return render(request, 'carshare/pricing.html')
+
 def how_it_works(request):
     return render(request, 'carshare/how_it_works.html')
 
