@@ -327,7 +327,14 @@
         });
         // Validate all forms with .validated-form
         $('.validated-form').each(function() {
-            $(this).validate();
+            $(this).validate({
+                submitHandler: function(form) {
+                    // Disable button and show loading animation (only happens if form valid)
+                    $('.load-after-click').addClass('disabled');
+                    $('.loading-icon').show();
+                    form.submit();
+                }
+            });
         });
     </script>
 
@@ -345,13 +352,9 @@
 </script>
 
 <script>
-    // Disable button and show loading icon for actions that shouldn't be done more than once
+    // Insert hidden animated loading icon in every button with appropriate class
     $(document).ready(function() {
         $('.load-after-click').append(' <span class="loading-icon glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display: none"></span>')
-    });
-    $('.load-after-click').click(function() {
-        $(this).addClass('disabled');
-        $('.loading-icon').show();
     });
 </script>
 
