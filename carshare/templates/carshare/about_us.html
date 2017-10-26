@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block pagetitle %}{% block pageheader %}About Us{% endblock %} {% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/about_us.css' %}">
+{% endblock header %}
+
+{% block full-width-content %}
+
+    <div class="container-fluid text-center notflush">
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Are Vroom Car Share</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ipsum quam, molestie et lacus eu,
+                        rutrum commodo dolor. In ut ultrices urna, quis tempor odio. Ut elementum lacinia libero.
+                        Maecenas at massa sit amet massa aliquam dignissim. Nulla maximus et nibh ac egestas.</p>
+                </div>
+            </div>
+            <div class="row top-spacer">
+                <div class="col-xs-4 stat">
+                    <div class="stat-value">37</div>
+                    <div class="stat-label">Vehicles</div>
+                </div>
+                <div class="col-xs-4 stat">
+                    <div class="stat-value">29</div>
+                    <div class="stat-label">Locations</div>
+                </div>
+                <div class="col-xs-4 stat">
+                    <div class="stat-value">295</div>
+                    <div class="stat-label">Shares</div>
+                </div>
+            </div>
+            <div class="row top-spacer">
+                <div class="col-xs-12 stat">
+                    <div class="stat-value stat-savings">$15,507</div>
+                    <div class="stat-label">Estimated Savings</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <img class="full-width-image" src="{% static 'carshare/images/about_sharing.jpg' %}">
+        </div>
+
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Believe in Sharing</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Vivamus ipsum neque, auctor quis nisl ac, tristique aliquet ex. Maecenas pharetra, ex vel cursus
+                        cursus, massa dolor lobortis mauris, ut mattis ante risus quis neque. Sed porta leo ornare,
+                        congue quam in, venenatis lacus. Integer in gravida magna.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <img class="full-width-image" src="{% static 'carshare/images/about_environment.jpg' %}">
+        </div>
+
+
+        <div class="narrow-content">
+            <div class="row top-spacer">
+                <div class="col-xs-12">
+                    <h2 class="subheading">We Care About Our Environment</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>Proin euismod, nulla non dictum imperdiet, massa libero egestas neque, sit amet semper tellus erat
+                        in ligula. Morbi ac venenatis velit, quis tempus arcu. Suspendisse eros purus, auctor in odio vel,
+                        ultrices mattis erat. Vestibulum rutrum, leo eu auctor hendrerit, velit tellus consectetur dolor, sed porta felis leo auctor dolor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
