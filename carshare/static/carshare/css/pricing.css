@@ -29,6 +29,11 @@
     margin-top: 25px;
 }
 
+.icon {
+    width:20px;
+    margin-bottom: 4px;
+}
+
 @media only screen and (max-width: 767px) {
 
     .row {
