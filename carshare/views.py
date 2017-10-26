@@ -29,8 +29,6 @@ def faq(request):
 
 
 def about_us(request):
-    first_booking_date = Booking.objects.all().order_by('schedule_start').first().schedule_start
-    days_since_first_booking = (timezone.now() - first_booking_date).days
     # Owner cost: $75 per trip, calculated using values from GoGet (10,000 kms per annum, car is used 20
     # hours per week, petrol $1.44 per litre). Assuming 20 hours is two trips on average.
     owner_cost = 75 * Booking.objects.count()
