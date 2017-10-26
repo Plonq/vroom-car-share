@@ -28,7 +28,6 @@ class ContactForm(forms.Form):
         )
 
 
-
 class BookingForm(forms.Form):
     TIMES = (
         ('00:00', '00:00'),
@@ -59,6 +58,7 @@ class BookingForm(forms.Form):
     dateTimeOptions = {
         'format': 'dd/mm/yyyy',
         'startDate': timezone.localtime().date().isoformat(),
+        'clearBtn': False,
     }
     booking_start_date = forms.DateField(widget=DateWidget(options=dateTimeOptions, bootstrap_version=3))
     booking_start_time = forms.ChoiceField(choices=TIMES)
@@ -157,6 +157,7 @@ class ExtendBookingForm(forms.Form):
     """
     dateTimeOptions = {
         'format': 'dd/mm/yyyy',
+        'clearBtn': False,
     }
     new_end_date = forms.DateField()
     new_end_time = forms.ChoiceField(choices=BookingForm.TIMES)
