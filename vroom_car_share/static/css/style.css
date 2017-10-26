@@ -13,6 +13,11 @@
     max-width: 710px;
 }
 
+.container,
+.container-fluid {
+    padding-bottom: 50px;
+}
+
 .notflush {
     padding-bottom: 15px;
 }

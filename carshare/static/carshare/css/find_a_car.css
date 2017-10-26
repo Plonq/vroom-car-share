@@ -1,3 +1,7 @@
+.container-fluid {
+    padding-bottom: 0;
+}
+
 #Booking_Container {
     position: absolute;
     width: 250px;

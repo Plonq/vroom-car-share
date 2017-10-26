@@ -1,3 +1,7 @@
+.container-fluid {
+    padding-bottom: 0;
+}
+
 /* INDEX carousel */
 .item img {
     width: 100%;
