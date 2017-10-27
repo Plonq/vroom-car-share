@@ -102,6 +102,8 @@ class Booking(models.Model):
     schedule_end = models.DateTimeField(verbose_name='End time')
     cancelled = models.DateTimeField(null=True, blank=True)
 
+    MAX_LENGTH_DAYS = 90
+
     def calculate_cost(self):
         """
         Calculates total cost of booking, taking into account hourly rate and daily rate of the vehicle.
@@ -171,7 +173,11 @@ class Booking(models.Model):
             else:
                 return "{0} - Unpaid".format(s)
         elif self.is_confirmed():
-            return "Confirmed"
+            s = "Confirmed"
+            if self.is_paid():
+                return "{0} - Paid".format(s)
+            else:
+                return "{0} - Unpaid".format(s)
         else:
             return "Unknown - contact staff"
 

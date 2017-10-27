@@ -67,7 +67,6 @@
                         <div class="controls">
                             <div id="id_timeline_date" class="input-group date">
                                 <input id="id_timeline_date" name="timeline_date" value="{{ date.day }}/{{ date.month }}/{{ date.year }}" readonly="" class="datepicker datewidget form-control" placeholder="Date" required="" aria-invalid="false" type="text">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
@@ -106,7 +105,8 @@
             startDate: '{{ today.isoformat }}',
             startView: 2,
             minView: 2,
-            autoclose: true
+            autoclose: true,
+            clearBtn: false
         })
         // When datepicker changed, load page with select date
         .change(function () {

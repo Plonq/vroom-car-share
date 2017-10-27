@@ -51,7 +51,18 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(active_booking.is_cancelled())
         self.assertFalse(active_booking.is_complete())
 
-    def test_future_booking(self):
+    def test_future_paid_booking(self):
+        """
+        Future booking returns expected results
+        """
+        future_booking = Booking(schedule_start=tomorrow, schedule_end=two_days_from_now, vehicle=self.v1, user=self.u)
+        future_booking.invoice = Invoice(booking=future_booking, amount=future_booking.calculate_cost(), date=timezone.now())
+        self.assertFalse(future_booking.is_active())
+        self.assertFalse(future_booking.is_cancelled())
+        self.assertFalse(future_booking.is_complete())
+        self.assertEqual(future_booking.get_status(), "Confirmed - Paid")
+
+    def test_future_unpaid_booking(self):
         """
         Future booking returns expected results
         """
@@ -59,7 +70,7 @@ class CarshareBookingModelTests(TestCase):
         self.assertFalse(future_booking.is_active())
         self.assertFalse(future_booking.is_cancelled())
         self.assertFalse(future_booking.is_complete())
-        self.assertEqual(future_booking.get_status(), "Confirmed")
+        self.assertEqual(future_booking.get_status(), "Confirmed - Unpaid")
 
     def test_complete_unpaid_booking(self):
         """

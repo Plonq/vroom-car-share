@@ -19,6 +19,7 @@ class CreditCardInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     # Add inline forms for address and credit card
+
     inlines = (AddressInline, CreditCardInline)
 
     # The forms to add and change user instances
@@ -26,7 +27,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
 
     # These define the fields in the list view
-    list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('id', 'email', 'first_name', 'last_name', 'is_staff')
     list_filter = ('is_staff',)
     # These are the fields on the 'edit' page
     fieldsets = (
@@ -52,14 +53,12 @@ class UserAdmin(BaseUserAdmin):
             return list()
         return super(UserAdmin, self).get_inline_instances(request, obj)
 
-
     def get_readonly_fields(self, request, obj=None):
         # Prevent staff changing their own permissions
         rof = super(UserAdmin, self).get_readonly_fields(request, obj)
         if not request.user.is_superuser:
             rof += ('is_staff', 'is_superuser', 'groups', 'user_permissions')
         return rof
-
 
     def has_change_permission(self, request, obj=None):
         # Prevent staff changing other user's who may have higher privileges.

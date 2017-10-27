@@ -209,6 +209,9 @@ def booking_extend(request, booking_id):
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
+    if booking.is_paid():
+        messages.error(request, 'You cannot extend a booking that has already been paid')
+        return redirect('carshare:my_bookings')
 
     if request.method == 'POST':
         extend_booking_form = ExtendBookingForm(request.POST, current_booking_end=booking.schedule_end)
@@ -275,6 +278,9 @@ def booking_cancel(request, booking_id):
         return redirect('carshare:my_bookings')
     if booking.is_complete():
         messages.error(request, 'You cannot cancel a booking that has already been completed')
+        return redirect('carshare:my_bookings')
+    if booking.is_paid():
+        messages.error(request, 'You cannot cancel a booking that has already been paid')
         return redirect('carshare:my_bookings')
     booking.cancelled = timezone.now()
     booking.save()
