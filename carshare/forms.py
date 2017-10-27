@@ -9,6 +9,8 @@ from datetimewidget.widgets import DateWidget
 
 import datetime as dt
 
+from .models import Booking
+
 
 class ContactForm(forms.Form):
     contact_name = forms.CharField(label='Your name', max_length=60)
@@ -58,6 +60,7 @@ class BookingForm(forms.Form):
     dateTimeOptions = {
         'format': 'dd/mm/yyyy',
         'startDate': timezone.localtime().date().isoformat(),
+        'endDate': (timezone.localtime() + dt.timedelta(days=Booking.MAX_LENGTH_DAYS)).date().isoformat(),
         'clearBtn': False,
     }
     booking_start_date = forms.DateField(widget=DateWidget(options=dateTimeOptions, bootstrap_version=3))
@@ -79,8 +82,8 @@ class BookingForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(BookingForm, self).clean()
-        if 'booking_start_date' in cleaned_data and 'booking_start_time' in cleaned_data \
-            and 'booking_end_date' in cleaned_data and 'booking_end_time' in cleaned_data:
+        if ('booking_start_date' in cleaned_data and 'booking_start_time' in cleaned_data
+                and 'booking_end_date' in cleaned_data and 'booking_end_time' in cleaned_data):
             schedule_start = timezone.make_aware(
                 dt.datetime.combine(cleaned_data['booking_start_date'], cleaned_data['booking_start_time']),
                 timezone=timezone.get_current_timezone()
@@ -89,6 +92,12 @@ class BookingForm(forms.Form):
                 dt.datetime.combine(cleaned_data['booking_end_date'], cleaned_data['booking_end_time']),
                 timezone=timezone.get_current_timezone()
             )
+            # Make sure booking is less than max booking length
+            length = schedule_end - schedule_start
+            if length.days > Booking.MAX_LENGTH_DAYS:
+                raise forms.ValidationError(
+                    'You cannot book for longer than {0} days'.format(Booking.MAX_LENGTH_DAYS)
+                )
             # Make sure schedule_end is later than schedule_start
             if schedule_end < schedule_start:
                 raise forms.ValidationError('End time must be after the start time')
