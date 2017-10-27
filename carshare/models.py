@@ -171,7 +171,11 @@ class Booking(models.Model):
             else:
                 return "{0} - Unpaid".format(s)
         elif self.is_confirmed():
-            return "Confirmed"
+            s = "Confirmed"
+            if self.is_paid():
+                return "{0} - Paid".format(s)
+            else:
+                return "{0} - Unpaid".format(s)
         else:
             return "Unknown - contact staff"
 
