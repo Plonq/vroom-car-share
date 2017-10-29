@@ -5,7 +5,7 @@ from django.utils import timezone
 
 import datetime as dt
 
-from ..models import Booking, User, Vehicle, Pod, VehicleType
+from ..models import Booking, User, Vehicle, Pod, VehicleType, Invoice
 
 
 # Tests do not work with whitenoise static file storage, so we use the default storage for tests
@@ -267,3 +267,106 @@ class CarshareBookingListViewTests(TestCase):
             response.context['past_bookings'],
             ['<Booking: {0} - {1}>'.format(b.id, b.get_status())]
         )
+
+
+@override_settings(STATICFILES_STORAGE=STATICFILES_STORAGE_FOR_TESTS)
+class CarshareBookingDetailViewTests(TestCase):
+    def setUp(self):
+        vt = VehicleType.objects.create(description='Premium', hourly_rate=12.50, daily_rate=80.00)
+        p1 = Pod.objects.create(latitude='-39.34523453', longitude='139.53524344', description='Pod 1')
+        self.v1 = Vehicle.objects.create(pod=p1, type=vt, name='Vehicle1', make='Toyota', model='Yaris', year=2012,
+                                         registration='AAA222')
+        self.u1 = User.objects.create_user(email='test1@test.com', password='flippleflopple', first_name='John', last_name='Doe', date_of_birth='1980-01-01')
+
+    def create_booking(self, start, end):
+        return Booking.objects.create(
+            user=self.u1,
+            vehicle=self.v1,
+            schedule_start=timezone.make_aware(start),
+            schedule_end=timezone.make_aware(end)
+        )
+
+    def test_confirmed_unpaid_booking(self):
+        b1 = self.create_booking(start=dt.datetime(year=2999, month=1, day=1, hour=0),
+                                 end=dt.datetime(year=2999, month=1, day=1, hour=1))
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '>Pay<')
+        self.assertContains(response, '>Extend<')
+        self.assertContains(response, '>Cancel<')
+
+    def test_active_unpaid_booking(self):
+        yesterday = dt.datetime.now() - dt.timedelta(days=1)
+        tomorrow = dt.datetime.now() + dt.timedelta(days=1)
+        b1 = self.create_booking(start=yesterday, end=tomorrow)
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '>Pay<')
+        self.assertContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+
+    def test_cancelled_booking(self):
+        b1 = self.create_booking(start=dt.datetime(year=2999, month=1, day=1, hour=0),
+                                 end=dt.datetime(year=2999, month=1, day=1, hour=1))
+        b1.cancelled = timezone.now()
+        b1.save()
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '>Pay<')
+        self.assertNotContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+
+    def test_complete_unpaid_booking(self):
+        start = dt.datetime.now() - dt.timedelta(days=1)
+        end = start + dt.timedelta(hours=1)
+        b1 = self.create_booking(start=start, end=end)
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '>Pay<')
+        self.assertNotContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+
+    def test_confirmed_paid_booking(self):
+        b1 = self.create_booking(start=dt.datetime(year=2999, month=1, day=1, hour=0),
+                                 end=dt.datetime(year=2999, month=1, day=1, hour=1))
+        invoice = Invoice(booking=b1, amount=b1.calculate_cost(), date=timezone.localdate())
+        invoice.save()
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '>Pay<')
+        self.assertNotContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+        self.assertContains(response, '>View Invoice<')
+
+    def test_active_paid_booking(self):
+        yesterday = dt.datetime.now() - dt.timedelta(days=1)
+        tomorrow = dt.datetime.now() + dt.timedelta(days=1)
+        b1 = self.create_booking(start=yesterday,end=tomorrow)
+        invoice = Invoice(booking=b1, amount=b1.calculate_cost(), date=timezone.localdate())
+        invoice.save()
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '>Pay<')
+        self.assertNotContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+        self.assertContains(response, '>View Invoice<')
+
+    def test_complete_paid_booking(self):
+        start = dt.datetime.now() - dt.timedelta(days=1)
+        end = start + dt.timedelta(hours=1)
+        b1 = self.create_booking(start=start, end=end)
+        invoice = Invoice(booking=b1, amount=b1.calculate_cost(), date=timezone.localdate())
+        invoice.save()
+        self.client.login(email='test1@test.com', password='flippleflopple')
+        response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': b1.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '>Pay<')
+        self.assertNotContains(response, '>Extend<')
+        self.assertNotContains(response, '>Cancel<')
+        self.assertContains(response, '>View Invoice<')
