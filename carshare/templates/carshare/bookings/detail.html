@@ -60,10 +60,10 @@
                     {% if not booking.is_paid %}
                         <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#confirmEnd">Pay</a>
                         {% if booking.is_confirmed %}
-                            {% if booking.is_active %}
-                                <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                            <a class="btn btn-info" href="{% url 'carshare:booking_extend' booking.id %}">Extend</a>
+                            {% if not booking.is_active %}
+                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
                             {% endif %}
-                            <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
                         {% endif %}
                     {% else %}
                         <a class="btn btn-info" href="{% url 'carshare:booking_invoice' booking.id %}">View Invoice</a>
