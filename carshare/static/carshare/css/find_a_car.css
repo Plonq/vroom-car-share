@@ -175,6 +175,58 @@ button#booking_button {
     padding-top: 20px;
 }
 
+/* Map Filter */
+
+#filter_container {
+    position: absolute;
+    top:20px;
+    left:20px;
+    z-index: 999999;
+    background-color: #006699;
+    color:white;
+    user-select: none;
+}
+
+#filter {
+    float: left;
+    padding:8px;
+    font-weight: bold;
+}
+
+.shows {
+    display: inline-block !important;
+    padding: 0px;
+    margin: 0px;
+}
+
+#filter_options {
+    display: none;
+}
+
+#filter_options li {
+    display: block;
+    float: left;
+    padding: 8px;
+    padding-bottom:0px;
+}
+
+#clear {
+    color: lightgray;
+    font-weight: bold;
+    padding: 8px;
+    float: right;
+}
+
+.selected {
+    color:#4cc1f6;
+    font-weight: bold;
+}
+
+
+/* End Map Filter */
+
+
+
 @media only screen and (min-height: 1260px) {
 
     #map_contain {
