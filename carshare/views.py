@@ -97,6 +97,8 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
         datetime = timezone.make_aware(dt.datetime.combine(date, dt.time(hour=i, minute=0)), timezone.get_current_timezone())
         if vehicle.is_available_at(datetime=datetime) and datetime > timezone.localtime() - dt.timedelta(hours=1):
             hours[i] = 'available'
+        elif not vehicle.get_booking_at(datetime=datetime) is None and vehicle.get_booking_at(datetime=datetime).user == request.user:
+            hours[i] = 'booked_by_user'
         else:
             hours[i] = 'unavailable'
     context = {

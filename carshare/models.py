@@ -75,11 +75,18 @@ class Vehicle(models.Model):
         :return: Boolean
         """
         for booking in self.booking_set.all():
-            if (booking.schedule_start <= datetime < booking.schedule_end and
-                    booking.get_status() != 'Cancelled' and
-                    booking.get_status() != 'Ended'):
+            if booking.schedule_start <= datetime < booking.schedule_end and not booking.is_cancelled():
                 return False
         return True
+
+    def get_booking_at(self, datetime):
+        """
+        Returns the booking for this vehicle at the specified time, or None if it is not booked
+        """
+        for booking in self.booking_set.all():
+            if booking.schedule_start <= datetime < booking.schedule_end and not booking.is_cancelled():
+                return booking
+        return None
 
     def __str__(self):
         # E.g. 'Jackie - 2014 Toyota Corolla'
