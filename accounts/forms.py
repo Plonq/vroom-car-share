@@ -137,8 +137,13 @@ class UserChangeSelfForm(forms.ModelForm):
             'last_name',
             'date_of_birth',
           )
+        dateTimeOptions = {
+            'format': 'dd/mm/yyyy',
+            'endDate': timezone.localtime().date().isoformat(),
+            'startView': 4,
+        }
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'}, format='%Y-%m-%d')
+            'date_of_birth': DateWidget(options=dateTimeOptions, bootstrap_version=3)
         }
 
     def __init__(self, *args, **kwargs):
