@@ -205,24 +205,29 @@ def profile(request):
 @login_required
 def edit_profile(request):
     user = request.user
+    address_form = None
     if request.method == 'POST':
         user_form = UserChangeSelfForm(request.POST, instance=user)
-        address_form = AddressForm(request.POST, instance=user.address)
 
-        if user_form.is_valid() and address_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            address_form.save()
+            if hasattr(user, 'address'):
+                address_form = AddressForm(request.POST, instance=user.address)
+                if address_form.is_valid():
+                    address_form.save()
 
             messages.success(request, 'Changes saved')
             return redirect('profile')
     else:
         user_form = UserChangeSelfForm(instance=user)
-        address_form = AddressForm(instance=user.address)
+        if hasattr(user, 'address'):
+            address_form = AddressForm(instance=user.address)
 
     context = {
         'user_form': user_form,
-        'address_form': address_form,
     }
+    if address_form:
+        context['address_form'] = address_form
 
     return render(request, 'accounts/edit_profile.html', context)
 

@@ -8,8 +8,10 @@
             <h3> User Details </h3>
             {% crispy user_form %}
 
-            <h3>Address</h3>
-            {% crispy address_form %}
+            {% if request.user.address %}
+                <h3>Address</h3>
+                {% crispy address_form %}
+            {% endif %}
 
             <button type="submit" class="btn btn-primary load-after-click">Save</button>
             <a class="btn btn-link" href="{% url 'profile' %}">Cancel</a>
