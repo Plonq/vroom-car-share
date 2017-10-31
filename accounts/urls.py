@@ -14,7 +14,7 @@ urlpatterns = [
     # Fall back on defaults for everything else
     url(r'^', include('django.contrib.auth.urls')),
     # Other accounts-related pages not included in django auth
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})', views.activate_account, name='activate_account'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$', views.activate_account, name='activate_account'),
     url(r'^register/$', views.register_user, name='register'),
     url(r'^register/address/$', views.register_address, name='register_address'),
     url(r'^register/credit-card/$', views.register_credit_card, name='register_credit_card'),
@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
     url(r'^profile/edit/update-credit-card/$', views.update_credit_card, name='update_credit_card'),
+    url(r'^profile/edit/update-email/$', views.update_email, name='update_email'),
+    url(r'^profile/edit/update-email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$', views.update_email_verify, name='update_email_verify'),
     url(r'^delete/$', views.delete_account, name='delete_account'),
     url(r'^disable/$', views.disable_account, name='disable_account'),
 ]

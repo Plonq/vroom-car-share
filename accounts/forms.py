@@ -119,12 +119,11 @@ class UserChangeForm(forms.ModelForm):
             'is_superuser',
           )
 
-
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
-       return self.initial["password"]
+        return self.initial["password"]
 
 
 class UserChangeSelfForm(forms.ModelForm):
@@ -138,12 +137,38 @@ class UserChangeSelfForm(forms.ModelForm):
             'last_name',
             'date_of_birth',
           )
+        dateTimeOptions = {
+            'format': 'dd/mm/yyyy',
+            'endDate': timezone.localtime().date().isoformat(),
+            'startView': 4,
+        }
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'max': '9999-12-31'}, format='%Y-%m-%d')
+            'date_of_birth': DateWidget(options=dateTimeOptions, bootstrap_version=3)
         }
 
     def __init__(self, *args, **kwargs):
         super(UserChangeSelfForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class EmailChangeForm(forms.ModelForm):
+    """
+    A form for changing one's email address
+    """
+    class Meta:
+        model = User
+        fields = {
+            'email',
+        }
+
+    def clean(self):
+        if not self.has_changed():
+            raise forms.ValidationError('That is the same email already on your account')
+        return self.cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(EmailChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
