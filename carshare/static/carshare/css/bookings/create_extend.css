@@ -29,11 +29,16 @@ form > fieldset p {
 }
 
 /* Create only */
-.timeline-wrapper div {
+.timeline-wrapper div,
+.timeline-legend div {
     display: inline-block;
     margin: 3px;
     padding: 15px;
     border-radius: 10px;
+}
+
+.timeline-legend div {
+    padding: 10px;
 }
 
 .timeline-datepicker {
@@ -55,15 +60,31 @@ form > fieldset p {
     font-size: 12pt;
 }
 
+.timeline-legend > div {
+    display: inline-block;
+}
+
+div.available {
+    background-color: #c4ffc4;
+}
+
+div.unavailable {
+    background-color: #efefef;
+}
+
+div.booked_by_user {
+    background-color: #c4ebfc;
+}
+
 .timeline div.unavailable {
     color: #7f7f7f;
-    background-color: #efefef;
     cursor: not-allowed;
     user-select: none; /* stop the highlighting of text */
 }
 
-.timeline div.available {
-    background-color: #c4ffc4;
+.timeline div.booked_by_user {
+    cursor: not-allowed;
+    user-select: none; /* stop the highlighting of text */
 }
 
 #date_selector {

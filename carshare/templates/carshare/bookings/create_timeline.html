@@ -87,12 +87,20 @@
                     {% for hour, avail in hours.items %}
                         {% if avail == 'available' %}
                             <a href="{% url 'carshare:booking_create_final' vehicle.id date.year date.month date.day hour %}"><div class="{{ avail }}">{{ hour|stringformat:"02d:00" }}</div></a>
-                        {% elif avail == 'unavailable' %}
+                        {% elif avail == 'unavailable' or 'booked_by_user' %}
                             <div class="{{ avail }}">{{ hour|stringformat:"02d:00" }}</div>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row text-center bottom-spacer">
+        <div class="timeline-legend">
+            <div class="available">Available</div>
+            <div class="unavailable">Unavailable</div>
+            <div class="booked_by_user">Your booking</div>
         </div>
     </div>
 

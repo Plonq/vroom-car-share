@@ -191,7 +191,7 @@ class AccountsCreditCardFormTests(TestCase):
         Expiry date of last month correctly identified as invalid
         """
         invalid_form_data = form_data.copy()
-        last_month = date.today() - timedelta(days=30)
+        last_month = date.today().replace(day=1) - timedelta(days=1)
         invalid_form_data['expiry_month'] = str(last_month.month)
         invalid_form_data['expiry_year'] = str(last_month.year)
         form = CreditCardForm(data=invalid_form_data)
