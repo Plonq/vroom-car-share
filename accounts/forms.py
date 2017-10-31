@@ -152,6 +152,27 @@ class UserChangeSelfForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
+class EmailChangeForm(forms.ModelForm):
+    """
+    A form for changing one's email address
+    """
+    class Meta:
+        model = User
+        fields = {
+            'email',
+        }
+
+    def clean(self):
+        if not self.has_changed():
+            raise forms.ValidationError('That is the same email already on your account')
+        return self.cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(EmailChangeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
 class PasswordChangeForm(auth_forms.PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
