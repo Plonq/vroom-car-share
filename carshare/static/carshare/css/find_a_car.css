@@ -182,40 +182,54 @@ button#booking_button {
     top:20px;
     left:5%;
     z-index: 999999;
-    background-color: #006699;
-    color:white;
     user-select: none;
     cursor: pointer;
 }
 
-#filter {
+.expand_main_wrapper {
+    max-width: 281px !important;
+    transition:0.5s max-width linear;
+}
+
+.main_wrapper {
+    overflow: hidden;
+    max-width: 0px;
+    transition:0.5s max-width linear;
     float: left;
-    padding:8px;
-    font-weight: bold;
+
 }
 
-.shows {
-    display: inline-block !important;
-    padding: 0px;
-    margin: 0px;
-}
-
-#filter_options {
-    display: none;
-}
-
-#filter_options li {
-    display: block;
+#left-button {
     float: left;
     padding: 8px;
-    padding-bottom:0px;
+    background-color: #006699;
+    color: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 
-#clear {
+#reset {
+    padding: 8px;
+    float: left;
     color: lightgray;
-    font-weight: bold;
+    background-color: #006699;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.filter_wrapper{
+    width:400px;
+}
+
+.options {
+    background-color: #006699;
+    color:white;
+    float: left;
     padding: 8px;
-    float: right;
+}
+
+.options:hover {
+    color:#4cc1f6;
 }
 
 .selected {
