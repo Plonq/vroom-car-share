@@ -16,19 +16,19 @@
             <button type="submit" class="btn btn-primary" id="findcar" value="Find Car">Search</button>
 
             <div id="filter-mobile-wrapper" class="col-xs-12">
-            <div class="col-xs-12 filter-mobile-header">Filter</div>
-            <div class="col-xs-offset-1 col-xs-9">
-                <ul id="mobile-filter">
-                    <li onclick="filter_map('All');reset_markers();" class="All selected">All</li>
-                    <li onclick="filter_map('Economy')" class="Economy">Economy</li>
-                    <li onclick="filter_map('Standard')" class="Standard">Standard</li>
-                </ul>
+                <div class="col-xs-12 filter-mobile-header">Filter</div>
+                <div class="col-xs-offset-1 col-xs-9">
+                    <ul id="mobile-filter">
+                        <li onclick="filter_map('All');reset_markers();" class="All selected">All</li>
+                        <li onclick="filter_map('Economy')" class="Economy">Economy</li>
+                        <li onclick="filter_map('Standard')" class="Standard">Standard</li>
+                    </ul>
 
-                <ul id="mobile-filter">
-                    <li onclick="filter_map('Premium')" class="Premium">Premium</li>
-                    <li onclick="filter_map('Utility')" class="Utility">Utility</li>
-                </ul>
-            </div>
+                    <ul id="mobile-filter">
+                        <li onclick="filter_map('Premium')" class="Premium">Premium</li>
+                        <li onclick="filter_map('Utility')" class="Utility">Utility</li>
+                    </ul>
+                </div>
             </div>
 
         </div>
@@ -37,16 +37,18 @@
 
         <div id="map_contain">
 
-            <!-- Filter Map -->
+            <!-- Filter overlay website -->
             <div id="filter_container" class="hidden-xs">
-                <div id="filter" onclick="filter_map_toggle()">Filter</div>
-                <ul id="filter_options">
-                    <li onclick="filter_map('Economy')" class="Economy">Economy</li>
-                    <li onclick="filter_map('Standard')" class="Standard">Standard</li>
-                    <li onclick="filter_map('Premium')" class="Premium">Premium</li>
-                    <li onclick="filter_map('Utility')" class="Utility">Utility</li>
-                </ul>
-                <div id="clear" onclick="reset_markers()">Reset</div>
+                <div id="left-button" onclick="filter_map_toggle();">Filter</div>
+                <div class="main_wrapper">
+                    <div class="filter_wrapper">
+                        <div onclick="filter_map('Economy')" class="Economy options">Economy</div>
+                        <div onclick="filter_map('Standard')" class="Standard options">Standard</div>
+                        <div onclick="filter_map('Premium')" class="Premium options">Premium</div>
+                        <div onclick="filter_map('Utility')" class="Utility options">Utility</div>
+                    </div>
+                </div>
+                <div id="reset" onclick="reset_markers()">Reset</div>
             </div>
 
 
@@ -433,7 +435,7 @@
         }
 
         function filter_map_toggle() {
-            $("#filter_options").toggleClass("shows");
+            $(".main_wrapper").toggleClass("expand_main_wrapper");
         }
 
         function filter_map(filter_type) {
