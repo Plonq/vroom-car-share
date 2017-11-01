@@ -31,6 +31,11 @@ def faq(request):
     return render(request, 'carshare/faq.html')
 
 
+def privacy(request):
+    from django.http import FileResponse
+    return FileResponse(open('vroom_car_share/static/privacy_policy.pdf', 'rb'), content_type='application/pdf')
+
+
 def about_us(request):
     # Owner cost: $75 per trip, calculated using values from GoGet (10,000 kms per annum, car is used 20
     # hours per week, petrol $1.44 per litre). Assuming 20 hours is two trips on average.
