@@ -175,6 +175,95 @@ button#booking_button {
     padding-top: 20px;
 }
 
+/* Map Filter */
+
+#filter_container {
+    position: absolute;
+    top:20px;
+    left:5%;
+    z-index: 999999;
+    user-select: none;
+    cursor: pointer;
+}
+
+.expand_main_wrapper {
+    max-width: 281px !important;
+    transition:0.5s max-width linear;
+}
+
+.main_wrapper {
+    overflow: hidden;
+    max-width: 0px;
+    transition:0.5s max-width linear;
+    float: left;
+
+}
+
+#left-button {
+    float: left;
+    padding: 8px;
+    background-color: #006699;
+    color: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+#reset {
+    padding: 8px;
+    float: left;
+    color: lightgray;
+    background-color: #006699;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.filter_wrapper{
+    width:400px;
+}
+
+.options {
+    background-color: #006699;
+    color:white;
+    float: left;
+    padding: 8px;
+}
+
+.options:hover {
+    color:#4cc1f6;
+}
+
+.selected {
+    color:#4cc1f6;
+    font-weight: bold;
+}
+
+#mobile-filter {
+    margin-bottom:0px;
+}
+
+#mobile-filter li {
+    display: inline-block;
+    padding: 8px;
+}
+
+.filter-mobile-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size:20px;
+}
+
+#filter-mobile-wrapper {
+    background-color: #006699;
+    padding-bottom:10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+/* End Map Filter */
+
+
+
 @media only screen and (min-height: 1260px) {
 
     #map_contain {
@@ -207,6 +296,7 @@ button#booking_button {
     #findcar {
         width: 90%;
         margin-bottom: 20px;
+        margin-top:10px;
     }
 
     #map_contain {
