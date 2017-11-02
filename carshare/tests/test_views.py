@@ -102,7 +102,7 @@ class CarshareBookingViewTests(TestCase):
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
-        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        self.assertEqual(post_response.status_code, 200)
         confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
         self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
@@ -155,7 +155,7 @@ class CarshareBookingViewTests(TestCase):
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
-        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        self.assertEqual(post_response.status_code, 200)
         confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
         self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
@@ -190,7 +190,7 @@ class CarshareBookingViewTests(TestCase):
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
-        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        self.assertEqual(post_response.status_code, 200)
         confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking = User.objects.get(email='user@test.com').booking_set.first()
         self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking.id}))
