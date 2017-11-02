@@ -6,7 +6,6 @@ from . import views
 app_name = 'carshare'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'bookings/new/review$', views.booking_review, name='booking_review'),
     url(r'contact-us/$', views.contact_us, name='contact_us'),
     url(r'pricing/$', views.pricing, name='pricing'),
     url(r'how-it-works/$', views.how_it_works, name='how_it_works'),
@@ -20,7 +19,6 @@ urlpatterns = [
     url(r'bookings/new/review/$', views.booking_review, name='booking_review'),
     url(r'bookings/confirm/$', views.booking_confirm, name='booking_confirm'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
-    url(r'bookings/confirmed/$', views.booking_confirmed, name='booking_confirmed'),
     url(r'bookings/(?P<booking_id>[0-9]+)/extend/$', views.booking_extend, name='booking_extend'),
     url(r'bookings/$', views.my_bookings, name='my_bookings'),
     url(r'bookings/(?P<booking_id>[0-9]+)/cancel/$', views.booking_cancel, name='booking_cancel'),
