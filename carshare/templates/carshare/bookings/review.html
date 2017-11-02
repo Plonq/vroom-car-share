@@ -1,6 +1,6 @@
 {% extends 'base_narrow.html' %}
 {% load static %}
-{% block pagetitle %}{% block pageheader %}Booking Review{% endblock %}{% endblock %}
+{% block pagetitle %}{% block pageheader %}Review Booking{% endblock %}{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
@@ -50,9 +50,8 @@
         <div class="actions">
             <div class="row text-center">
                 <div class="col-xs-12">
-                    <a class="btn btn-success" href=" {% url 'carshare:booking_confirmed' %}" >Confirm Booking</a>
-
                     <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
+                    <a class="btn btn-success" href="{% url 'carshare:booking_confirm' %}">Confirm</a>
                 </div>
             </div>
         </div>

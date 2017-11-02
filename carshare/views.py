@@ -1,13 +1,13 @@
 from django.contrib import messages
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-import time, datetime
 from django.db.models import Q
+
 from wkhtmltopdf.views import PDFTemplateResponse
-from formtools.preview import FormPreview
+
 import datetime as dt
 import json
 
@@ -169,7 +169,6 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
 
 
 def booking_review(request):
-
     vehicle_id = request.session['vehicle_id']
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     scheduled_start= request.session['booking_start']
@@ -189,11 +188,11 @@ def booking_review(request):
             'scheduled_end': scheduled_end,
     }
 
-    return render(request, 'carshare/bookings/confirm.html', context)
+    return render(request, 'carshare/bookings/review.html', context)
 
 
 @login_required
-def booking_confirmed(request):
+def booking_confirm(request):
     vehicle_id = request.session['vehicle_id']
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
@@ -206,7 +205,6 @@ def booking_confirmed(request):
         schedule_start=scheduled_start,
         schedule_end=scheduled_end,
     )
-
     booking.save()
 
     # Send confirmation email
@@ -220,11 +218,7 @@ def booking_confirmed(request):
 
     messages.success(request, 'Booking created successfully')
 
-    context = {
-        'booking': booking,
-    }
-
-    return render(request, 'carshare/bookings/detail.html', context)
+    return redirect('carshare:booking_detail', booking.id)
 
 
 @login_required
