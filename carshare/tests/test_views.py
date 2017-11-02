@@ -102,8 +102,10 @@ class CarshareBookingViewTests(TestCase):
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
+        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
-        self.assertRedirects(post_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
+        self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
 
     def test_booking_for_time_period_already_booked(self):
         """
@@ -153,8 +155,10 @@ class CarshareBookingViewTests(TestCase):
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
         post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
+        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking_id = User.objects.get(email='user@test.com').booking_set.first().id
-        self.assertRedirects(post_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
+        self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking_id}))
         # Then try to create another booking for the same time period but different vehicle
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
@@ -185,8 +189,11 @@ class CarshareBookingViewTests(TestCase):
         self.client.login(email='user@test.com', password='bigbadtestuser')
         get_response = self.client.get(reverse('carshare:booking_create_final', kwargs=kwargs))
         self.assertEqual(get_response.status_code, 200)
-        self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
+        post_response = self.client.post(reverse('carshare:booking_create_final', kwargs=kwargs), data=form)
+        self.assertRedirects(post_response, reverse('carshare:booking_review'))
+        confirm_response = self.client.get(reverse('carshare:booking_confirm'))
         booking = User.objects.get(email='user@test.com').booking_set.first()
+        self.assertRedirects(confirm_response, reverse('carshare:booking_detail', kwargs={'booking_id': booking.id}))
         # Get detail page for the booking
         response = self.client.get(reverse('carshare:booking_detail', kwargs={'booking_id': booking.id}))
         self.assertContains(response, "Booking Detail")
