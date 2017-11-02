@@ -29,6 +29,7 @@ SECRET_KEY = "fdmp5t!(7c5n8bp1xcyo3ttuf6i6kap_)f0g473_+m)3ref!wn"
 DEBUG = os.environ.get('DEBUG', False)
 
 # Application definition
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 INSTALLED_APPS = [
     'flat_responsive',

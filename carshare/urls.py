@@ -6,7 +6,7 @@ from . import views
 app_name = 'carshare'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'testering/$', views.trial_test, name='trial_test'),
+    url(r'bookings/new/review$', views.booking_review, name='booking_review'),
     url(r'contact-us/$', views.contact_us, name='contact_us'),
     url(r'pricing/$', views.pricing, name='pricing'),
     url(r'how-it-works/$', views.how_it_works, name='how_it_works'),
@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/$', views.booking_timeline, name='booking_create_date'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/(?P<hour>[0-9]{1,2})/$', views.booking_create, name='booking_create_final'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
+    url(r'bookings/confirmed/$', views.booking_confirmed, name='booking_confirmed'),
     url(r'bookings/(?P<booking_id>[0-9]+)/extend/$', views.booking_extend, name='booking_extend'),
     url(r'bookings/$', views.my_bookings, name='my_bookings'),
     url(r'bookings/(?P<booking_id>[0-9]+)/cancel/$', views.booking_cancel, name='booking_cancel'),

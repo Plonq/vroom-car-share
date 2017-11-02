@@ -1,6 +1,6 @@
 {% extends 'base_narrow.html' %}
 {% load static %}
-{% block pagetitle %}{% block pageheader %}Booking Detail{% endblock %}{% endblock %}
+{% block pagetitle %}{% block pageheader %}Booking Review{% endblock %}{% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/bookings/detail.css' %}">
@@ -18,7 +18,7 @@
                 <div class="col-lg-12  col-sm-12 col-xs-12">Name</div>
             </div>
             <div class="row text-center">
-                <div class="col-lg-12  col-sm-12 col-xs-12">{{ booking.vehicle.name }}</div>
+                <div class="col-lg-12  col-sm-12 col-xs-12">{{ vehicle.name }}</div>
             </div>
 
             <div class="row text-center">
@@ -26,37 +26,32 @@
                 <div class="col-lg-6  col-sm-6 col-xs-6">Model</div>
             </div>
             <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.vehicle.make }}</div>
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.vehicle.model }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ vehicle.make }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ vehicle.model }}</div>
             </div>
             <div class="row text-center">
                 <div class="col-lg-6 col-sm-6 col-xs-6">From</div>
                 <div class="col-lg-6 col-sm-6 col-xs-6">To</div>
             </div>
             <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.schedule_start }}</div>
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.schedule_end }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ scheduled_start }}</div>
+                <div class="col-lg-6  col-sm-6 col-xs-6">{{ scheduled_end }}</div>
             </div>
             <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">Booking ID</div>
                 <div class="col-lg-6  col-sm-6 col-xs-6">Location</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">Cost</div>
             </div>
             <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.id }}</div>
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.vehicle.pod.description }}</div>
-            </div>
-            <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">Status</div>
-                <div class="col-lg-6  col-sm-6 col-xs-6">Cost</div>
-            </div>
-            <div class="row text-center">
-                <div class="col-lg-6  col-sm-6 col-xs-6">{{ booking.get_status }}</div>
+                <div class="col-lg-6 col-sm-6 col-xs-6"> {{ vehicle.pod.description }}</div>
                 <div class="col-lg-6  col-sm-6 col-xs-6">${{ booking.calculate_cost|stringformat:".2f" }}</div>
             </div>
         </div>
+
         <div class="actions">
             <div class="row text-center">
                 <div class="col-xs-12">
+                    <a class="btn btn-success" href=" {% url 'carshare:booking_confirmed' %}" >Confirm Booking</a>
+
                     <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#confirmCancel">Cancel</a>
                 </div>
             </div>
@@ -73,11 +68,11 @@
                         <h4 class="modal-title" id="myModalLabel">Confirm Cancellation</h4>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to cancel this booking?
+                        Are you sure you want to cancel? You will be redirected to Find A Car
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <a href="{% url 'carshare:booking_cancel' booking.id %}" class="btn btn-danger load-after-click">Confirm Cancel</a>
+                        <a href="{% url 'carshare:find_a_car' %}" class="btn btn-danger load-after-click">Confirm Cancel</a>
                     </div>
                 </div>
             </div>
@@ -90,8 +85,8 @@
     <script>
         function initMap() {
             var vehicle = {
-                lat: {{ booking.vehicle.pod.latitude }},
-                lng: {{ booking.vehicle.pod.longitude }}
+                lat: {{ vehicle.pod.latitude }},
+                lng: {{ vehicle.pod.longitude }}
             };
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
