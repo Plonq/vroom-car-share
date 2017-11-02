@@ -35,6 +35,11 @@ button.accordion:after {
     color: #777;
     float: right;
     margin-left: 5px;
+    margin-right: -25px;
+}
+
+button.accordion {
+    padding-right: 45px;
 }
 
 button.accordion.active:after {
