@@ -116,7 +116,7 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
 
 
 @login_required
-def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None):
+def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None, length=1):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
 
@@ -149,60 +149,58 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     break
 
             if is_valid_booking:
+                # Save details in session, but also provide to template context. When confirmed, we'll create the
+                # booking from the session vars.
                 request.session['vehicle_id'] = vehicle.id
                 request.session['booking_start'] = booking_start
                 request.session['booking_end'] = booking_end
-                return redirect('carshare:booking_review')
+                booking = Booking(
+                    user=request.user,
+                    vehicle=vehicle,
+                    schedule_start=booking_start,
+                    schedule_end=booking_end,
+                )
+                # Include start date, hour, and length of booking so we can have a Back button
+                context = {
+                    'booking': booking,
+                    'datetime': booking_start,
+                    'length': int((booking_end - booking_start).seconds / 60 / 60),
+                }
+                return render(request, 'carshare/bookings/review.html', context)
 
             # Else, continue and render the same page with form errors
     else:
-        booking_form = BookingForm(initial_start_datetime=datetime)
+        booking_form = BookingForm(initial_start_datetime=datetime, initial_length=length)
         booking_form.is_bound = False  # Prevent validation triggering
 
     context = {
         'vehicle': vehicle,
         'booking_form': booking_form,
         'date': datetime.date,
+        'booking_length': length,
     }
     return render(request, "carshare/bookings/create.html", context)
 
 
-def booking_review(request):
-    vehicle_id = request.session['vehicle_id']
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
-    scheduled_start= request.session['booking_start']
-    scheduled_end= request.session['booking_end']
-
-    booking = Booking(
-        user=request.user,
-        vehicle=vehicle,
-        schedule_start=scheduled_start,
-        schedule_end=scheduled_end,
-    )
-
-    context = {
-            'booking': booking,
-            'vehicle': vehicle,
-            'scheduled_start': scheduled_start,
-            'scheduled_end': scheduled_end,
-    }
-
-    return render(request, 'carshare/bookings/review.html', context)
-
-
 @login_required
 def booking_confirm(request):
-    vehicle_id = request.session['vehicle_id']
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
-
-    scheduled_start= request.session['booking_start']
-    scheduled_end= request.session['booking_end']
+    # Create booking from session vars, since form was previously submitted
+    try:
+        vehicle_id = request.session['vehicle_id']
+        vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+        schedule_start = request.session['booking_start']
+        schedule_end = request.session['booking_end']
+        del request.session['vehicle_id']
+        del request.session['booking_start']
+        del request.session['booking_end']
+    except KeyError:
+        return redirect('carshare:index')
 
     booking = Booking(
         user=request.user,
         vehicle=vehicle,
-        schedule_start=scheduled_start,
-        schedule_end=scheduled_end,
+        schedule_start=schedule_start,
+        schedule_end=schedule_end,
     )
     booking.save()
 
@@ -214,9 +212,7 @@ def booking_confirm(request):
           'booking': booking,
         },
      )
-
     messages.success(request, 'Booking created successfully')
-
     return redirect('carshare:booking_detail', booking.id)
 
 

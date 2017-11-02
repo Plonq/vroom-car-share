@@ -115,13 +115,14 @@ class BookingForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         initial_start_datetime = kwargs.pop('initial_start_datetime', None)
+        initial_length = int(kwargs.pop('initial_length', 1))
         super(BookingForm, self).__init__(*args, **kwargs)
         if initial_start_datetime:
             # Set initial start time
             self.initial['booking_start_date'] = dt.datetime.strftime(initial_start_datetime, '%d/%m/%Y')
             self.initial['booking_start_time'] = dt.datetime.strftime(initial_start_datetime, '%H:%M')
             # Set initial end time to two hours after start time
-            initial_end_datetime = initial_start_datetime + dt.timedelta(hours=1)
+            initial_end_datetime = initial_start_datetime + dt.timedelta(hours=initial_length)
             self.initial['booking_end_date'] = dt.datetime.strftime(initial_end_datetime, '%d/%m/%Y')
             self.initial['booking_end_time'] = dt.datetime.strftime(initial_end_datetime, '%H:%M')
         # Crispy Forms
