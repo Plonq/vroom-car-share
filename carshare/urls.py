@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+
 app_name = 'carshare'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -15,6 +16,8 @@ urlpatterns = [
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/$', views.booking_timeline, name='booking_create'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/$', views.booking_timeline, name='booking_create_date'),
     url(r'bookings/new/(?P<vehicle_id>[0-9]+)/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/(?P<hour>[0-9]{1,2})/$', views.booking_create, name='booking_create_final'),
+    url(r'bookings/new/review/$', views.booking_review, name='booking_review'),
+    url(r'bookings/confirm/$', views.booking_confirm, name='booking_confirm'),
     url(r'bookings/(?P<booking_id>[0-9]+)/$', views.booking_detail, name='booking_detail'),
     url(r'bookings/(?P<booking_id>[0-9]+)/extend/$', views.booking_extend, name='booking_extend'),
     url(r'bookings/$', views.my_bookings, name='my_bookings'),

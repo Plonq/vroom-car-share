@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
+
 from wkhtmltopdf.views import PDFTemplateResponse
 
 import datetime as dt
@@ -12,7 +13,6 @@ import json
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking, Invoice, Pod
-
 
 # Create your views here.
 def index(request):
@@ -149,26 +149,11 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     break
 
             if is_valid_booking:
-                # Process form and create booking
-                booking = Booking(
-                    user=request.user,
-                    vehicle=vehicle,
-                    schedule_start=booking_start,
-                    schedule_end=booking_end,
-                )
-                booking.save()
+                request.session['vehicle_id'] = vehicle.id
+                request.session['booking_start'] = booking_start
+                request.session['booking_end'] = booking_end
+                return redirect('carshare:booking_review')
 
-                # Send confirmation email
-                request.user.send_email(
-                    template_name='Booking Confirmation',
-                    context={
-                        'user': request.user,
-                        'booking': booking,
-                    },
-                )
-
-                messages.success(request, 'Booking created successfully')
-                return redirect('carshare:booking_detail', booking.pk)
             # Else, continue and render the same page with form errors
     else:
         booking_form = BookingForm(initial_start_datetime=datetime)
@@ -180,6 +165,59 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
         'date': datetime.date,
     }
     return render(request, "carshare/bookings/create.html", context)
+
+
+def booking_review(request):
+    vehicle_id = request.session['vehicle_id']
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    scheduled_start= request.session['booking_start']
+    scheduled_end= request.session['booking_end']
+
+    booking = Booking(
+        user=request.user,
+        vehicle=vehicle,
+        schedule_start=scheduled_start,
+        schedule_end=scheduled_end,
+    )
+
+    context = {
+            'booking': booking,
+            'vehicle': vehicle,
+            'scheduled_start': scheduled_start,
+            'scheduled_end': scheduled_end,
+    }
+
+    return render(request, 'carshare/bookings/review.html', context)
+
+
+@login_required
+def booking_confirm(request):
+    vehicle_id = request.session['vehicle_id']
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    scheduled_start= request.session['booking_start']
+    scheduled_end= request.session['booking_end']
+
+    booking = Booking(
+        user=request.user,
+        vehicle=vehicle,
+        schedule_start=scheduled_start,
+        schedule_end=scheduled_end,
+    )
+    booking.save()
+
+    # Send confirmation email
+    request.user.send_email(
+       template_name='Booking Confirmation',
+       context={
+          'user': request.user,
+          'booking': booking,
+        },
+     )
+
+    messages.success(request, 'Booking created successfully')
+
+    return redirect('carshare:booking_detail', booking.id)
 
 
 @login_required
