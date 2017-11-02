@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,7 +8,7 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .forms import UserCreationSelfForm, AddressForm, CreditCardForm, UserChangeSelfForm
+from .forms import UserCreationSelfForm, AddressForm, CreditCardForm, UserChangeSelfForm, EmailChangeForm
 from .models import User, Address
 
 
@@ -180,7 +179,6 @@ def register_cancel(request):
     except (User.DoesNotExist, Address.DoesNotExist, KeyError):
         pass
 
-
     messages.info(request, 'Registration cancelled')
     return redirect('carshare:index')
 
@@ -207,26 +205,32 @@ def profile(request):
 @login_required
 def edit_profile(request):
     user = request.user
+    address_form = None
     if request.method == 'POST':
         user_form = UserChangeSelfForm(request.POST, instance=user)
-        address_form = AddressForm(request.POST, instance=user.address)
 
-        if user_form.is_valid() and address_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            address_form.save()
+            if hasattr(user, 'address'):
+                address_form = AddressForm(request.POST, instance=user.address)
+                if address_form.is_valid():
+                    address_form.save()
 
             messages.success(request, 'Changes saved')
             return redirect('profile')
     else:
         user_form = UserChangeSelfForm(instance=user)
-        address_form = AddressForm(instance=user.address)
+        if hasattr(user, 'address'):
+            address_form = AddressForm(instance=user.address)
 
     context = {
         'user_form': user_form,
-        'address_form': address_form,
     }
+    if address_form:
+        context['address_form'] = address_form
 
     return render(request, 'accounts/edit_profile.html', context)
+
 
 @login_required
 def update_credit_card(request):
@@ -248,6 +252,58 @@ def update_credit_card(request):
     }
 
     return render(request, 'accounts/update_credit_card.html', context)
+
+
+def update_email(request):
+    if request.method == 'POST':
+        email_form = EmailChangeForm(request.POST, instance=request.user)
+
+        if email_form.is_valid():
+            # Save new email in session and verify by sending email to it
+            request.session['pending_email'] = email_form.cleaned_data.get('email')
+            kwargs = {
+                "uidb64": urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
+                "token": default_token_generator.make_token(request.user)
+            }
+            verification_url = reverse("update_email_verify", kwargs=kwargs)
+            verify_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), verification_url)
+            request.user.send_email(
+                template_name='Verify Email',
+                context={
+                    'user': request.user,
+                    'verify_url': verify_url
+                },
+            )
+
+            return render(request, 'accounts/verify_email_request.html')
+    else:
+        email_form = EmailChangeForm()
+
+    context = {
+        'email_form': email_form,
+    }
+
+    return render(request, 'accounts/update_email.html', context)
+
+
+def update_email_verify(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except User.DoesNotExist:
+        user = None
+    if user and default_token_generator.check_token(user, token):
+        # Get new email address from session
+        if 'pending_email' in request.session:
+            user.email = request.session['pending_email']
+            user.save()
+            messages.success(request, 'Email address successfully updated')
+            return redirect('profile')
+        else:
+            return HttpResponse("Session has expired, please try again")
+    else:
+        return HttpResponse("Activation link has expired")
+
 
 # Delete account confirmation, delete if POST
 @login_required

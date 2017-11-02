@@ -14,6 +14,7 @@
 {% url 'carshare:how_it_works' as url_how_it_works %}
 {% url 'carshare:pricing' as url_pricing %}
 {% url 'carshare:about_us' as url_about_us %}
+{% url 'carshare:privacy' as url_privacy %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +81,7 @@
                             <input type="password" name="password" class="textinput textInput form-control" required="" id="id_password">
                         </div>
                     </div>
-                    <p>No account? <a href="{{ url_register }}">Register</a></p>
+                    <p><a href="{{ url_register }}">Register</a> | <a href="{% url 'password_reset' %}">Forgot password</a></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -213,37 +214,45 @@
                 <a href="{{ url_home }}">Home</a>
             </div>
             <div class="col-sm-4">
-                <a href="#">Make Booking</a>
-            </div>
-            <div class="col-sm-4">
-                <a href="" data-toggle="modal" data-target="#myModal">Login</a>
-            </div>
-        </div>
-        <div class="row hidden-xs top-buffer">
-            <div class="col-sm-4">
-                <a href="{{ url_about_us }}">About Us</a>
-            </div>
-            <div class="col-sm-4">
                 <a href="{{ url_find_a_car }}">Find A Car</a>
             </div>
             <div class="col-sm-4">
-                <a href="{{ url_register }}">Register</a>
+                <a href="{{ url_about_us }}">About Us</a>
             </div>
         </div>
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4">
+                {% if user.is_authenticated %}
+                    <a href="{{ url_login }}">Login</a>
+                {% else %}
+                    <a href="{{ url_logout }}">Logout</a>
+                {% endif %}
+            </div>
+            <div class="col-sm-4">
                 <a href="{{ url_faq }}">FAQ</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_pricing }}">Pricing</a>
+            </div>
+        </div>
+        <div class="row hidden-xs top-buffer">
+            <div class="col-sm-4">
+                {% if user.is_authenticated %}
+                    <a href="{{ url_profile }}">Profile</a>
+                {% else %}
+                    <a href="{{ url_register }}">Register</a>
+                {% endif %}
             </div>
             <div class="col-sm-4">
                 <a href="{{ url_how_it_works }}">How It Works</a>
             </div>
             <div class="col-sm-4">
-                <a href="#">My Account</a>
+                <a href="{{ url_contact_us }}">Contact Us</a>
             </div>
         </div>
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4 col-sm-offset-4">
-                <a href="{{ url_pricing }}">Pricing</a>
+                <a href="{{ url_privacy }}">Privacy Policy</a>
             </div>
         </div>
 
@@ -253,31 +262,43 @@
                 <a href="{{ url_home }}">Home</a>
             </div>
             <div class="col-xs-6">
-                <a href="#">Make Booking</a>
-            </div>
-        </div>
-        <div class="row visible-xs top-buffer">
-            <div class="col-xs-6">
-                <a href="{{ url_about_us }}">About Us</a>
-            </div>
-            <div class="col-xs-6">
                 <a href="{{ url_find_a_car }}">Find A Car</a>
             </div>
         </div>
         <div class="row visible-xs top-buffer">
             <div class="col-xs-6">
-                <a href="{{ url_faq }}">FAQ</a>
+                {% if user.is_authenticated %}
+                    <a href="{{ url_login }}">Login</a>
+                {% else %}
+                    <a href="{{ url_logout }}">Logout</a>
+                {% endif %}
             </div>
             <div class="col-xs-6">
-                <a href="" data-toggle="modal" data-target="#myModal">Login</a>
+                <a href="{{ url_about_us }}">About Us</a>
             </div>
         </div>
         <div class="row visible-xs top-buffer">
             <div class="col-xs-6">
-                <a href="#">Pricing</a>
+                <a href="{{ url_register }}">Register</a>
             </div>
             <div class="col-xs-6">
-                <a href="{{ url_register }}">Register</a>
+                <a href="{{ url_faq }}">FAQ</a>
+            </div>
+        </div>
+        <div class="row visible-xs top-buffer">
+            <div class="col-xs-6">
+                <a href="{{ url_how_it_works }}">How it Works</a>
+            </div>
+            <div class="col-xs-6">
+                <a href="{{ url_pricing }}">Pricing</a>
+            </div>
+        </div>
+        <div class="row visible-xs top-buffer">
+            <div class="col-xs-6">
+                <a href="{{ url_contact_us }}">Contact Us</a>
+            </div>
+            <div class="col-xs-6">
+                <a href="{{ url_privacy }}">Privacy Policy</a>
             </div>
         </div>
 
