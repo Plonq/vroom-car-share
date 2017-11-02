@@ -1,18 +1,18 @@
 from django.contrib import messages
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+import time, datetime
 from django.db.models import Q
 from wkhtmltopdf.views import PDFTemplateResponse
-
+from formtools.preview import FormPreview
 import datetime as dt
 import json
 
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking, Invoice, Pod
-
 
 # Create your views here.
 def index(request):
@@ -143,27 +143,45 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     booking_form.add_error(None, "You already have a booking within the selected time frame")
                     break
 
+            vehicle_name = vehicle.name
+
+            request.session['vehicle_name'] = vehicle_name
+            request.session['vehicle_make'] = vehicle.make
+            request.session['vehicle_model'] = vehicle.model
+            request.session['vehicle_year'] = vehicle.year
+            request.session['booking_start'] = time.mktime(booking_start.timetuple())
+            request.session['booking_end'] = time.mktime(booking_end.timetuple())
+
+
+
+
+
+
+
+
             if is_valid_booking:
                 # Process form and create booking
+
                 booking = Booking(
                     user=request.user,
                     vehicle=vehicle,
                     schedule_start=booking_start,
                     schedule_end=booking_end,
                 )
-                booking.save()
+
+
+               # booking.save()
 
                 # Send confirmation email
-                request.user.send_email(
-                    template_name='Booking Confirmation',
-                    context={
-                        'user': request.user,
-                        'booking': booking,
-                    },
-                )
+               # request.user.send_email(
+                #    template_name='Booking Confirmation',
+                 #   context={
+                  #      'user': request.user,
+                   #     'booking': booking,
+                   # },
+               # )
 
-                messages.success(request, 'Booking created successfully')
-                return redirect('carshare:booking_detail', booking.pk)
+            return redirect('carshare:trial_test')
             # Else, continue and render the same page with form errors
     else:
         booking_form = BookingForm(initial_start_datetime=datetime)
@@ -175,6 +193,30 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
         'date': datetime.date,
     }
     return render(request, "carshare/bookings/create.html", context)
+
+def trial_test(request):
+    vehicle_name = request.session['vehicle_name']
+    vehicle_make = request.session['vehicle_make']
+    vehicle_model = request.session['vehicle_model']
+    vehicle_year = request.session['vehicle_year']
+
+    scheduled_start1= request.session['booking_start']
+    scheduled_end1= request.session['booking_end']
+
+    scheduled_start = datetime.datetime.fromtimestamp(int(scheduled_start1)).strftime('%Y-%m-%d')
+    scheduled_end = datetime.datetime.fromtimestamp(int(scheduled_end1)).strftime('%Y-%m-%d')
+
+    context = {
+        'vehicle_name': vehicle_name,
+        'vehicle_make': vehicle_make,
+        'vehicle_model': vehicle_model,
+        'vehicle_year': vehicle_year,
+        'scheduled_start': scheduled_start,
+        'scheduled_end': scheduled_end,
+
+    }
+
+    return render(request, 'carshare/bookings/test.html', context)
 
 
 @login_required
