@@ -148,45 +148,13 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     booking_form.add_error(None, "You already have a booking within the selected time frame")
                     break
 
-            vehicle_name = vehicle.name
-
-            request.session['vehicle_name'] = vehicle_name
-            request.session['vehicle_make'] = vehicle.make
-            request.session['vehicle_model'] = vehicle.model
-            request.session['vehicle_year'] = vehicle.year
-            request.session['booking_start'] = time.mktime(booking_start.timetuple())
-            request.session['booking_end'] = time.mktime(booking_end.timetuple())
-
-
-
-
-
-
-
-
             if is_valid_booking:
-                # Process form and create booking
+                request.session['vehicle_id'] = vehicle.id
+                request.session['booking_start'] = booking_start
+                request.session['booking_end'] = booking_end
 
-                booking = Booking(
-                    user=request.user,
-                    vehicle=vehicle,
-                    schedule_start=booking_start,
-                    schedule_end=booking_end,
-                )
+            return redirect('carshare:booking_review')
 
-
-               # booking.save()
-
-                # Send confirmation email
-               # request.user.send_email(
-                #    template_name='Booking Confirmation',
-                 #   context={
-                  #      'user': request.user,
-                   #     'booking': booking,
-                   # },
-               # )
-
-            return redirect('carshare:trial_test')
             # Else, continue and render the same page with form errors
     else:
         booking_form = BookingForm(initial_start_datetime=datetime)
@@ -199,29 +167,64 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
     }
     return render(request, "carshare/bookings/create.html", context)
 
-def trial_test(request):
-    vehicle_name = request.session['vehicle_name']
-    vehicle_make = request.session['vehicle_make']
-    vehicle_model = request.session['vehicle_model']
-    vehicle_year = request.session['vehicle_year']
 
-    scheduled_start1= request.session['booking_start']
-    scheduled_end1= request.session['booking_end']
+def booking_review(request):
 
-    scheduled_start = datetime.datetime.fromtimestamp(int(scheduled_start1)).strftime('%Y-%m-%d')
-    scheduled_end = datetime.datetime.fromtimestamp(int(scheduled_end1)).strftime('%Y-%m-%d')
+    vehicle_id = request.session['vehicle_id']
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    scheduled_start= request.session['booking_start']
+    scheduled_end= request.session['booking_end']
+
+    booking = Booking(
+        user=request.user,
+        vehicle=vehicle,
+        schedule_start=scheduled_start,
+        schedule_end=scheduled_end,
+    )
 
     context = {
-        'vehicle_name': vehicle_name,
-        'vehicle_make': vehicle_make,
-        'vehicle_model': vehicle_model,
-        'vehicle_year': vehicle_year,
-        'scheduled_start': scheduled_start,
-        'scheduled_end': scheduled_end,
-
+            'booking': booking,
+            'vehicle': vehicle,
+            'scheduled_start': scheduled_start,
+            'scheduled_end': scheduled_end,
     }
 
-    return render(request, 'carshare/bookings/test.html', context)
+    return render(request, 'carshare/bookings/confirm.html', context)
+
+
+@login_required
+def booking_confirmed(request):
+    vehicle_id = request.session['vehicle_id']
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    scheduled_start= request.session['booking_start']
+    scheduled_end= request.session['booking_end']
+
+    booking = Booking(
+        user=request.user,
+        vehicle=vehicle,
+        schedule_start=scheduled_start,
+        schedule_end=scheduled_end,
+    )
+
+    booking.save()
+
+    # Send confirmation email
+    request.user.send_email(
+       template_name='Booking Confirmation',
+       context={
+          'user': request.user,
+          'booking': booking,
+        },
+     )
+
+    messages.success(request, 'Booking created successfully')
+
+    context = {
+        'booking': booking,
+    }
+
+    return render(request, 'carshare/bookings/detail.html', context)
 
 
 @login_required
