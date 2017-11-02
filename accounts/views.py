@@ -141,12 +141,14 @@ def register_credit_card(request):
             }
             activation_url = reverse("activate_account", kwargs=kwargs)
             activate_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), activation_url)
-            #
+            url_how_it_works = reverse('carshare:how_it_works')
+            url_how_it_works = "{0}://{1}{2}".format(request.scheme, request.get_host(), url_how_it_works)
             user_obj.send_email(
                 template_name='Registration',
                 context={
                     'user': user_obj,
-                    'activate_url': activate_url
+                    'activate_url': activate_url,
+                    'url_how_it_works': url_how_it_works,
                 },
             )
 
