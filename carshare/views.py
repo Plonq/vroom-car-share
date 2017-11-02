@@ -152,8 +152,7 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                 request.session['vehicle_id'] = vehicle.id
                 request.session['booking_start'] = booking_start
                 request.session['booking_end'] = booking_end
-
-            return redirect('carshare:booking_review')
+                return redirect('carshare:booking_review')
 
             # Else, continue and render the same page with form errors
     else:
