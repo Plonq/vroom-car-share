@@ -162,10 +162,11 @@ class EmailChangeForm(forms.ModelForm):
             'email',
         }
 
-    def clean(self):
-        if not self.has_changed():
-            raise forms.ValidationError('That is the same email already on your account')
-        return self.cleaned_data
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('That email is already taken')
+        return email
 
     def __init__(self, *args, **kwargs):
         super(EmailChangeForm, self).__init__(*args, **kwargs)
