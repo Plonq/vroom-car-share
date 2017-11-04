@@ -84,9 +84,9 @@
             <h4 id="location_mobile">Location:</h4>
             <div id="pod_description_mobile"></div>
 
-            <button type="button" class="btn btn-warning" id="booking_button_mobile" value="Book Now">Book Now</button>
-            <button type="button" class="btn btn-danger start-again-button" onclick="hide_popup_mobile()" value="Reset">
-                Start Again
+            <button type="button" class="btn btn-primary" id="booking_button_mobile" value="Book Now">Book Now</button>
+            <button type="reset" class="btn btn-link reset-button" onclick="hide_popup_mobile()">
+                Back to Search
             </button>
 
         </div>
@@ -432,6 +432,7 @@
             $("#Booking_Container_mobile").fadeOut("slow");
             stopmarkers();
             $(".mobile_header").scrollintoview({duration: "normal"});
+            $('#pac-input-mobile').focus();
         }
 
         function filter_map_toggle() {

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -256,13 +257,15 @@ def update_credit_card(request):
     return render(request, 'accounts/update_credit_card.html', context)
 
 
+@login_required
 def update_email(request):
     if request.method == 'POST':
         email_form = EmailChangeForm(request.POST, instance=request.user)
 
         if email_form.is_valid():
-            # Save new email in session and verify by sending email to it
-            request.session['pending_email'] = email_form.cleaned_data.get('email')
+            # Save new email with the user in prep for verification
+            request.user.requested_email = email_form.cleaned_data.get('email')
+            request.user.save()
             kwargs = {
                 "uidb64": urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
                 "token": default_token_generator.make_token(request.user)
@@ -296,13 +299,13 @@ def update_email_verify(request, uidb64, token):
         user = None
     if user and default_token_generator.check_token(user, token):
         # Get new email address from session
-        if 'pending_email' in request.session:
-            user.email = request.session['pending_email']
+        if user.requested_email:
+            user.email = user.requested_email
+            user.requested_email = None
             user.save()
-            messages.success(request, 'Email address successfully updated')
-            return redirect('profile')
+            return render(request, 'accounts/update_email_done.html')
         else:
-            return HttpResponse("Session has expired, please try again")
+            return HttpResponse("Invalid link")
     else:
         return HttpResponse("Activation link has expired")
 
