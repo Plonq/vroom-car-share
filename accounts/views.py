@@ -256,6 +256,7 @@ def update_credit_card(request):
     return render(request, 'accounts/update_credit_card.html', context)
 
 
+@login_required
 def update_email(request):
     if request.method == 'POST':
         email_form = EmailChangeForm(request.POST, instance=request.user)
@@ -288,6 +289,7 @@ def update_email(request):
     return render(request, 'accounts/update_email.html', context)
 
 
+@login_required
 def update_email_verify(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
