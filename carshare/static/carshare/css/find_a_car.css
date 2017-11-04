@@ -334,10 +334,11 @@ button#booking_button {
         margin-top: 20px;
     }
 
-    .start-again-button {
+    .reset-button {
         margin-bottom: 20px;
         margin-top: 5px;
         width: 90%;
+        color: #00466c;
     }
 
     div#Booking_Container_mobile {
