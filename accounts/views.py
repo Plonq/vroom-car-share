@@ -264,17 +264,21 @@ def update_email(request):
 
         if email_form.is_valid():
             # Save new email with the user in prep for verification
-            request.user.requested_email = email_form.cleaned_data.get('email')
+            user = request.user
+            user.requested_email = email_form.cleaned_data.get('requested_email')
+            user.save()
+
             kwargs = {
                 "uidb64": urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
                 "token": default_token_generator.make_token(request.user)
             }
+
             verification_url = reverse("update_email_verify", kwargs=kwargs)
             verify_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), verification_url)
-            request.user.send_email(
+            user.send_email(
                 template_name='Verify Email',
                 context={
-                    'user': request.user,
+                    'user': user,
                     'verify_url': verify_url
                 },
             )

@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     # Temporary holding spot when user requests changing their email address
-    requested_email = models.EmailField(max_length=255, null=True, blank=True)
+    requested_email = models.EmailField(verbose_name='requested email', max_length=255, null=True, blank=True)
 
     # Custom user manager
     objects = UserManager()
