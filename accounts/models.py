@@ -49,14 +49,26 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Sends an email to this User given the template_name (not the template filename)
         """
-        send_templated_email(
-            template_name=template_name,
-            context=context,
-            recipient_list=[self.email],
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            attachment_filename=attachment_filename,
-            attachment_data=attachment_data,
-        )
+
+        if self.requested_email is None:
+            send_templated_email(
+                template_name=template_name,
+                context=context,
+                recipient_list=[self.email],
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                attachment_filename=attachment_filename,
+                attachment_data=attachment_data,
+            )
+        else:
+            send_templated_email(
+                template_name=template_name,
+                context=context,
+                recipient_list=[self.requested_email],
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                attachment_filename=attachment_filename,
+                attachment_data=attachment_data,
+            )
+
 
     def has_perm(self, perm, obj=None):
         """
