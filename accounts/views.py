@@ -265,7 +265,6 @@ def update_email(request):
         if email_form.is_valid():
             # Save new email with the user in prep for verification
             request.user.requested_email = email_form.cleaned_data.get('email')
-            request.user.save()
             kwargs = {
                 "uidb64": urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
                 "token": default_token_generator.make_token(request.user)
