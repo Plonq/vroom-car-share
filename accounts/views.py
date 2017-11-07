@@ -11,6 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .forms import UserCreationSelfForm, AddressForm, CreditCardForm, UserChangeSelfForm, EmailChangeForm
 from .models import User, Address
+from emails.utils import send_templated_email
 
 
 def register_user(request):
@@ -259,27 +260,28 @@ def update_credit_card(request):
 
 @login_required
 def update_email(request):
+    user = request.user
     if request.method == 'POST':
-        email_form = EmailChangeForm(request.POST, instance=request.user)
+        email_form = EmailChangeForm(request.POST, instance=user)
 
         if email_form.is_valid():
-            # Save new email with the user in prep for verification
-            request.user.requested_email = email_form.cleaned_data.get('email')
-            request.user.save()
+            email_form.save()
+
+            # Send verification email
             kwargs = {
-                "uidb64": urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
-                "token": default_token_generator.make_token(request.user)
+                "uidb64": urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                "token": default_token_generator.make_token(user)
             }
             verification_url = reverse("update_email_verify", kwargs=kwargs)
             verify_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), verification_url)
-            request.user.send_email(
+            send_templated_email(
                 template_name='Verify Email',
+                recipient_list=[user.requested_email],
                 context={
-                    'user': request.user,
+                    'user': user,
                     'verify_url': verify_url
                 },
             )
-
             return render(request, 'accounts/verify_email_request.html')
     else:
         email_form = EmailChangeForm()

@@ -159,14 +159,14 @@ class EmailChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = {
-            'email',
+            'requested_email',
         }
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
+        requested_email = self.cleaned_data.get('requested_email')
+        if User.objects.filter(email=requested_email).exists():
             raise forms.ValidationError('That email is already taken')
-        return email
+        return requested_email
 
     def __init__(self, *args, **kwargs):
         super(EmailChangeForm, self).__init__(*args, **kwargs)
