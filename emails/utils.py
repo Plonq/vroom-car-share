@@ -2,11 +2,12 @@ from django.template import Engine, Context
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.conf import settings
 
 from .models import EmailTemplate
 
 
-def send_templated_email(template_name, context, recipient_list, from_email, attachment_filename=None, attachment_data=None):
+def send_templated_email(template_name, context, recipient_list, from_email=settings.DEFAULT_FROM_EMAIL, attachment_filename=None, attachment_data=None):
     # Get template from database, render it using the provided context
     template_engine = Engine()
     email_template = EmailTemplate.objects.get(name=template_name)

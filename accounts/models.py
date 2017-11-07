@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     # Temporary holding spot when user requests changing their email address
-    requested_email = models.EmailField(verbose_name='requested email', max_length=255, null=True, blank=True)
+    requested_email = models.EmailField(verbose_name='email address', max_length=255, null=True, blank=True)
 
     # Custom user manager
     objects = UserManager()
@@ -45,29 +45,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.first_name
 
-    def send_email(self, template_name, context, attachment_filename=None, attachment_data=None):
+    def send_email(self, template_name, context, from_email=settings.DEFAULT_FROM_EMAIL, attachment_filename=None, attachment_data=None):
         """
         Sends an email to this User given the template_name (not the template filename)
         """
-
-        if self.requested_email is None:
-            send_templated_email(
-                template_name=template_name,
-                context=context,
-                recipient_list=[self.email],
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                attachment_filename=attachment_filename,
-                attachment_data=attachment_data,
-            )
-        else:
-            send_templated_email(
-                template_name=template_name,
-                context=context,
-                recipient_list=[self.requested_email],
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                attachment_filename=attachment_filename,
-                attachment_data=attachment_data,
-            )
+        send_templated_email(
+            template_name=template_name,
+            context=context,
+            recipient_list=[self.email],
+            from_email=from_email,
+            attachment_filename=attachment_filename,
+            attachment_data=attachment_data,
+        )
 
 
     def has_perm(self, perm, obj=None):
