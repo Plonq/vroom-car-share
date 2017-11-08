@@ -7,7 +7,7 @@ textarea#id_message {
     margin-top:20px;
 }
 
-.contact-wrapper {
+.contact-wrapper > .row {
     background-color:#f7f8f9;
 }
 
