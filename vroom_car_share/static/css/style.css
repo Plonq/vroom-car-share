@@ -347,3 +347,10 @@ body {
     }
 
 }
+
+@media only screen and (max-width: 350px) {
+    /* Reduce size of social icons for tiny screens */
+    .social-icons img {
+        width: 56px;
+    }
+}
