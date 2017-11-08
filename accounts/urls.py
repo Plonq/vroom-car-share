@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     # Override django auth templates with our own
-    url(r'^login/$', LoginView.as_view(form_class=AuthenticationForm)),
+    url(r'^login/$', LoginView.as_view(form_class=AuthenticationForm, redirect_authenticated_user=True)),
     url(r'^logout/$', LogoutView.as_view(template_name='accounts/logged_out.html')),
     url(r'^password_change/$', PasswordChangeView.as_view(template_name='accounts/password_change_form.html', form_class=PasswordChangeForm)),
     url(r'^password_change/done/$', PasswordChangeDoneView.as_view(template_name='accounts/password_change_done.html')),
