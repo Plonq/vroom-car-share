@@ -266,9 +266,9 @@
         <div class="row visible-xs top-buffer">
             <div class="col-xs-6">
                 {% if user.is_authenticated %}
-                    <a href="{{ url_login }}">Login</a>
-                {% else %}
                     <a href="{{ url_logout }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_login }}">Login</a>
                 {% endif %}
             </div>
             <div class="col-xs-6">
