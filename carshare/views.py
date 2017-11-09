@@ -335,7 +335,7 @@ def booking_cancel(request, booking_id):
     messages.success(request, 'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
                                                                                           booking.vehicle.make,
                                                                                           booking.vehicle.model))
-    return redirect('carshare:my_bookings')
+    return redirect('carshare:booking_detail', booking.id)
 
 
 def booking_pay(request, booking_id):
