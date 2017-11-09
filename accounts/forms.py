@@ -73,7 +73,9 @@ class UserCreationSelfForm(UserCreationForm):
     def clean_date_of_birth(self):
         # Check that DOB indicates user is over 18
         dob = self.cleaned_data.get('date_of_birth')
-        if dob > date.today() - timedelta(days=365*18):
+        today = timezone.localdate()
+        eighteen_years_ago = date(today.year-18, today.month, today.day)
+        if dob > eighteen_years_ago:
             raise forms.ValidationError('You must be 18 years old to sign up')
         return dob
 
