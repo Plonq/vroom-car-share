@@ -161,10 +161,12 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     schedule_end=booking_end,
                 )
                 # Include start date, hour, and length of booking so we can have a Back button
+                length = (booking_end - booking_start)
+                length_hours = length.days * 24 + length.seconds / 60 / 60
                 context = {
                     'booking': booking,
                     'datetime': booking_start,
-                    'length': int((booking_end - booking_start).seconds / 60 / 60),
+                    'length': int(length_hours),
                 }
                 return render(request, 'carshare/bookings/review.html', context)
 
