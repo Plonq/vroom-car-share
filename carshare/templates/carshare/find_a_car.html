@@ -214,7 +214,7 @@
 
             // Add a marker clusterer to manage the markers.
             window.markerCluster = new MarkerClusterer(map, window.markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+                {imagePath: '{% static 'carshare/images' %}/gmaps_cluster_icon_m'});
 
 
             //disable all marker animations
@@ -505,7 +505,7 @@
 
 
     </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    <script src="{% static 'carshare/js/gmaps_markerclusterer.js' %}">
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWl7Uj5BgiGJIo6zS0DSbgdIuGoV9JBc0&libraries=places&callback=initMap"
             async defer></script>
