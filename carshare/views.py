@@ -405,4 +405,4 @@ def booking_calculate_cost(request, vehicle_id):
             }
             return HttpResponse(json.dumps(cost))
         else:
-            return HttpResponse(json.dumps({'error': 'check form validity'}))
+            return HttpResponse(json.dumps({'error': booking_form.errors}))
