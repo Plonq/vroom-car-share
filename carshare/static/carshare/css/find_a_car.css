@@ -323,7 +323,8 @@ button#booking_button {
         font-size: 30px;
     }
 
-    #location_mobile {
+    #location_mobile,
+    #pricing_mobile {
         font-weight: bold;
         font-size: 20px;
         margin-top: 10px;

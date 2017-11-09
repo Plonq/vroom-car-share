@@ -60,8 +60,8 @@
                 <h4>Location:</h4>
                 <div id="pod_description"></div><!-- pod description listed here -->
                 <h4>Pricing:</h4>
-                <div><strong>Daily: </strong><span id="daily_rate"></span> <strong>Hourly: </strong><span
-                        id="hourly_rate"></span></div>
+                <div><strong>Daily: </strong><span class="daily_rate"></span> <strong>Hourly: </strong><span
+                        class="hourly_rate"></span></div>
 
                 <button type="button" class="btn btn-primary" id="booking_button" value="Book Now">Book Now</button>
             </div>
@@ -83,6 +83,9 @@
             <div id="booking_mobile"></div>
             <h4 id="location_mobile">Location:</h4>
             <div id="pod_description_mobile"></div>
+            <h4 id="pricing_mobile">Pricing:</h4>
+            <div><strong>Daily: </strong><span class="daily_rate"></span> <strong>Hourly: </strong><span
+                    class="hourly_rate"></span></div>
 
             <button type="button" class="btn btn-primary" id="booking_button_mobile" value="Book Now">Book Now</button>
             <button type="reset" class="btn btn-link reset-button" onclick="hide_popup_mobile()">
@@ -235,8 +238,8 @@
                     pod.setAnimation(google.maps.Animation.BOUNCE);
                     $("#booking").text(pod.carname + " the " + pod.make + " " + pod.model);
                     $("#pod_description").text(pod.pod_description);
-                    $("#daily_rate").text(pod.daily_rate);
-                    $("#hourly_rate").text(pod.hourly_rate);
+                    $(".daily_rate").text(pod.daily_rate);
+                    $(".hourly_rate").text(pod.hourly_rate);
 
                     //mobile
                     $("#booking_mobile").text(pod.carname + " the " + pod.make + " " + pod.model);
