@@ -1,6 +1,5 @@
 {% extends 'base_full_width.html' %}
 {% load static %}
-{% load humanize %}
 {% block pagetitle %}{% block pageheader %}About Us{% endblock %}{% endblock %}
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{% static 'carshare/css/about_us.css' %}">
@@ -39,7 +38,7 @@
             </div>
             <div class="row top-spacer">
                 <div class="col-xs-12 stat">
-                    <div class="stat-value stat-savings">$<span class="countup">{{ estimated_savings|intcomma }}</span></div>
+                    <div class="stat-value stat-savings">$<span class="countup">{{ estimated_savings }}</span></div>
                     <div class="stat-label">Estimated Savings</div>
                 </div>
             </div>
@@ -97,6 +96,11 @@
 
 {% block scripts %}
     <script>
+        $.fn.digits = function(){
+            return this.each(function(){
+                $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+            })
+        };
         $('.countup').each(function () {
             $(this).prop('Counter',0).animate({
                 Counter: $(this).text()
@@ -104,7 +108,7 @@
                 duration: 1000,
                 easing: 'swing',
                 step: function (now) {
-                    $(this).text(Math.ceil(now));
+                    $(this).text(Math.ceil(now)).digits();
                 }
             });
         });
