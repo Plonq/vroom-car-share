@@ -366,7 +366,7 @@ def booking_pay(request, booking_id):
         attachment_data=response.rendered_content,
     )
     messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
-    return redirect('carshare:my_bookings')
+    return redirect('carshare:booking_detail', booking.id)
 
 
 def booking_invoice(request, booking_id):
