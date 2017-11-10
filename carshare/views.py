@@ -91,6 +91,10 @@ def find_a_car(request):
 def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
+    # Redirect if vehicle is inactive
+    if not vehicle.is_active():
+        return redirect('carshare:find_a_car')
+
     # Default to today if no date specified
     if year and month and day:
         date = dt.date(int(year), int(month), int(day))
@@ -119,6 +123,10 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
 def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None, length=1):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
+
+    # Redirect if vehicle is inactive
+    if not vehicle.is_active():
+        return redirect('carshare:find_a_car')
 
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
