@@ -402,7 +402,7 @@
             document.getElementById('findcar').onclick = function () {
                 var input = document.getElementById('pac-input');
 
-                google.maps.event.trigger(input, 'focus')
+                google.maps.event.trigger(input, 'focus');
                 google.maps.event.trigger(input, 'keydown', {keyCode: 40}); // 40 = keydown
                 google.maps.event.trigger(input, 'keydown', {keyCode: 13}); // 13 = enter
             };
@@ -423,7 +423,7 @@
                     stylers: [{visibility: 'off'}]
                 },
             ]
-        }
+        };
 
         //disable all marker animations
         function stopmarkers() {
