@@ -80,7 +80,7 @@ class UserCreationSelfForm(UserCreationForm):
         hundred_twenty_years_ago = date(today.year-100, today.month, today.day)
         if dob > eighteen_years_ago:
             raise forms.ValidationError('You must be 18 years old to sign up')
-        if dob > hundred_twenty_years_ago:
+        if dob < hundred_twenty_years_ago:
             raise forms.ValidationError('Are you sure you should be driving at that age?')
         return dob
 
