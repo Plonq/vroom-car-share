@@ -91,6 +91,10 @@ def find_a_car(request):
 def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
+    # Redirect if vehicle is inactive
+    if not vehicle.is_active():
+        return redirect('carshare:find_a_car')
+
     # Default to today if no date specified
     if year and month and day:
         date = dt.date(int(year), int(month), int(day))
@@ -119,6 +123,10 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
 def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None, length=1):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
+
+    # Redirect if vehicle is inactive
+    if not vehicle.is_active():
+        return redirect('carshare:find_a_car')
 
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
@@ -161,10 +169,12 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
                     schedule_end=booking_end,
                 )
                 # Include start date, hour, and length of booking so we can have a Back button
+                length = (booking_end - booking_start)
+                length_hours = length.days * 24 + length.seconds / 60 / 60
                 context = {
                     'booking': booking,
                     'datetime': booking_start,
-                    'length': int((booking_end - booking_start).seconds / 60 / 60),
+                    'length': int(length_hours),
                 }
                 return render(request, 'carshare/bookings/review.html', context)
 
@@ -335,7 +345,7 @@ def booking_cancel(request, booking_id):
     messages.success(request, 'Successfully cancelled booking for {0} the {1} {2}'.format(booking.vehicle.name,
                                                                                           booking.vehicle.make,
                                                                                           booking.vehicle.model))
-    return redirect('carshare:my_bookings')
+    return redirect('carshare:booking_detail', booking.id)
 
 
 def booking_pay(request, booking_id):
@@ -364,7 +374,7 @@ def booking_pay(request, booking_id):
         attachment_data=response.rendered_content,
     )
     messages.success(request, 'Thank you for your booking. An invoice has been emailed to you.')
-    return redirect('carshare:my_bookings')
+    return redirect('carshare:booking_detail', booking.id)
 
 
 def booking_invoice(request, booking_id):
@@ -405,4 +415,4 @@ def booking_calculate_cost(request, vehicle_id):
             }
             return HttpResponse(json.dumps(cost))
         else:
-            return HttpResponse(json.dumps({'error': 'check form validity'}))
+            return HttpResponse(json.dumps({'error': booking_form.errors}))

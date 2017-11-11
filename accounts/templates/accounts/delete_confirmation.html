@@ -4,6 +4,8 @@
 
     <div class="text-center top-spacer">
         <h4>Are you Sure?</h4>
+        <p>Your account and all related data including booking history and invoices will be permanently deleted, and you
+            will not be able to restore it.</p>
         <form method="post">
             {% csrf_token %}
             <input type="hidden" name="confirm" value="1">

@@ -22,7 +22,7 @@
 }
 
 .booking-details .row:last-of-type {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 .actions-heading {
@@ -40,4 +40,10 @@
 /* Override parent */
 .container {
     padding-bottom: 0;
+}
+
+/* Prominent cancelled status */
+.cancelled {
+    font-weight: bold;
+    color: #c10000;
 }

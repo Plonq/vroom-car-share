@@ -115,10 +115,29 @@ class CreditCard(models.Model):
     """
     Stores credit card information for a user
     """
+    from django.utils import timezone
+    MONTHS = [
+        ('01', '01'),
+        ('02', '02'),
+        ('03', '03'),
+        ('04', '04'),
+        ('05', '05'),
+        ('06', '06'),
+        ('07', '07'),
+        ('08', '08'),
+        ('09', '09'),
+        ('10', '10'),
+        ('11', '11'),
+        ('12', '12'),
+    ]
+    # Dynamically create year list. 30 years starting from today
+    today = timezone.localdate()
+    YEARS = [(str(year), str(year)) for year in range(today.year, today.year+30)]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='credit_card')
     card_number = models.CharField(max_length=16)
-    expiry_month = models.CharField(max_length=2)
-    expiry_year = models.CharField(max_length=4)
+    expiry_month = models.CharField(max_length=2, choices=MONTHS)
+    expiry_year = models.CharField(max_length=4, choices=YEARS)
 
     def __str__(self):
         return "XXXX XXXX XXXX {0}".format(self.card_number[-4:])

@@ -168,21 +168,21 @@ class AccountsCreditCardFormTests(TestCase):
         form = CreditCardForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
-    def test_expiry_year_exactly_50_in_future(self):
+    def test_expiry_year_exactly_29_in_future(self):
         """
-        Expiry year exactly 50 years in future correctly identified as valid
+        Expiry year exactly 29 years in future correctly identified as valid
         """
         invalid_form_data = form_data.copy()
-        invalid_form_data['expiry_year'] = str(date.today().year + 50)
+        invalid_form_data['expiry_year'] = str(date.today().year + 29)
         form = CreditCardForm(data=invalid_form_data)
         self.assertTrue(form.is_valid())
 
-    def test_expiry_year_over_50_in_future(self):
+    def test_expiry_year_over_30_in_future(self):
         """
         Expiry year of 51 years in future correctly identified as invalid
         """
         invalid_form_data = form_data.copy()
-        invalid_form_data['expiry_year'] = str(date.today().year + 51)
+        invalid_form_data['expiry_year'] = str(date.today().year + 31)
         form = CreditCardForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 

@@ -84,14 +84,30 @@
 {% block scripts %}
     <script>
         function initMap() {
+            var styles = {
+                default: null,
+                hide: [
+                    {
+                        featureType: 'poi',
+                        stylers: [{visibility: 'off'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'labels.icon',
+                        stylers: [{visibility: 'off'}]
+                    },
+                ]
+            };
             var vehicle = {
                 lat: {{ vehicle.pod.latitude }},
                 lng: {{ vehicle.pod.longitude }}
             };
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 16,
-                center: vehicle
+                center: vehicle,
+                disableDefaultUI: true
             });
+            map.setOptions({styles: styles['hide']});
             var marker = new google.maps.Marker({
                 position: vehicle,
                 map: map,

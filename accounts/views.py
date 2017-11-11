@@ -318,6 +318,7 @@ def delete_account(request):
     if request.method == 'POST':
         if request.POST['confirm'] == '1':
             request.user.delete()
+            messages.success(request, 'Account successfully deleted')
             return redirect('carshare:index')
     else:
         return render(request, 'accounts/delete_confirmation.html')
@@ -330,6 +331,7 @@ def disable_account(request):
         if request.POST['confirm'] == '1':
             request.user.is_active = False
             request.user.save()
+            messages.success(request, 'Account successfully disabled')
             return redirect('carshare:index')
     else:
         return render(request, 'accounts/disable_confirmation.html')

@@ -90,12 +90,11 @@ class Vehicle(models.Model):
 
     def __str__(self):
         # E.g. 'Jackie - 2014 Toyota Corolla'
-        return "{0} - {1} {2} {3}{4}".format(
+        return "{0} - {1} {2} {3}".format(
             self.name,
             self.year,
             self.make,
             self.model,
-            (" (active)" if self.is_active() else "")
         )
 
 
