@@ -51,9 +51,11 @@ class UserCreationSelfForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'date_of_birth')
+        today = timezone.localdate()
         dateTimeOptions = {
             'format': 'dd/mm/yyyy',
-            'endDate': timezone.localtime().date().isoformat(),
+            'endDate': date(today.year-18, today.month, today.day).isoformat(),
+            'startDate': date(today.year-100, today.month, today.day).isoformat(),
             'startView': 4,
         }
         widgets = {
@@ -75,8 +77,11 @@ class UserCreationSelfForm(UserCreationForm):
         dob = self.cleaned_data.get('date_of_birth')
         today = timezone.localdate()
         eighteen_years_ago = date(today.year-18, today.month, today.day)
+        hundred_twenty_years_ago = date(today.year-100, today.month, today.day)
         if dob > eighteen_years_ago:
             raise forms.ValidationError('You must be 18 years old to sign up')
+        if dob > hundred_twenty_years_ago:
+            raise forms.ValidationError('Are you sure you should be driving at that age?')
         return dob
 
     def save(self, commit=True):
