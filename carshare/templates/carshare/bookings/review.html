@@ -51,7 +51,7 @@
             <div class="row text-center">
                 <div class="col-xs-12">
                     <a class="btn btn-default" href="{% url 'carshare:booking_create_final_length' booking.vehicle.id datetime.year datetime.month datetime.day datetime.hour length %}">Back</a>
-                    <a class="btn btn-success" href="{% url 'carshare:booking_confirm' %}">Confirm</a>
+                    <a class="btn btn-success load-after-click" href="{% url 'carshare:booking_confirm' %}">Confirm</a>
                 </div>
             </div>
         </div>
