@@ -221,9 +221,9 @@
         <div class="row hidden-xs top-buffer">
             <div class="col-sm-4">
                 {% if user.is_authenticated %}
-                    <a href="{{ url_login }}">Login</a>
+                    <a href="{{ url_login }}">Logout</a>
                 {% else %}
-                    <a href="{{ url_logout }}">Logout</a>
+                    <a href="{{ url_logout }}">Login</a>
                 {% endif %}
             </div>
             <div class="col-sm-4">
