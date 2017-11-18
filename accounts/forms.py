@@ -168,7 +168,7 @@ class EmailChangeForm(forms.ModelForm):
             'requested_email',
         }
 
-    def clean_email(self):
+    def clean_requested_email(self):
         requested_email = self.cleaned_data.get('requested_email')
         if User.objects.filter(email=requested_email).exists():
             raise forms.ValidationError('That email is already taken')
