@@ -357,6 +357,10 @@ def booking_pay(request, booking_id):
     if booking.cancelled:
         messages.error(request, 'You cannot pay a booking that has been cancelled')
         return redirect('carshare:my_bookings')
+    # Is already paid?
+    if hasattr(booking, 'invoice'):
+        messages.info(request, 'This booking has already been paid')
+        return redirect('carshare:booking_detail', booking.id)
     # Create invoice and email it to user
     invoice = Invoice(booking=booking, amount=booking.calculate_cost())
     invoice.save()

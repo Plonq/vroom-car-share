@@ -374,6 +374,12 @@
     // Insert hidden animated loading icon in every button with appropriate class
     $(document).ready(function() {
         $('.load-after-click').append(' <span class="loading-icon glyphicon glyphicon-refresh glyphicon-refresh-animate" style="display: none"></span>')
+        // For link buttons (i.e. not forms), show loading always when clicked.
+        // For forms, see jquery validation submitHandler above
+        $('a.load-after-click').click(function() {
+            $(this).addClass('disabled');
+            $('.loading-icon').show();
+        })
     });
 </script>
 
