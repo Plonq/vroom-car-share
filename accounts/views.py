@@ -1,5 +1,9 @@
+#
+#   Author(s): Huon Imberger, Shaun O'Malley
+#   Description: Controllers for accounts-related pages
+#
+
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -15,6 +19,9 @@ from emails.utils import send_templated_email
 
 
 def register_user(request):
+    """
+    First step in the registration process - user details
+    """
     if request.user.is_authenticated:
         # User logged in, redirect to profile
         return redirect('profile')
@@ -63,6 +70,9 @@ def register_user(request):
 
 
 def register_address(request):
+    """
+    Second step in the registration process - address
+    """
     if request.user.is_authenticated:
         # User logged in, redirect to profile
         return redirect('profile')
@@ -113,6 +123,9 @@ def register_address(request):
 
 
 def register_credit_card(request):
+    """
+    Third and last step in the registration process - credit card
+    """
     if request.user.is_authenticated:
         # User logged in, redirect to profile
         return redirect('profile')
@@ -172,6 +185,9 @@ def register_credit_card(request):
 
 
 def register_cancel(request):
+    """
+    Cancels the registration process, deleting partial data from the database
+    """
     try:
         # Must try deleting in this order, because if address doesn't exist, it will skip to except block
         user_obj = User.objects.get(id=request.session['user_id'])
@@ -188,12 +204,17 @@ def register_cancel(request):
 
 
 def activate_account(request, uidb64, token):
+    """
+    Activates an account using provided token and user id
+    """
     try:
+        # Decode user ID and get user from DB
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except User.DoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
+        # Activate the user and display success page
         user.is_active = True
         user.save()
         return render(request, 'accounts/activate_done.html')
@@ -203,19 +224,26 @@ def activate_account(request, uidb64, token):
 
 @login_required
 def profile(request):
+    """
+    Displays the user's profile
+    """
     return render(request, 'accounts/profile.html')
 
 
 @login_required
 def edit_profile(request):
+    """
+    Edit profile form
+    """
     user = request.user
     address_form = None
     if request.method == 'POST':
+        # Create form from POST data and validate
         user_form = UserChangeSelfForm(request.POST, instance=user)
-
         if user_form.is_valid():
             user_form.save()
             if hasattr(user, 'address'):
+                # If user has address, also validate and save
                 address_form = AddressForm(request.POST, instance=user.address)
                 if address_form.is_valid():
                     address_form.save()
@@ -223,6 +251,7 @@ def edit_profile(request):
             messages.success(request, 'Changes saved')
             return redirect('profile')
     else:
+        # Not POST, display form(s)
         user_form = UserChangeSelfForm(instance=user)
         if hasattr(user, 'address'):
             address_form = AddressForm(instance=user.address)
@@ -238,8 +267,12 @@ def edit_profile(request):
 
 @login_required
 def update_credit_card(request):
+    """
+    Update credit card form
+    """
     user = request.user
     if request.method == 'POST':
+        # Create form from POST data and validate
         credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
 
         if credit_card_form.is_valid():
@@ -260,8 +293,12 @@ def update_credit_card(request):
 
 @login_required
 def update_email(request):
+    """
+    Update email form
+    """
     user = request.user
     if request.method == 'POST':
+        # Create form from POST data and validate
         email_form = EmailChangeForm(request.POST, instance=user)
 
         if email_form.is_valid():
@@ -294,13 +331,17 @@ def update_email(request):
 
 
 def update_email_verify(request, uidb64, token):
+    """
+    Verifies new email address using provided token and user id
+    """
     try:
+        # Decode user ID and get user from DB
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except User.DoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
-        # Get new email address from session
+        # Get new email address from user object and replace actual email
         if user.requested_email:
             user.email = user.requested_email
             user.requested_email = None
@@ -315,6 +356,9 @@ def update_email_verify(request, uidb64, token):
 # Delete account confirmation, delete if POST
 @login_required
 def delete_account(request):
+    """
+    Prompts for and deletes a user account
+    """
     if request.method == 'POST':
         if request.POST['confirm'] == '1':
             request.user.delete()
@@ -327,6 +371,9 @@ def delete_account(request):
 # Disable account confirmation, disable if POST
 @login_required
 def disable_account(request):
+    """
+    Prompts for and disables a user account
+    """
     if request.method == 'POST':
         if request.POST['confirm'] == '1':
             request.user.is_active = False

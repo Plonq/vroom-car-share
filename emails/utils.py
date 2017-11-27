@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger
+#   Description: Email utility methods
+#
+
 from django.template import Engine, Context
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -8,6 +13,10 @@ from .models import EmailTemplate
 
 
 def send_templated_email(template_name, context, recipient_list, from_email=settings.DEFAULT_FROM_EMAIL, attachment_filename=None, attachment_data=None):
+    """
+    Sends an email using a template stored in the database (based on the template name)
+    Also supports attaching a file
+    """
     # Get template from database, render it using the provided context
     template_engine = Engine()
     email_template = EmailTemplate.objects.get(name=template_name)

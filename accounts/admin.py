@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger
+#   Description: Configures django-admin for account-related admin tasks
+#
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -5,6 +10,7 @@ from .models import User, Address, CreditCard
 from .forms import UserCreationForm, UserChangeForm
 
 
+# Inlines to allow editing of address and credit card on the same page as user details
 class AddressInline(admin.StackedInline):
     model = Address
     can_delete = True
@@ -19,7 +25,6 @@ class CreditCardInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     # Add inline forms for address and credit card
-
     inlines = (AddressInline, CreditCardInline)
 
     # The forms to add and change user instances

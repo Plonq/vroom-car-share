@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger, Shaun O'Malley
+#   Description: Controllers for core pages
+#
+
 from django.contrib import messages
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
@@ -14,7 +19,7 @@ import json
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking, Invoice, Pod
 
-# Create your views here.
+
 def index(request):
     return render(request, 'carshare/index.html')
 
@@ -32,11 +37,17 @@ def faq(request):
 
 
 def privacy(request):
+    """
+    Render privacy policy PDF document
+    """
     from django.http import FileResponse
     return FileResponse(open('vroom_car_share/static/privacy_policy.pdf', 'rb'), content_type='application/pdf')
 
 
 def about_us(request):
+    """
+    Calculates approximate savings over owning a car and displays About info
+    """
     # Owner cost: $75 per trip, calculated using values from GoGet (10,000 kms per annum, car is used 20
     # hours per week, petrol $1.44 per litre). Assuming 20 hours is two trips on average.
     owner_cost = 75 * Booking.objects.count()
@@ -54,7 +65,11 @@ def about_us(request):
 
 
 def contact_us(request):
+    """
+    Contact form and Vroom information
+    """
     if request.method == 'POST':
+        # Create form from POST data and validate
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():
             contact_name = contact_form.cleaned_data['contact_name']
@@ -62,6 +77,7 @@ def contact_us(request):
             subject = 'New Contact Us from {0}'.format(contact_name)
             message = contact_form.cleaned_data['message']
             try:
+                # Send email to admin with the contact message
                 email = EmailMessage(
                     subject=subject,
                     body=message,
@@ -80,6 +96,10 @@ def contact_us(request):
 
 
 def find_a_car(request):
+    """
+    Interactive map page
+    """
+    # Get all active vehicles that have been assigned to a pod
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
@@ -89,6 +109,9 @@ def find_a_car(request):
 
 @login_required
 def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
+    """
+    The booking timeline view, showing availability of selected vehicle and allowing user to choose a booking start time
+    """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
     # Redirect if vehicle is inactive
@@ -121,6 +144,10 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
 
 @login_required
 def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None, length=1):
+    """
+    Booking form for selected vehicle. Pre-fills form with provided data.
+    Also displays a booking review page before creating booking.
+    """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
 
@@ -194,6 +221,9 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
 
 @login_required
 def booking_confirm(request):
+    """
+    Creates booking from session variables (which should be set in booking_create())
+    """
     # Create booking from session vars, since form was previously submitted
     try:
         vehicle_id = request.session['vehicle_id']
@@ -228,6 +258,10 @@ def booking_confirm(request):
 
 @login_required
 def booking_detail(request, booking_id):
+    """
+    Displays details of a single booking
+    """
+    # Get booking, or display message and redirect if booking doesn't belong to auth'd user
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -240,6 +274,10 @@ def booking_detail(request, booking_id):
 
 @login_required
 def my_bookings(request):
+    """
+    Page displaying all of a user's bookings, split into logical groups
+    """
+    # Get list past and upcoming bookings, as well as the current booking
     now = timezone.localtime()
     current_booking = request.user.get_current_booking()
     upcoming_bookings = request.user.booking_set.filter(
@@ -256,7 +294,11 @@ def my_bookings(request):
 
 @login_required
 def booking_extend(request, booking_id):
+    """
+    Logic for extending a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -265,6 +307,7 @@ def booking_extend(request, booking_id):
         return redirect('carshare:my_bookings')
 
     if request.method == 'POST':
+        # Create form from POST data and validate
         extend_booking_form = ExtendBookingForm(request.POST, current_booking_end=booking.schedule_end)
         if extend_booking_form.is_valid():
             new_schedule_end = extend_booking_form.cleaned_data['new_schedule_end']
@@ -293,6 +336,7 @@ def booking_extend(request, booking_id):
                     )
                     break
 
+            # New booking end is valid? Save booking send email
             if is_valid_booking:
                 booking.schedule_end = new_schedule_end
                 booking.save()
@@ -320,7 +364,11 @@ def booking_extend(request, booking_id):
 
 
 def booking_cancel(request, booking_id):
+    """
+    Logic for cancelling a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -333,9 +381,11 @@ def booking_cancel(request, booking_id):
     if booking.is_paid():
         messages.error(request, 'You cannot cancel a booking that has already been paid')
         return redirect('carshare:my_bookings')
+
+    # Cancel booking
     booking.cancelled = timezone.now()
     booking.save()
-    # Send email
+    # Send email confirmation
     request.user.send_email(
         template_name='Booking Cancelled',
         context={
@@ -349,7 +399,11 @@ def booking_cancel(request, booking_id):
 
 
 def booking_pay(request, booking_id):
+    """
+    Logic for paying a booking (note: no actual payment is charged to user's credit card)
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -361,6 +415,7 @@ def booking_pay(request, booking_id):
     if hasattr(booking, 'invoice'):
         messages.info(request, 'This booking has already been paid')
         return redirect('carshare:booking_detail', booking.id)
+
     # Create invoice and email it to user
     invoice = Invoice(booking=booking, amount=booking.calculate_cost())
     invoice.save()
@@ -382,6 +437,9 @@ def booking_pay(request, booking_id):
 
 
 def booking_invoice(request, booking_id):
+    """
+    Creates and displays an invoice as PDF for a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that invoice')
@@ -400,23 +458,24 @@ def booking_invoice(request, booking_id):
 def booking_calculate_cost(request, vehicle_id):
     """
     Calculates booking cost given start and end times (from POST)
-    :return: Float
     """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
+            # Create booking object using provided data and use its method
             data = booking_form.cleaned_data
             booking_start = data['schedule_start']
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
-            # DO NOT SAVE BOOKING! It's only used for its method
+            # DO NOT SAVE BOOKING!
             days, hours = booking.calculate_daily_hourly_billable_counts()
             cost = {
                 'total': '${0:.2f}'.format(booking.calculate_cost()),
                 'days': days,
                 'hours': hours,
             }
+            # Return calculated cost as string
             return HttpResponse(json.dumps(cost))
         else:
             return HttpResponse(json.dumps({'error': booking_form.errors}))

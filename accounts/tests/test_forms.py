@@ -2,6 +2,7 @@ from django.test import TestCase
 from ..forms import *
 
 
+# Set up default, valid form data
 form_data = {
     'email': 'test@test.com',
     'first_name': 'Test',

@@ -1,10 +1,14 @@
-from crispy_forms import bootstrap
+#
+#   Author(s): Huon Imberger, Shaun O'Malley
+#   Description: Defines forms, including validation rules
+#
+
 from django import forms
 from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML, Submit
-from crispy_forms.bootstrap import (PrependedText, PrependedAppendedText, FormActions)
+from crispy_forms.bootstrap import (PrependedText, FormActions)
 from datetimewidget.widgets import DateWidget
 
 import datetime as dt

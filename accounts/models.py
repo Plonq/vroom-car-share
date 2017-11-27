@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger
+#   Description: Defines database models for account-related data
+#
+
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -7,8 +12,10 @@ from .managers import UserManager
 from emails.utils import send_templated_email
 
 
-# Custom User model to use email instead of username
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Custom User model to use email instead of username
+    """
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -58,7 +65,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             attachment_data=attachment_data,
         )
 
-
     def has_perm(self, perm, obj=None):
         """
         Does the user have a specific permission?
@@ -77,6 +83,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_current_booking(self):
+        """
+        Gets this user's current booking
+        """
         current_bookings = self.booking_set.all()
         active_bookings = [b for b in current_bookings if b.is_active()]
         # Should only ever be one active booking (enforced via validation when creating a booking),

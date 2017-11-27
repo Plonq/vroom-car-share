@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger
+#   Description: Utility methods
+#
+
 def is_credit_card_valid(card_number):
     """
     Checks the validity of a credit card using the Luhn algorithm
