@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger, Steven Thompson, Shaun O'Malley
+#   Description: Maps views (controllers) to URL patterns. AKA routes - for account-related pages
+#
+
 from django.conf.urls import url, include
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView, PasswordChangeDoneView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 

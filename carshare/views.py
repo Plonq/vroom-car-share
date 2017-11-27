@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger, Shaun O'Malley
+#   Description: Controllers for core pages
+#
+
 from django.contrib import messages
 from django.core.mail import EmailMessage, BadHeaderError
 from django.http import HttpResponse
@@ -14,7 +19,7 @@ import json
 from .forms import ContactForm, BookingForm, ExtendBookingForm
 from .models import Vehicle, Booking, Invoice, Pod
 
-# Create your views here.
+
 def index(request):
     return render(request, 'carshare/index.html')
 
@@ -32,11 +37,17 @@ def faq(request):
 
 
 def privacy(request):
+    """
+    Render privacy policy PDF document
+    """
     from django.http import FileResponse
     return FileResponse(open('vroom_car_share/static/privacy_policy.pdf', 'rb'), content_type='application/pdf')
 
 
 def about_us(request):
+    """
+    Calculates approximate savings over owning a car and displays About info
+    """
     # Owner cost: $75 per trip, calculated using values from GoGet (10,000 kms per annum, car is used 20
     # hours per week, petrol $1.44 per litre). Assuming 20 hours is two trips on average.
     owner_cost = 75 * Booking.objects.count()
@@ -54,6 +65,9 @@ def about_us(request):
 
 
 def contact_us(request):
+    """
+    Contact form and Vroom information
+    """
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():
@@ -80,6 +94,9 @@ def contact_us(request):
 
 
 def find_a_car(request):
+    """
+    Interactive map page
+    """
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
@@ -89,6 +106,9 @@ def find_a_car(request):
 
 @login_required
 def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
+    """
+    The booking timeline view, showing availability of selected vehicle and allowing user to choose a booking start time
+    """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
     # Redirect if vehicle is inactive
@@ -121,6 +141,10 @@ def booking_timeline(request, vehicle_id, year=None, month=None, day=None):
 
 @login_required
 def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=None, length=1):
+    """
+    Booking form for selected vehicle. Pre-fills form with provided data.
+    Also displays a booking review page before creating booking.
+    """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     datetime = dt.datetime(int(year), int(month), int(day), int(hour), minute=0)
 
@@ -194,6 +218,9 @@ def booking_create(request, vehicle_id, year=None, month=None, day=None, hour=No
 
 @login_required
 def booking_confirm(request):
+    """
+    Creates booking from session variables (which should be set in booking_create())
+    """
     # Create booking from session vars, since form was previously submitted
     try:
         vehicle_id = request.session['vehicle_id']
@@ -228,6 +255,9 @@ def booking_confirm(request):
 
 @login_required
 def booking_detail(request, booking_id):
+    """
+    Displays details of a single booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -240,6 +270,9 @@ def booking_detail(request, booking_id):
 
 @login_required
 def my_bookings(request):
+    """
+    Page displaying all of a user's bookings, split into logical groups
+    """
     now = timezone.localtime()
     current_booking = request.user.get_current_booking()
     upcoming_bookings = request.user.booking_set.filter(
@@ -256,6 +289,9 @@ def my_bookings(request):
 
 @login_required
 def booking_extend(request, booking_id):
+    """
+    Logic for extending a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -320,6 +356,9 @@ def booking_extend(request, booking_id):
 
 
 def booking_cancel(request, booking_id):
+    """
+    Logic for cancelling a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -349,6 +388,9 @@ def booking_cancel(request, booking_id):
 
 
 def booking_pay(request, booking_id):
+    """
+    Logic for paying a booking (note: no actual payment is charged to user's credit card)
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -382,6 +424,9 @@ def booking_pay(request, booking_id):
 
 
 def booking_invoice(request, booking_id):
+    """
+    Creates and displays an invoice as PDF for a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that invoice')
@@ -400,7 +445,6 @@ def booking_invoice(request, booking_id):
 def booking_calculate_cost(request, vehicle_id):
     """
     Calculates booking cost given start and end times (from POST)
-    :return: Float
     """
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     if request.method == 'POST':

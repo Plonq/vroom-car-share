@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger, Shaun O'Malley
+#   Description: Defines account-related forms, including validation rules
+#
+
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth.password_validation import validate_password, password_validators_help_text_html
 from django import forms

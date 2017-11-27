@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger, Steven Thompson, Shaun O'Malley
+#   Description: Maps views (controllers) to URL patterns. AKA routes - for core function pages
+#
+
 from django.conf.urls import url
 
 from . import views

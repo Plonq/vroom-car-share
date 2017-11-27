@@ -1,3 +1,8 @@
+#
+#   Author(s): Huon Imberger
+#   Description: Defines database models for core functionality
+#
+
 from django.db import models
 from django.utils import timezone
 
