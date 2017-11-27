@@ -208,11 +208,13 @@ def activate_account(request, uidb64, token):
     Activates an account using provided token and user id
     """
     try:
+        # Decode user ID and get user from DB
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except User.DoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
+        # Activate the user and display success page
         user.is_active = True
         user.save()
         return render(request, 'accounts/activate_done.html')
@@ -236,11 +238,12 @@ def edit_profile(request):
     user = request.user
     address_form = None
     if request.method == 'POST':
+        # Create form from POST data and validate
         user_form = UserChangeSelfForm(request.POST, instance=user)
-
         if user_form.is_valid():
             user_form.save()
             if hasattr(user, 'address'):
+                # If user has address, also validate and save
                 address_form = AddressForm(request.POST, instance=user.address)
                 if address_form.is_valid():
                     address_form.save()
@@ -248,6 +251,7 @@ def edit_profile(request):
             messages.success(request, 'Changes saved')
             return redirect('profile')
     else:
+        # Not POST, display form(s)
         user_form = UserChangeSelfForm(instance=user)
         if hasattr(user, 'address'):
             address_form = AddressForm(instance=user.address)
@@ -268,6 +272,7 @@ def update_credit_card(request):
     """
     user = request.user
     if request.method == 'POST':
+        # Create form from POST data and validate
         credit_card_form = CreditCardForm(request.POST, instance=user.credit_card)
 
         if credit_card_form.is_valid():
@@ -293,6 +298,7 @@ def update_email(request):
     """
     user = request.user
     if request.method == 'POST':
+        # Create form from POST data and validate
         email_form = EmailChangeForm(request.POST, instance=user)
 
         if email_form.is_valid():
@@ -329,12 +335,13 @@ def update_email_verify(request, uidb64, token):
     Verifies new email address using provided token and user id
     """
     try:
+        # Decode user ID and get user from DB
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except User.DoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
-        # Get new email address from session
+        # Get new email address from user object and replace actual email
         if user.requested_email:
             user.email = user.requested_email
             user.requested_email = None

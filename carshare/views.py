@@ -69,6 +69,7 @@ def contact_us(request):
     Contact form and Vroom information
     """
     if request.method == 'POST':
+        # Create form from POST data and validate
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():
             contact_name = contact_form.cleaned_data['contact_name']
@@ -76,6 +77,7 @@ def contact_us(request):
             subject = 'New Contact Us from {0}'.format(contact_name)
             message = contact_form.cleaned_data['message']
             try:
+                # Send email to admin with the contact message
                 email = EmailMessage(
                     subject=subject,
                     body=message,
@@ -97,6 +99,7 @@ def find_a_car(request):
     """
     Interactive map page
     """
+    # Get all active vehicles that have been assigned to a pod
     active_vehicles_with_pods = Vehicle.objects.filter(active=True).exclude(pod__isnull=True)
     context = {
         'vehicles': active_vehicles_with_pods
@@ -258,6 +261,7 @@ def booking_detail(request, booking_id):
     """
     Displays details of a single booking
     """
+    # Get booking, or display message and redirect if booking doesn't belong to auth'd user
     booking = get_object_or_404(Booking, pk=booking_id)
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
@@ -273,6 +277,7 @@ def my_bookings(request):
     """
     Page displaying all of a user's bookings, split into logical groups
     """
+    # Get list past and upcoming bookings, as well as the current booking
     now = timezone.localtime()
     current_booking = request.user.get_current_booking()
     upcoming_bookings = request.user.booking_set.filter(
@@ -293,6 +298,7 @@ def booking_extend(request, booking_id):
     Logic for extending a booking
     """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -301,6 +307,7 @@ def booking_extend(request, booking_id):
         return redirect('carshare:my_bookings')
 
     if request.method == 'POST':
+        # Create form from POST data and validate
         extend_booking_form = ExtendBookingForm(request.POST, current_booking_end=booking.schedule_end)
         if extend_booking_form.is_valid():
             new_schedule_end = extend_booking_form.cleaned_data['new_schedule_end']
@@ -329,6 +336,7 @@ def booking_extend(request, booking_id):
                     )
                     break
 
+            # New booking end is valid? Save booking send email
             if is_valid_booking:
                 booking.schedule_end = new_schedule_end
                 booking.save()
@@ -360,6 +368,7 @@ def booking_cancel(request, booking_id):
     Logic for cancelling a booking
     """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -372,9 +381,11 @@ def booking_cancel(request, booking_id):
     if booking.is_paid():
         messages.error(request, 'You cannot cancel a booking that has already been paid')
         return redirect('carshare:my_bookings')
+
+    # Cancel booking
     booking.cancelled = timezone.now()
     booking.save()
-    # Send email
+    # Send email confirmation
     request.user.send_email(
         template_name='Booking Cancelled',
         context={
@@ -392,6 +403,7 @@ def booking_pay(request, booking_id):
     Logic for paying a booking (note: no actual payment is charged to user's credit card)
     """
     booking = get_object_or_404(Booking, pk=booking_id)
+    # Redirect conditions
     if request.user != booking.user:
         messages.error(request, 'You do not have permission to view that booking')
         return redirect('carshare:index')
@@ -403,6 +415,7 @@ def booking_pay(request, booking_id):
     if hasattr(booking, 'invoice'):
         messages.info(request, 'This booking has already been paid')
         return redirect('carshare:booking_detail', booking.id)
+
     # Create invoice and email it to user
     invoice = Invoice(booking=booking, amount=booking.calculate_cost())
     invoice.save()
@@ -450,17 +463,19 @@ def booking_calculate_cost(request, vehicle_id):
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
+            # Create booking object using provided data and use its method
             data = booking_form.cleaned_data
             booking_start = data['schedule_start']
             booking_end = data['schedule_end']
             booking = Booking(user=request.user, vehicle=vehicle, schedule_start=booking_start, schedule_end=booking_end)
-            # DO NOT SAVE BOOKING! It's only used for its method
+            # DO NOT SAVE BOOKING!
             days, hours = booking.calculate_daily_hourly_billable_counts()
             cost = {
                 'total': '${0:.2f}'.format(booking.calculate_cost()),
                 'days': days,
                 'hours': hours,
             }
+            # Return calculated cost as string
             return HttpResponse(json.dumps(cost))
         else:
             return HttpResponse(json.dumps({'error': booking_form.errors}))
