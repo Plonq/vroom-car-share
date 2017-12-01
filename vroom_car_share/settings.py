@@ -23,7 +23,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "fdmp5t!(7c5n8bp1xcyo3ttuf6i6kap_)f0g473_+m)3ref!wn"
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
@@ -166,9 +166,6 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-# Admins get error notifications
-ADMINS = [('Huon', 'huon@plonq.org')]
-
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -178,17 +175,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # SendGrid email
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
-SENDGRID_API_KEY = "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"
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = 'Vroom Car Share <admin@vroomcs.org>'
 
 # Customise messages framework
 MESSAGE_TAGS = {
     messages.ERROR: 'danger' # To match the Bootstrap3 class
 }
-
-# Backup email
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'progproject2017@gmail.com'
-# EMAIL_HOST_PASSWORD = 'thisisthepassword'
-# EMAIL_PORT = 587
