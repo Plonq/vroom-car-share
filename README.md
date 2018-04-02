@@ -6,7 +6,7 @@ It was created as a final group project for [Bachelor of Information Technology 
 You can see a live demo at https://vroom-car-share.herokuapp.com/. Feel free to create an account and try it out.
 
 Members and contributors:
-* Huon Imberger
+* Huon Imberger (Plonq)
 * Steven Thompson
 * Annalise Graham
 * Shaun O'Malley
